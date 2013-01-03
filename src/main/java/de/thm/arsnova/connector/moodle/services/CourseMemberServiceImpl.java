@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.thm.arsnova.connector.moodle.dao.CourseDao;
-import de.thm.arsnova.connector.moodle.model.MdlUser;
 
 @Service("courseMemberService")
 public class CourseMemberServiceImpl implements CourseMemberService {
@@ -30,11 +29,11 @@ public class CourseMemberServiceImpl implements CourseMemberService {
 	@Path("/{username}/ismemberof/{courseid}")
 	@Produces("application/json")
 	public boolean ismember(@PathParam("username") String username, @PathParam("courseid") String courseid) {
-		List<MdlUser> users = courseDao.getCourseUsers(courseid);
-
+		List<String> users = courseDao.getCourseUsers(courseid);
+	
 		if (users != null) {
-			for (MdlUser user : users) {
-				if (username.equals(user.getUsername())) {
+			for (String _username : users) {
+				if (username.equals(_username)) {
 					return true;
 				}
 			}
