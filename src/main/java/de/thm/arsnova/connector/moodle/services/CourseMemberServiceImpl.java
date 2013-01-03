@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.thm.arsnova.connector.moodle.dao.CourseDao;
+import de.thm.arsnova.connector.moodle.model.Course;
+import de.thm.arsnova.connector.moodle.model.Courses;
+import de.thm.arsnova.connector.moodle.model.Membership;
 
 @Service("courseMemberService")
 public class CourseMemberServiceImpl implements CourseMemberService {
@@ -18,28 +21,37 @@ public class CourseMemberServiceImpl implements CourseMemberService {
 	@Autowired
 	private CourseDao courseDao;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.thm.arsnova.connector.moodle.CourseMemberService#ismember(java.lang
-	 * .String, int)
-	 */
 	@GET
-	@Path("/{username}/ismemberof/{courseid}")
-	@Produces("application/json")
-	public boolean ismember(@PathParam("username") String username, @PathParam("courseid") String courseid) {
+	@Path("/{username}/membership/{courseid}")
+	@Produces("application/xml")
+	public Membership ismember(@PathParam("username") String username, @PathParam("courseid") String courseid) {
 		List<String> users = courseDao.getCourseUsers(courseid);
-	
+		Membership membership = new Membership();
+		membership.setCourseid(courseid);
+		
 		if (users != null) {
 			for (String _username : users) {
 				if (username.equals(_username)) {
-					return true;
+					membership.setIsmember(true);
+					return membership;
 				}
 			}
 		}
 
-		return false;
+		membership.setIsmember(false);
+		return membership;
 	}
 
+	@GET
+	@Path("/{username}/courses")
+	@Produces("application/xml")
+	public Courses getCourses(@PathParam("username") String username) {
+		Courses courses = new Courses();
+		
+		for (Course c : courseDao.getTeachersCourses(username)) {
+			courses.getCourse().add(c);
+		}
+		
+		return courses;
+	}
 }

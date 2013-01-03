@@ -4,3 +4,4 @@
 .springBeans
 *.properties
 target/*
+src/main/jaxb/*
