@@ -54,23 +54,4 @@
 		<property name="username" value="${jdbc.username}" />
 		<property name="password" value="${jdbc.password}" />
 	</bean>
-
-	<bean id="entityManagerFactory"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="persistenceUnitName" value="moodle-connector"></property>
-		<property name="dataSource" ref="dataSource"></property>
-		<property name="jpaVendorAdapter">
-			<bean class="org.springframework.orm.jpa.vendor.OpenJpaVendorAdapter">
-				<property name="showSql" value="true" />
-				<property name="generateDdl" value="false" />
-				<property name="databasePlatform"
-					value="org.apache.openjpa.jdbc.sql.MySQLDictionary"></property>
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-		<property name="entityManagerFactory" ref="entityManagerFactory" />
-	</bean>
-
 </beans>
