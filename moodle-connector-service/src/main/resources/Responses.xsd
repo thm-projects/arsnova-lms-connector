@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://arsnova.thm.de/Responses"
+	xmlns:tns="http://arsnova.thm.de/Responses" elementFormDefault="qualified">
+
+	<element name="courses">
+		<complexType>
+			<sequence>
+				<element name="course" type="tns:Course" minOccurs="0" maxOccurs="unbounded"></element>
+			</sequence>
+		</complexType>
+	</element>
+
+	<complexType name="Course">
+		<sequence>
+			<element name="id" type="string"></element>
+			<element name="fullname" type="string"></element>
+		</sequence>
+	</complexType>
+	
+	<element name="membership">
+		<complexType>
+			<sequence>
+				<element name="courseid" type="string"></element>
+				<element name="ismember" type="boolean"></element>
+			</sequence>
+		</complexType>
+	</element>
+</schema>

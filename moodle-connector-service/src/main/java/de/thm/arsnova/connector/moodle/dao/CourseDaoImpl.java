@@ -18,7 +18,7 @@ public class CourseDaoImpl implements CourseDao {
 
 	@Autowired
 	private DataSource dataSource;
-	
+
 	public List<String> getCourseUsers(String courseid) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		return jdbcTemplate.query(
@@ -34,7 +34,7 @@ public class CourseDaoImpl implements CourseDao {
 				}
 		);
 	}
-	
+
 	public List<Course> getTeachersCourses(String username) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		return jdbcTemplate.query(

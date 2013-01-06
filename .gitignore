@@ -1,7 +1,9 @@
 .classpath
 .project
+*/.settings/*
 .settings/*
 .springBeans
 *.properties
-target/*
-src/main/jaxb/*
+*/target/*
+*/src/main/jaxb/*
+
