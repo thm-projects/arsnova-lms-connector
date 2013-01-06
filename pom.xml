@@ -6,6 +6,13 @@
 	<version>0.8.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
+	<name>ARSnova connector for Moodle</name>
+	<description>The ARSnova Connector for Moodle is an easy to use connector to retrieve information about courses and to use them in ARSnova.</description>
+	<organization>
+		<name>Technische Hochschule Mittelhessen</name>
+		<url>http://www.thm.de</url>
+	</organization>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
