@@ -8,24 +8,24 @@ import de.thm.arsnova.connector.moodle.model.Membership;
 
 public class MoodleClientImpl implements MoodleClient {
 	private final RestTemplate restTemplate = new RestTemplate();
-	
-	private final String IS_MEMBER_URI = "/{username}/membership/{courseid}";
-	private final String GET_COURSES_URI = "/{username}/courses";
-	
+
+	private static final String isMemberUri = "/{username}/membership/{courseid}";
+	private static final String getCoursesUri = "/{username}/courses";
+
 	private String uriHostPart;
-	
+
 	@Autowired
 	public void setServiceLocation(String serviceLocation) {
 		uriHostPart = serviceLocation;
 	}
-	
+
 	@Override
 	public Membership isMember(String username, String courseid) {
-		return restTemplate.getForObject(uriHostPart + IS_MEMBER_URI, Membership.class, username, courseid);
+		return restTemplate.getForObject(uriHostPart + isMemberUri, Membership.class, username, courseid);
 	}
-	
+
 	@Override
 	public Courses getCourses(String username) {
-		return restTemplate.getForObject(uriHostPart + GET_COURSES_URI, Courses.class, username);
+		return restTemplate.getForObject(uriHostPart + getCoursesUri, Courses.class, username);
 	}
 }
