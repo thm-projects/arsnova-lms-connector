@@ -1,6 +1,8 @@
 package de.thm.arsnova.connector.moodle.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,6 +25,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import de.thm.arsnova.connector.moodle.model.Courses;
+import de.thm.arsnova.connector.moodle.model.Membership;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/test/resources/spring-test.xml" })
@@ -111,5 +114,38 @@ public class CourseMemberServiceTest {
 		int expected = 2;
 
 		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testShouldNotReturnCoursesForNonexistantUsers() {
+		Courses courses = courseMemberService.getCourses("iamnothere");
+		int actual = courses.getCourse().size();
+		int expected = 0;
+
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testShouldIndicateAnEnroledUser() {
+		Membership membership = courseMemberService.ismember("admin", "1");
+		assertTrue(membership.isIsmember());
+	}
+	
+	@Test
+	public void testShouldNotIndicateUnenroledUsers() {
+		Membership membership = courseMemberService.ismember("pcvl72", "1");
+		assertFalse(membership.isIsmember());
+	}
+	
+	@Test
+	public void testShouldReturnFalseOnUnknownCourse() {
+		Membership membership = courseMemberService.ismember("pcvl72", "12345678");
+		assertFalse(membership.isIsmember());
+	}
+	
+	@Test
+	public void testShouldReturnFalseOnUnknownUser() {
+		Membership membership = courseMemberService.ismember("iamnothere", "1");
+		assertFalse(membership.isIsmember());
 	}
 }

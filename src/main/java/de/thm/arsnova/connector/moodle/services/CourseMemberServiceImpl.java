@@ -30,8 +30,8 @@ public class CourseMemberServiceImpl implements CourseMemberService {
 		membership.setCourseid(courseid);
 		
 		if (users != null) {
-			for (String _username : users) {
-				if (username.equals(_username)) {
+			for (String user : users) {
+				if (username.equals(user)) {
 					membership.setIsmember(true);
 					return membership;
 				}
