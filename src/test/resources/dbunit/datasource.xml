@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<table name="mdl_course">
+		<column>id</column>
+		<column>fullname</column>
+		<row>
+			<value>1</value>
+			<value>Testkurs 1</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>Testkurs 2</value>
+		</row>
+	</table>
+	<table name="mdl_user">
+		<column>id</column>
+		<column>username</column>
+		<row>
+			<value>1</value>
+			<value>admin</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>ptsr00</value>
+		</row>
+	</table>
+	<table name="mdl_enrol">
+		<column>id</column>
+		<column>enrol</column>
+		<column>courseid</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>1</value>
+			<value>1</value>
+		</row>
+	</table>
+	<table name="mdl_user_enrolments">
+		<column>id</column>
+		<column>enrolid</column>
+		<column>userid</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>2</value>
+			<value>1</value>
+		</row>
+	</table>
+</dataset>

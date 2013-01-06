@@ -1,0 +1,18 @@
+ -----
+ ARSnova Connector for Moodle
+ -----
+ Paul-Christian Volkmer
+ -----
+ -----
+
+ARSnova Connector for Moodle
+
+ 
+ The ARSnova Connector for Moodle is an easy to use connector to retrieve information about courses and to use them
+ in ARSnova.
+ 
+ The main goals are to check if a user is enlisted in a course and to get a list of all courses a user is enlisted
+ with an administrative role.
+ 
+ These informations are needed for new features proposed for later versions of ARSnova 2.
+
