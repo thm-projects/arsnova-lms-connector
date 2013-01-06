@@ -14,6 +14,11 @@ Deployment
   
   * Change settings to match your environment
 
+Database connection
+
+ This application comes with build in support for MySQL database. If you intend to use it with another database engine, you have to setup your environment
+ to provide an JDBC driver for the database engine you are using.
+
 Server configuration
 
  In order to build up a full featured server installation you have to install at least the following services:
