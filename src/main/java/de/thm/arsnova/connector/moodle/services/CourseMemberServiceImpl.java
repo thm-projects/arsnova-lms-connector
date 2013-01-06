@@ -28,7 +28,7 @@ public class CourseMemberServiceImpl implements CourseMemberService {
 		List<String> users = courseDao.getCourseUsers(courseid);
 		Membership membership = new Membership();
 		membership.setCourseid(courseid);
-		
+
 		if (users != null) {
 			for (String user : users) {
 				if (username.equals(user)) {
@@ -47,11 +47,11 @@ public class CourseMemberServiceImpl implements CourseMemberService {
 	@Produces("application/xml")
 	public Courses getCourses(@PathParam("username") String username) {
 		Courses courses = new Courses();
-		
+
 		for (Course c : courseDao.getTeachersCourses(username)) {
 			courses.getCourse().add(c);
 		}
-		
+
 		return courses;
 	}
 }

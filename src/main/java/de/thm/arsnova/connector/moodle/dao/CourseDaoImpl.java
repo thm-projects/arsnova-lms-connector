@@ -15,15 +15,15 @@ import de.thm.arsnova.connector.moodle.model.Course;
 
 @Component
 public class CourseDaoImpl implements CourseDao {
-	
+
 	@Autowired
 	private DataSource dataSource;
 	
 	public List<String> getCourseUsers(String courseid) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		return jdbcTemplate.query(
-				"SELECT username FROM mdl_user " 
-				+ "JOIN mdl_user_enrolments ON (mdl_user.id = mdl_user_enrolments.userid) " 
+				"SELECT username FROM mdl_user "
+				+ "JOIN mdl_user_enrolments ON (mdl_user.id = mdl_user_enrolments.userid) "
 				+ "JOIN mdl_enrol ON (mdl_user_enrolments.enrolid = mdl_enrol.id) "
 				+ "WHERE mdl_enrol.courseid = ?;",
 				new String[] {courseid},
