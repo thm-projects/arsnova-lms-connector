@@ -9,8 +9,8 @@ import de.thm.arsnova.connector.moodle.model.Membership;
 public class MoodleClientImpl implements MoodleClient {
 	private final RestTemplate restTemplate = new RestTemplate();
 
-	private static final String isMemberUri = "/{username}/membership/{courseid}";
-	private static final String getCoursesUri = "/{username}/courses";
+	private static final String ISMEMBER_URI = "/{username}/membership/{courseid}";
+	private static final String GETCOURSES_URI = "/{username}/courses";
 
 	private String uriHostPart;
 
@@ -21,11 +21,11 @@ public class MoodleClientImpl implements MoodleClient {
 
 	@Override
 	public Membership isMember(String username, String courseid) {
-		return restTemplate.getForObject(uriHostPart + isMemberUri, Membership.class, username, courseid);
+		return restTemplate.getForObject(uriHostPart + ISMEMBER_URI, Membership.class, username, courseid);
 	}
 
 	@Override
 	public Courses getCourses(String username) {
-		return restTemplate.getForObject(uriHostPart + getCoursesUri, Courses.class, username);
+		return restTemplate.getForObject(uriHostPart + GETCOURSES_URI, Courses.class, username);
 	}
 }
