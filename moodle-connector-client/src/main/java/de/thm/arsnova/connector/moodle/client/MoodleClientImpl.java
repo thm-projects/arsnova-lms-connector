@@ -15,7 +15,7 @@ import de.thm.arsnova.connector.moodle.model.Membership;
 
 public class MoodleClientImpl implements MoodleClient {
 	private final RestTemplate restTemplate = new RestTemplate();
-	
+
 	private static final String ISMEMBER_URI = "/{username}/membership/{courseid}";
 	private static final String GETCOURSES_URI = "/{username}/courses";
 	private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
@@ -71,7 +71,6 @@ public class MoodleClientImpl implements MoodleClient {
 				username,
 				courseid
 		);
-		
 		return response.getBody();
 	}
 
@@ -84,7 +83,6 @@ public class MoodleClientImpl implements MoodleClient {
 				Courses.class,
 				username
 		);
-		
 		return response.getBody();
 	}
 }
