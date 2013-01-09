@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>de.thm.arsnova.connector</groupId>
 		<artifactId>moodle-connector</artifactId>
-		<version>0.8.2-SNAPSHOT</version>
+		<version>0.9.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>moodle-connector-client</artifactId>
@@ -39,6 +39,11 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
 			<version>3.2.0.RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.7</version>
 		</dependency>
 	</dependencies>
 
