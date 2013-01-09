@@ -1,5 +1,7 @@
 package de.thm.arsnova.connector.moodle.client;
 
+import java.nio.charset.Charset;
+
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -13,9 +15,10 @@ import de.thm.arsnova.connector.moodle.model.Membership;
 
 public class MoodleClientImpl implements MoodleClient {
 	private final RestTemplate restTemplate = new RestTemplate();
-
+	
 	private static final String ISMEMBER_URI = "/{username}/membership/{courseid}";
 	private static final String GETCOURSES_URI = "/{username}/courses";
+	private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
 	private String uriHostPart;
 	private String username;
@@ -37,20 +40,21 @@ public class MoodleClientImpl implements MoodleClient {
 	}
 
 	private HttpEntity<Membership> createMembershipEntity() {
-		HttpHeaders httpHeaders = new HttpHeaders();
-		String authorisation = username + ":" + password;
-		System.out.println(authorisation);
-		byte[] encodedAuthorisation = Base64.encodeBase64(authorisation.getBytes());
-		httpHeaders.add("Authorization", "Basic " + new String(encodedAuthorisation));
-		return new HttpEntity<Membership>(httpHeaders);
+		return new HttpEntity<Membership>(getAuthorizationHeader());
 	}
-	
+
 	private HttpEntity<Courses> createCoursesEntity() {
+		return new HttpEntity<Courses>(getAuthorizationHeader());
+	}
+
+	private HttpHeaders getAuthorizationHeader() {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		String authorisation = username + ":" + password;
-		byte[] encodedAuthorisation = Base64.encodeBase64(authorisation.getBytes());
-		httpHeaders.add("Authorization", "Basic " + new String(encodedAuthorisation));
-		return new HttpEntity<Courses>(httpHeaders);
+		httpHeaders.add(
+				"Authorization",
+				"Basic " + Base64.encodeBase64String(authorisation.getBytes(UTF8_CHARSET))
+		);
+		return httpHeaders;
 	}
 
 	private String buildRequestUri(String relativeUri) {
