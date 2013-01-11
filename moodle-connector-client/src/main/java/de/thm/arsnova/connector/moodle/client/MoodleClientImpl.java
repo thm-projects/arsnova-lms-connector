@@ -21,8 +21,8 @@ public class MoodleClientImpl implements MoodleClient {
 	private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
 	private String uriHostPart;
-	private String username;
-	private String password;
+	private String httpUsername;
+	private String httpPassword;
 
 	@Autowired
 	public void setServiceLocation(String serviceLocation) {
@@ -30,13 +30,13 @@ public class MoodleClientImpl implements MoodleClient {
 	}
 
 	@Autowired
-	public void setUsername(String uname) {
-		username = uname;
+	public void setUsername(String username) {
+		httpUsername = username;
 	}
 
 	@Autowired
-	public void setPassword(String passwd) {
-		password = passwd;
+	public void setPassword(String password) {
+		httpPassword = password;
 	}
 
 	private HttpEntity<Membership> createMembershipEntity() {
@@ -49,7 +49,7 @@ public class MoodleClientImpl implements MoodleClient {
 
 	private HttpHeaders getAuthorizationHeader() {
 		HttpHeaders httpHeaders = new HttpHeaders();
-		String authorisation = username + ":" + password;
+		String authorisation = httpUsername + ":" + httpPassword;
 		httpHeaders.add(
 				"Authorization",
 				"Basic " + Base64.encodeBase64String(authorisation.getBytes(UTF8_CHARSET))
