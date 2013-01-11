@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>de.thm.arsnova.connector</groupId>
 		<artifactId>moodle-connector</artifactId>
-		<version>0.9.0-SNAPSHOT</version>
+		<version>0.9.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>moodle-connector-service</artifactId>
 	<packaging>war</packaging>

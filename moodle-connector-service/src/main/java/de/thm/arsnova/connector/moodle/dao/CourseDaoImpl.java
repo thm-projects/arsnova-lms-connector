@@ -16,6 +16,8 @@ import de.thm.arsnova.connector.moodle.model.Course;
 @Component
 public class CourseDaoImpl implements CourseDao {
 
+	private static final String TYPE = "moodle";
+
 	@Autowired
 	private DataSource dataSource;
 
@@ -49,6 +51,7 @@ public class CourseDaoImpl implements CourseDao {
 						Course course = new Course();
 						course.setId(resultSet.getString("id"));
 						course.setFullname(resultSet.getString("fullname"));
+						course.setType(TYPE);
 						return course;
 					}
 				}

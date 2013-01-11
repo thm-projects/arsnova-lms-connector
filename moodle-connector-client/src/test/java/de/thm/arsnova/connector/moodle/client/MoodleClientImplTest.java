@@ -25,5 +25,4 @@ public class MoodleClientImplTest {
 	public void testShouldResultInException() {
 		moodleClient.getCourses("ptsr00");
 	}
-
 }

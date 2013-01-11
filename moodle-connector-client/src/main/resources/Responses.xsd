@@ -15,8 +15,9 @@
 			<element name="id" type="string"></element>
 			<element name="fullname" type="string"></element>
 		</sequence>
+		<attribute name="type" type="string"></attribute>
 	</complexType>
-	
+
 	<element name="membership">
 		<complexType>
 			<sequence>

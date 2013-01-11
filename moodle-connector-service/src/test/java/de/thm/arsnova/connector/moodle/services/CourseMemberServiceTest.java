@@ -148,4 +148,13 @@ public class CourseMemberServiceTest {
 		Membership membership = courseMemberService.ismember("iamnothere", "1");
 		assertFalse(membership.isIsmember());
 	}
+
+	@Test
+	public void testShouldReturnCorrectCourseType() {
+		Courses courses = courseMemberService.getCourses("admin");
+		String actual = courses.getCourse().get(0).getType();
+		String expected = "moodle";
+
+		assertEquals(expected, actual);
+	}
 }
