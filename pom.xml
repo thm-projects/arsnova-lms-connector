@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.thm.arsnova.connector</groupId>
-	<artifactId>moodle-connector</artifactId>
+	<artifactId>connector</artifactId>
 	<version>0.9.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -103,7 +103,8 @@
 	</build>
 	
 	<modules>
-		<module>moodle-connector-client</module>
-		<module>moodle-connector-service</module>
+		<module>connector-client</module>
+		<module>connector-service</module>
+		<module>connector-model</module>
 	</modules>
 </project>

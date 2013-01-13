@@ -1,7 +1,0 @@
-jdbc.driverClassName=com.mysql.jdbc.Driver
-jdbc.url=jdbc:mysql://127.0.0.1:3306/moodle?zeroDateTimeBehavior=convertToNull
-jdbc.username=root
-jdbc.password=secret
-
-service.username=test
-service.password=test
