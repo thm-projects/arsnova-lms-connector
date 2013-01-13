@@ -1,4 +1,4 @@
-package de.thm.arsnova.connector.moodle.client;
+package de.thm.arsnova.connector.client;
 
 import java.nio.charset.Charset;
 
@@ -10,10 +10,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import de.thm.arsnova.connector.moodle.model.Courses;
-import de.thm.arsnova.connector.moodle.model.Membership;
+import de.thm.arsnova.connector.model.Courses;
+import de.thm.arsnova.connector.model.Membership;
 
-public class MoodleClientImpl implements MoodleClient {
+public class ConnectorClientImpl implements ConnectorClient {
 	private final RestTemplate restTemplate = new RestTemplate();
 
 	private static final String ISMEMBER_URI = "/{username}/membership/{courseid}";

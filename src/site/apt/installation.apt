@@ -1,5 +1,5 @@
  -----
- ARSnova Connector for Moodle
+ ARSnova Connector Service
  -----
  Paul-Christian Volkmer
  -----
@@ -10,7 +10,7 @@ Deployment
 
  You will need to do some configuration work upfront.
 
-  * Add a new directory "arsnova" in /etc and create a copy of moodle-connector.properties.example named moodle-connector.properties in this directory.
+  * Add a new directory "arsnova" in /etc and create a copy of connector.properties.example named connector.properties in this directory.
   
   * Change settings to match your environment
 

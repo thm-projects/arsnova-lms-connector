@@ -18,8 +18,8 @@
 		p:ignoreUnresolvablePlaceholders="false" p:ignoreResourceNotFound="true">
 		<property name="locations">
 			<list>
-				<value>moodle-connector.properties</value>
-				<value>file:///etc/arsnova/moodle-connector.properties</value>
+				<value>connector.properties</value>
+				<value>file:///etc/arsnova/connector.properties</value>
 			</list>
 		</property>
 	</bean>

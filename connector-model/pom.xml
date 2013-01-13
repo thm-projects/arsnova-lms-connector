@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>de.thm.arsnova.connector</groupId>
+		<artifactId>connector</artifactId>
+		<version>0.10.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>connector-model</artifactId>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>1.3.1</version>
+				<configuration>
+					<schemaDirectory>${basedir}/src/main/resources/</schemaDirectory>
+					<bindingDirectory>${basedir}/src/main/resources/</bindingDirectory>
+					<packageName>de.thm.arsnova.connector.model</packageName>
+					<outputDirectory>${basedir}/src/main/jaxb/</outputDirectory>
+					<clearOutputDir>false</clearOutputDir>
+				</configuration>
+				<executions>
+					<execution>
+						<id>xjc</id>
+						<goals>
+							<goal>xjc</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

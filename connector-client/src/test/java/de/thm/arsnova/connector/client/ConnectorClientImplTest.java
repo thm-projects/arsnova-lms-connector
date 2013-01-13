@@ -1,4 +1,4 @@
-package de.thm.arsnova.connector.moodle.client;
+package de.thm.arsnova.connector.client;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -9,20 +9,22 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.client.ResourceAccessException;
 
+import de.thm.arsnova.connector.client.ConnectorClient;
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/test/resources/moodle-connector-client-test.xml" })
-public class MoodleClientImplTest {
+@ContextConfiguration(locations = { "file:src/test/resources/connector-client-test.xml" })
+public class ConnectorClientImplTest {
 
 	@Autowired(required=false)
-	MoodleClient moodleClient;
+	ConnectorClient connectorClient;
 
 	@Test
 	public void testShouldInitializeClientBean() {
-		assertNotNull(moodleClient);
+		assertNotNull(connectorClient);
 	}
 
 	@Test(expected=ResourceAccessException.class)
 	public void testShouldResultInException() {
-		moodleClient.getCourses("ptsr00");
+		connectorClient.getCourses("ptsr00");
 	}
 }

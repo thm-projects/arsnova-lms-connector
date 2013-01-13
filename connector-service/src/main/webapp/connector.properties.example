@@ -7,7 +7,7 @@ jdbc.password=secret
 # Uncomment the following line to access Moodle
 dao.implementation=de.thm.arsnova.connector.dao.MoodleConnectorDaoImpl
 # Uncomment the following line to get a dummy implementation
-# daoImpl=de.thm.arsnova.connector.dao.DummyConnectorDaoImpl
+# dao.implementation=de.thm.arsnova.connector.dao.DummyConnectorDaoImpl
 
 service.username=test
 service.password=test
