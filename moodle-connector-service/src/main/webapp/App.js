@@ -1,6 +1,14 @@
 define(
-		[ 'dojo/_base/declare', 'dojo/request', 'dojo/dom', 'dojo/dom-construct', 'dojo/on' ],
-		function(declare, request, dom, domConstruct, on) {
+		[ 'dojo/_base/declare',
+		  'dojo/request',
+		  'dojo/query',
+		  'dojo/dom',
+		  'dojo/dom-construct', 
+		  'dojo/on',
+		  'dojox/highlight',
+		  'dojox/highlight/languages/xml'
+		],
+		function(declare, request, query, dom, domConstruct, on, highlight) {
 	return declare(null, {
 		requestHandle: null,
 		
@@ -46,18 +54,22 @@ define(
 					}
 				).then(
 					function(result) {
+						var code = highlight.processString(result).result;
 						domConstruct.place(
 							'<h3>Result</h3>'
-							+ '<textarea readonly="readonly">'
-							+ result
-							+ '</textarea>',
+							+ '<code class="xml">'
+							+ code
+							+ '</code>',
 							'result'
 						);
+						query('code').forEach(highlight.init);
 					},
-					function(error) {
+					function(status) {
 						domConstruct.place(
 							'<h3>Result</h3>'
-							+ '<pre>ERROR</pre>',
+							+ '<pre class="error">'
+							+ status 
+							+ '</pre>',
 							'result'
 						);
 					}
@@ -99,18 +111,22 @@ define(
 					}
 				).then(
 					function(result) {
+						var code = highlight.processString(result).result;
 						domConstruct.place(
 							'<h3>Result</h3>'
-							+ '<textarea readonly="readonly">'
-							+ result
-							+ '</textarea>',
+							+ '<code class="xml">'
+							+ code
+							+ '</code>',
 							'result'
 						);
+						query('code').forEach(highlight.init);
 					},
-					function(error) {
+					function(status) {
 						domConstruct.place(
 							'<h3>Result</h3>'
-							+ '<pre>ERROR</pre>',
+							+ '<pre class="error">'
+							+ status 
+							+ '</pre>',
 							'result'
 						);
 					}

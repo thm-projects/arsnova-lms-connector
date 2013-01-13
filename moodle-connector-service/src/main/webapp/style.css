@@ -60,3 +60,20 @@ nav > ol > li:hover {
 	border: none;
 	height: 160px;
 }
+
+code.xml {
+	margin-left: 16px;
+	position: absolute;
+}
+
+code.xml .pi,
+code.xml .tag {
+	display: block;
+	margin-left: -16px;
+	font-size: 11px;
+}
+
+pre.error {
+	font-weight: bold;
+	color: red;
+}
