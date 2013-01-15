@@ -63,6 +63,11 @@ public class ConnectorClientImpl implements ConnectorClient {
 
 	@Override
 	public Membership isMember(String username, String courseid) {
+		return this.getMembership(username, courseid);
+	}
+
+	@Override
+	public Membership getMembership(String username, String courseid) {
 		ResponseEntity<Membership> response = restTemplate.exchange(
 				buildRequestUri(ISMEMBER_URI),
 				HttpMethod.GET,

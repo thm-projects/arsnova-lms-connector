@@ -23,12 +23,18 @@
 			<value>2</value>
 			<value>ptsr00</value>
 		</row>
+		<row>
+			<value>3</value>
+			<value>ptsr01</value>
+		</row>
 	</table>
 	<table name="mdl_enrol">
 		<column>id</column>
 		<column>enrol</column>
 		<column>courseid</column>
+		<column>roleid</column>
 		<row>
+			<value>1</value>
 			<value>1</value>
 			<value>1</value>
 			<value>1</value>
@@ -37,6 +43,7 @@
 			<value>2</value>
 			<value>1</value>
 			<value>1</value>
+			<value>2</value>
 		</row>
 	</table>
 	<table name="mdl_user_enrolments">
@@ -51,7 +58,7 @@
 		<row>
 			<value>2</value>
 			<value>2</value>
-			<value>1</value>
+			<value>2</value>
 		</row>
 	</table>
 </dataset>

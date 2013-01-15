@@ -37,8 +37,17 @@ public interface ConnectorClient {
 	 * @param username The users name as used in target platform
 	 * @param courseid The course ID as used in target platform
 	 * @return The state of membership
+	 * @deprecated
 	 */
 	Membership isMember(String username, String courseid);
+
+	/** This service method returns the state of membership
+	 *
+	 * @param username The users name as used in target platform
+	 * @param courseid The course ID as used in target platform
+	 * @return The state of membership
+	 */
+	Membership getMembership(String username, String courseid);
 
 	/** This service method returns a list of courses the user is member
 	 *

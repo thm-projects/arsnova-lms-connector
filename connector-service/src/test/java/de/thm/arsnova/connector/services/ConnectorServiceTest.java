@@ -3,6 +3,8 @@ package de.thm.arsnova.connector.services;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,13 +28,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import de.thm.arsnova.connector.model.Courses;
 import de.thm.arsnova.connector.model.Membership;
+import de.thm.arsnova.connector.model.UserRole;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "file:src/test/resources/spring-test.xml" })
 public class ConnectorServiceTest {
 
 	@Autowired
-	private ConnectorService courseMemberService;
+	private ConnectorService connectorService;
 
 	@Autowired
 	private DataSource dataSource;
@@ -42,8 +45,8 @@ public class ConnectorServiceTest {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		createTables(jdbcTemplate);
 		try {
-            Connection con = dataSource.getConnection();
-            IDatabaseConnection connection = new DatabaseConnection(con);
+			Connection con = dataSource.getConnection();
+			IDatabaseConnection connection = new DatabaseConnection(con);
 			DatabaseOperation.CLEAN_INSERT.execute(connection, getDataSet());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,6 +74,7 @@ public class ConnectorServiceTest {
 				+ "id bigint NOT NULL,"
 				+ "enrol bigint,"
 				+ "courseid bigint,"
+				+ "roleid bigint,"
 				+ "PRIMARY KEY (id))"
 		);
 
@@ -100,7 +104,7 @@ public class ConnectorServiceTest {
 
 	@Test
 	public void testShouldNotReturnCourseForNotEnroledUser() {
-		Courses courses = courseMemberService.getCourses("ptsr00");
+		Courses courses = connectorService.getCourses("ptsr01");
 		int actual = courses.getCourse().size();
 		int expected = 0;
 
@@ -109,16 +113,24 @@ public class ConnectorServiceTest {
 	
 	@Test
 	public void testShouldReturnCourseForEnroledUser() {
-		Courses courses = courseMemberService.getCourses("admin");
+		Courses courses = connectorService.getCourses("ptsr00");
 		int actual = courses.getCourse().size();
-		int expected = 2;
+		int expected = 1;
 
 		assertEquals(expected, actual);
 	}
-	
+
+	@Test
+	public void testShouldReturnMembershipForEnroledUser() {
+		Membership membership = connectorService.getMembership("ptsr00", "1");
+
+		assertEquals("1", membership.getCourseid());
+		assertEquals(UserRole.CREATOR, membership.getUserrole());
+	}
+
 	@Test
 	public void testShouldNotReturnCoursesForNonexistantUsers() {
-		Courses courses = courseMemberService.getCourses("iamnothere");
+		Courses courses = connectorService.getCourses("iamnothere");
 		int actual = courses.getCourse().size();
 		int expected = 0;
 
@@ -127,34 +139,45 @@ public class ConnectorServiceTest {
 
 	@Test
 	public void testShouldIndicateAnEnroledUser() {
-		Membership membership = courseMemberService.ismember("admin", "1");
-		assertTrue(membership.isIsmember());
+		Membership membership = connectorService.getMembership("admin", "1");
+		assertTrue(membership.isMember());
+		assertNotNull(membership.getUserrole());
 	}
 	
 	@Test
 	public void testShouldNotIndicateUnenroledUsers() {
-		Membership membership = courseMemberService.ismember("pcvl72", "1");
-		assertFalse(membership.isIsmember());
+		Membership membership = connectorService.getMembership("ptsr01", "1");
+		assertFalse(membership.isMember());
+		assertNull(membership.getUserrole());
 	}
 	
 	@Test
 	public void testShouldReturnFalseOnUnknownCourse() {
-		Membership membership = courseMemberService.ismember("pcvl72", "12345678");
-		assertFalse(membership.isIsmember());
+		Membership membership = connectorService.getMembership("ptsr00", "12345678");
+		assertFalse(membership.isMember());
 	}
 	
 	@Test
 	public void testShouldReturnFalseOnUnknownUser() {
-		Membership membership = courseMemberService.ismember("iamnothere", "1");
-		assertFalse(membership.isIsmember());
+		Membership membership = connectorService.getMembership("iamnothere", "1");
+		assertFalse(membership.isMember());
 	}
 
 	@Test
 	public void testShouldReturnCorrectCourseType() {
-		Courses courses = courseMemberService.getCourses("admin");
+		Courses courses = connectorService.getCourses("ptsr00");
 		String actual = courses.getCourse().get(0).getType();
 		String expected = "moodle";
 
 		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testShouldReturnCorrectCourseMembership() {
+		Courses courses = connectorService.getCourses("ptsr00");
+		Membership actual = courses.getCourse().get(0).getMembership();
+
+		assertEquals("1", actual.getCourseid());
+		assertEquals(UserRole.CREATOR, actual.getUserrole());
 	}
 }

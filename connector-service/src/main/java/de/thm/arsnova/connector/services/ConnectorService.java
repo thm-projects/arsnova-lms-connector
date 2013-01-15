@@ -15,7 +15,7 @@ public interface ConnectorService {
 	 * @param courseid The course ID as used in target platform
 	 * @return The state of membership
 	 */
-	Membership ismember(String username, String courseid);
+	Membership getMembership(String username, String courseid);
 
 	/** This service method resturns a list of courses the user is member
 	 *

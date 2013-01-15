@@ -1,7 +1,5 @@
 package de.thm.arsnova.connector.services;
 
-import java.util.List;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -24,22 +22,8 @@ public class ConnectorServiceImpl implements ConnectorService {
 	@GET
 	@Path("/{username}/membership/{courseid}")
 	@Produces("application/xml")
-	public Membership ismember(@PathParam("username") String username, @PathParam("courseid") String courseid) {
-		List<String> users = connectorDao.getCourseUsers(courseid);
-		Membership membership = new Membership();
-		membership.setCourseid(courseid);
-
-		if (users != null) {
-			for (String user : users) {
-				if (username.equals(user)) {
-					membership.setIsmember(true);
-					return membership;
-				}
-			}
-		}
-
-		membership.setIsmember(false);
-		return membership;
+	public Membership getMembership(@PathParam("username") String username, @PathParam("courseid") String courseid) {
+		return connectorDao.getMembership(username, courseid);
 	}
 
 	@GET
@@ -48,7 +32,7 @@ public class ConnectorServiceImpl implements ConnectorService {
 	public Courses getCourses(@PathParam("username") String username) {
 		Courses courses = new Courses();
 
-		for (Course c : connectorDao.getTeachersCourses(username)) {
+		for (Course c : connectorDao.getMembersCourses(username)) {
 			courses.getCourse().add(c);
 		}
 

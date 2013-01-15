@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.thm.arsnova.connector.model.Course;
+import de.thm.arsnova.connector.model.Membership;
 
 public class DummyConnectorDaoImpl implements ConnectorDao {
 
@@ -15,7 +16,7 @@ public class DummyConnectorDaoImpl implements ConnectorDao {
 		return result;
 	}
 
-	public List<Course> getTeachersCourses(String username) {
+	public List<Course> getMembersCourses(String username) {
 		List<Course> result = new ArrayList<Course>();
 		Course course = new Course();
 		course.setFullname("Dummy Course");
@@ -23,5 +24,10 @@ public class DummyConnectorDaoImpl implements ConnectorDao {
 		course.setType(TYPE);
 		result.add(course);
 		return result;
+	}
+
+	@Override
+	public Membership getMembership(String username, String courseid) {
+		return new Membership();
 	}
 }
