@@ -17,6 +17,8 @@ import de.thm.arsnova.connector.model.UserRole;
 public class MoodleConnectorDaoImpl implements ConnectorDao {
 
 	private static final String TYPE = "moodle";
+	private static final int MOODLE_COURSE_CREATOR = 2;
+	private static final int MOODLE_COURSE_GUEST = 6;
 
 	@Autowired
 	private DataSource dataSource;
@@ -48,7 +50,6 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 				new RowMapper<Membership>() {
 					public Membership mapRow(ResultSet resultSet, int row) throws SQLException {
 						Membership membership = new Membership();
-						membership.setCourseid(courseid);
 						if (resultSet.wasNull()) {
 							membership.setMember(false);
 							return membership;
@@ -68,7 +69,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 	public List<Course> getMembersCourses(final String username) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		return jdbcTemplate.query(
-				"SELECT mdl_course.id, mdl_course.fullname FROM mdl_course "
+				"SELECT mdl_course.id, mdl_course.fullname, mdl_course.shortname FROM mdl_course "
 				+ "JOIN mdl_enrol ON (mdl_enrol.courseid = mdl_course.id) "
 				+ "JOIN mdl_user_enrolments ON (mdl_enrol.id = mdl_user_enrolments.enrolid) "
 				+ "JOIN mdl_user ON (mdl_user_enrolments.userid = mdl_user.id) "
@@ -79,6 +80,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 						Course course = new Course();
 						course.setId(resultSet.getString("id"));
 						course.setFullname(resultSet.getString("fullname"));
+						course.setShortname(resultSet.getString("shortname"));
 						course.setType(TYPE);
 						course.setMembership(getMembership(username, resultSet.getString("id")));
 						return course;
@@ -88,16 +90,13 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 	}
 
 	private UserRole getMembershipRole(final int moodleRoleId) {
-		if (moodleRoleId == 2) {
-			// User is course creator
-			return UserRole.fromValue(ROLE_CREATOR);
-		}
-		else if (moodleRoleId == 6) {
-			// User is guest
-			return UserRole.fromValue(ROLE_OTHER);
+		if (moodleRoleId == MOODLE_COURSE_CREATOR) {
+			return UserRole.CREATOR;
+		} else if (moodleRoleId == MOODLE_COURSE_GUEST) {
+			return UserRole.OTHER;
 		}
 
 		// User is course member, may be with right to manage the course
-		return UserRole.fromValue(ROLE_OTHER);
+		return UserRole.MEMBER;
 	}
 }

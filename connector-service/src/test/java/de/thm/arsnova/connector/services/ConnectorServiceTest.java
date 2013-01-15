@@ -59,6 +59,7 @@ public class ConnectorServiceTest {
 				"CREATE TABLE mdl_course ("
 				+ "id bigint NOT NULL,"
 				+ "fullname varchar(254),"
+				+ "shortname varchar(254),"
 				+ "PRIMARY KEY (id))"
 		);
 
@@ -124,7 +125,7 @@ public class ConnectorServiceTest {
 	public void testShouldReturnMembershipForEnroledUser() {
 		Membership membership = connectorService.getMembership("ptsr00", "1");
 
-		assertEquals("1", membership.getCourseid());
+		assertTrue(membership.isMember());
 		assertEquals(UserRole.CREATOR, membership.getUserrole());
 	}
 
@@ -173,11 +174,23 @@ public class ConnectorServiceTest {
 	}
 
 	@Test
+	public void testShouldReturnCorrectCourseData() {
+		Courses courses = connectorService.getCourses("ptsr00");
+		String actual = courses.getCourse().get(0).getShortname();
+		String expected = "TK1";
+		assertEquals(expected, actual);
+
+		actual = courses.getCourse().get(0).getFullname();
+		expected = "Testkurs 1";
+		assertEquals(expected, actual);
+	}
+
+	@Test
 	public void testShouldReturnCorrectCourseMembership() {
 		Courses courses = connectorService.getCourses("ptsr00");
 		Membership actual = courses.getCourse().get(0).getMembership();
 
-		assertEquals("1", actual.getCourseid());
+		assertTrue(actual.isMember());
 		assertEquals(UserRole.CREATOR, actual.getUserrole());
 	}
 }

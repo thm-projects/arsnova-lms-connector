@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>de.thm.arsnova.connector</groupId>
 		<artifactId>connector</artifactId>
-		<version>0.11.0-SNAPSHOT</version>
+		<version>0.11.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>connector-service</artifactId>
 	<packaging>war</packaging>
@@ -83,7 +83,7 @@
 		<dependency>
 			<groupId>de.thm.arsnova.connector</groupId>
 			<artifactId>connector-model</artifactId>
-			<version>0.11.0-SNAPSHOT</version>
+			<version>0.11.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

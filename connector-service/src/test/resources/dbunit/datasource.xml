@@ -3,13 +3,16 @@
 	<table name="mdl_course">
 		<column>id</column>
 		<column>fullname</column>
+		<column>shortname</column>
 		<row>
 			<value>1</value>
 			<value>Testkurs 1</value>
+			<value>TK1</value>
 		</row>
 		<row>
 			<value>2</value>
 			<value>Testkurs 2</value>
+			<value>TK2</value>
 		</row>
 	</table>
 	<table name="mdl_user">

@@ -33,9 +33,8 @@
 	<element name="membership">
 		<complexType>
 			<sequence>
-				<element name="courseid" type="string"></element>
 				<element name="member" type="boolean"></element>
-				<element name="userrole" type="tns:UserRole" nillable="true"></element>
+				<element name="userrole" type="tns:UserRole"></element>
 			</sequence>
 		</complexType>
 	</element>
