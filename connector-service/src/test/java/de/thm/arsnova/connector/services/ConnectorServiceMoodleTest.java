@@ -31,8 +31,8 @@ import de.thm.arsnova.connector.model.Membership;
 import de.thm.arsnova.connector.model.UserRole;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/test/resources/spring-test.xml" })
-public class ConnectorServiceTest {
+@ContextConfiguration(locations = { "file:src/test/resources/spring-test-moodle.xml" })
+public class ConnectorServiceMoodleTest {
 
 	@Autowired
 	private ConnectorService connectorService;
@@ -50,7 +50,6 @@ public class ConnectorServiceTest {
 			DatabaseOperation.CLEAN_INSERT.execute(connection, getDataSet());
 		} catch (Exception e) {
 			e.printStackTrace();
-
 		}
 	}
 
@@ -89,7 +88,7 @@ public class ConnectorServiceTest {
 	}
 
 	private IDataSet getDataSet() throws Exception {
-		FileInputStream fis = new FileInputStream(new File("src/test/resources/dbunit/datasource.xml"));
+		FileInputStream fis = new FileInputStream(new File("src/test/resources/dbunit/moodle-datasource.xml"));
 		return new XmlDataSet(fis);
 	}
 

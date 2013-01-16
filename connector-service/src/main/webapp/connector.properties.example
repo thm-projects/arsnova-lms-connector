@@ -6,6 +6,8 @@ jdbc.password=secret
 # Select the data access object implementation your target platform
 # Uncomment the following line to access Moodle
 dao.implementation=de.thm.arsnova.connector.dao.MoodleConnectorDaoImpl
+# Uncomment the following line to access Stud.IP
+# dao.implementation=de.thm.arsnova.connector.dao.StudipConnectorDaoImpl
 # Uncomment the following line to get a dummy implementation
 # dao.implementation=de.thm.arsnova.connector.dao.DummyConnectorDaoImpl
 

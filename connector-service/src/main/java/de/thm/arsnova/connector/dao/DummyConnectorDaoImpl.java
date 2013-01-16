@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.thm.arsnova.connector.model.Course;
 import de.thm.arsnova.connector.model.Membership;
+import de.thm.arsnova.connector.model.UserRole;
 
 public class DummyConnectorDaoImpl implements ConnectorDao {
 
@@ -28,6 +29,9 @@ public class DummyConnectorDaoImpl implements ConnectorDao {
 
 	@Override
 	public Membership getMembership(String username, String courseid) {
-		return new Membership();
+		Membership membership = new Membership();
+		membership.setMember(true);
+		membership.setUserrole(UserRole.MEMBER);
+		return membership;
 	}
 }
