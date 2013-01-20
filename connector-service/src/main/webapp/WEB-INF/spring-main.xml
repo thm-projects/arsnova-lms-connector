@@ -41,10 +41,15 @@
 		</security:authentication-provider>
 	</security:authentication-manager>
 
+	<bean id="jsonProvider" class="org.codehaus.jackson.jaxrs.JacksonJsonProvider" />
+
 	<jaxrs:server>
 		<jaxrs:serviceBeans>
 			<ref bean="courseMemberService" />
 		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<ref bean="jsonProvider" />
+		</jaxrs:providers>
 	</jaxrs:server>
 	
 	<bean id="dataSource"

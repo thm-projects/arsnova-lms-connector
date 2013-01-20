@@ -31,7 +31,11 @@ define(
 				+ '<input id="username" name="username" placeholder="username" />'
 				+ '/membership/'
 				+ '<input id="courseid" name="courseid" placeholder="courseid" />'
-				+ '</code>',
+				+ '</code>'
+				+ '<select id="accept">'
+				+ '<option value="application/json">application/json</option>'
+				+ '<option value="application/xml">application/xml</option>'
+				+ '</select>',
 				form
 			);
 			
@@ -46,23 +50,28 @@ define(
 			this.requestHandle = on(button, 'click', function() {
 				var username = dom.byId('username').value;
 				var courseid = dom.byId('courseid').value;
+				var accept = dom.byId('accept').value;
 				domConstruct.empty('result');
 				request.get(
 					username + '/membership/' + courseid,
 					{
-						handleAs: 'text'
+						handleAs: 'text',
+						headers: {
+							'Accept' : accept
+						}
 					}
 				).then(
 					function(result) {
 						var code = highlight.processString(result).result;
 						domConstruct.place(
 							'<h3>Result</h3>'
-							+ '<code class="xml">'
+							+ '<code class="' + accept.replace('application/','') + '">'
 							+ code
 							+ '</code>',
 							'result'
 						);
-						query('code').forEach(highlight.init);
+						if (accept.replace('application/','') == 'xml')
+							query('code').forEach(highlight.init);
 					},
 					function(status) {
 						domConstruct.place(
@@ -90,7 +99,11 @@ define(
 				+ '<code>/'
 				+ '<input id="username" name="username" placeholder="username" />'
 				+ '/courses'
-				+ '</code>',
+				+ '</code>'
+				+ '<select id="accept">'
+				+ '<option value="application/json">application/json</option>'
+				+ '<option value="application/xml">application/xml</option>'
+				+ '</select>',
 				form
 			);
 			var button = domConstruct.create(
@@ -103,23 +116,29 @@ define(
 			domConstruct.place(button, form);
 			this.requestHandle = on(button, 'click', function() {
 				var username = dom.byId('username').value;
+				var accept = dom.byId('accept').value;
 				domConstruct.empty('result');
 				request.get(
 					username + '/courses',
 					{
-						handleAs: 'text'
+						handleAs: 'text',
+						headers: {
+							'Accept' : accept
+						}
 					}
 				).then(
 					function(result) {
 						var code = highlight.processString(result).result;
 						domConstruct.place(
 							'<h3>Result</h3>'
-							+ '<code class="xml">'
+							+ '<code class="' + accept.replace('application/','') + '">'
 							+ code
 							+ '</code>',
 							'result'
 						);
-						query('code').forEach(highlight.init);
+						
+						if (accept.replace('application/','') == 'xml')
+							query('code').forEach(highlight.init);
 					},
 					function(status) {
 						domConstruct.place(

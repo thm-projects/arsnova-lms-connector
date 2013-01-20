@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.thm.arsnova.connector</groupId>
 	<artifactId>connector</artifactId>
-	<version>0.12.0-SNAPSHOT</version>
+	<version>0.12.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>ARSnova Connector Service</name>
@@ -16,6 +16,24 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>thmrepo</id>
+			<name>THM Maven Repository</name>
+			<url>http://maven.mni.thm.de/content/repositories</url>
+		</repository>
+		<repository>
+			<id>thmreposnapshots</id>
+			<name>THM Maven Snapshot Repository</name>
+			<url>http://maven.mni.thm.de/content/repositories/snapshots</url>
+		</repository>
+		<repository>
+			<id>thmmirror</id>
+			<name>THM Maven Mirror</name>
+			<url>http://maven.mni.thm.de/content/groups/public</url>
+		</repository>
+	</repositories>
 
 	<developers>
 		<developer>

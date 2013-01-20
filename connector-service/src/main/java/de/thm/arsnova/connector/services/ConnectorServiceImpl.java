@@ -19,17 +19,13 @@ public class ConnectorServiceImpl implements ConnectorService {
 	@Autowired
 	private ConnectorDao connectorDao;
 
-	@GET
-	@Path("/{username}/membership/{courseid}")
-	@Produces("application/xml")
-	public Membership getMembership(@PathParam("username") String username, @PathParam("courseid") String courseid) {
+	@Override
+	public Membership getMembership(String username, String courseid) {
 		return connectorDao.getMembership(username, courseid);
 	}
 
-	@GET
-	@Path("/{username}/courses")
-	@Produces("application/xml")
-	public Courses getCourses(@PathParam("username") String username) {
+	@Override
+	public Courses getCourses(String username) {
 		Courses courses = new Courses();
 
 		for (Course c : connectorDao.getMembersCourses(username)) {
@@ -37,5 +33,33 @@ public class ConnectorServiceImpl implements ConnectorService {
 		}
 
 		return courses;
+	}
+
+	@GET
+	@Path("/{username}/membership/{courseid}")
+	@Produces("application/xml")
+	public Membership getMembershipXml(@PathParam("username") String username, @PathParam("courseid") String courseid) {
+		return getMembership(username, courseid);
+	}
+
+	@GET
+	@Path("/{username}/membership/{courseid}")
+	@Produces("application/json")
+	public Membership getMembershipJSON(@PathParam("username") String username, @PathParam("courseid") String courseid) {
+		return getMembership(username, courseid);
+	}
+
+	@GET
+	@Path("/{username}/courses")
+	@Produces("application/xml")
+	public Courses getCoursesXml(@PathParam("username") String username) {
+		return getCourses(username);
+	}
+
+	@GET
+	@Path("/{username}/courses")
+	@Produces("application/json")
+	public Courses getCoursesJSON(@PathParam("username") String username) {
+		return getCourses(username);
 	}
 }

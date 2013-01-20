@@ -41,15 +41,20 @@ nav > ol > li:hover {
 	font-size: 13px;
 }
 
-#form > input[type=button] {
+#form > input[type=button],
+#form > select {
 	background: #ddd;
 	border: 1px solid #777;
 	border-radius: 2px;
 	padding: 4px;
-	margin-left: 80px;
 	cursor: pointer;
 	color: #333;
 	font-weight: bold;
+}
+
+#form > select {
+	margin-left: 80px;
+	margin-right: 8px;
 }
 
 #form > input[type=button]:hover {
