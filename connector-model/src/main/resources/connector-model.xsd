@@ -24,7 +24,7 @@
 
 	<simpleType name="UserRole">
 		<restriction base="string">
-			<enumeration value="manager"></enumeration>
+			<enumeration value="teacher"></enumeration>
 			<enumeration value="member"></enumeration>
 			<enumeration value="other"></enumeration>
 		</restriction>

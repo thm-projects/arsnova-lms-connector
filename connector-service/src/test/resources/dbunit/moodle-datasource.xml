@@ -15,6 +15,12 @@
 			<value>2</value>
 			<value>Testkurs 2</value>
 			<value>TK2</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>Testkurs 3 (Unsichtbar)</value>
+			<value>TK3</value>
 			<value>0</value>
 		</row>
 	</table>
@@ -33,6 +39,10 @@
 			<value>3</value>
 			<value>ptsr01</value>
 		</row>
+		<row>
+			<value>4</value>
+			<value>ptsr02</value>
+		</row>
 	</table>
 	<table name="mdl_enrol">
 		<column>id</column>
@@ -43,13 +53,25 @@
 			<value>1</value>
 			<value>1</value>
 			<value>1</value>
-			<value>1</value>
+			<value>5</value>
 		</row>
 		<row>
 			<value>2</value>
-			<value>1</value>
-			<value>1</value>
 			<value>2</value>
+			<value>2</value>
+			<value>5</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>3</value>
+			<value>2</value>
+			<value>5</value>
+		</row>
+		<row>
+			<value>4</value>
+			<value>4</value>
+			<value>3</value>
+			<value>5</value>
 		</row>
 	</table>
 	<table name="mdl_user_enrolments">
@@ -59,12 +81,22 @@
 		<row>
 			<value>1</value>
 			<value>1</value>
-			<value>1</value>
+			<value>2</value>
 		</row>
 		<row>
 			<value>2</value>
 			<value>2</value>
-			<value>2</value>
+			<value>3</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>3</value>
+			<value>4</value>
+		</row>
+		<row>
+			<value>4</value>
+			<value>4</value>
+			<value>4</value>
 		</row>
 	</table>
 	<table name="mdl_role_assignments">
@@ -74,15 +106,27 @@
 		<column>contextid</column>
 		<row>
 			<value>1</value>
-			<value>1</value>
-			<value>1</value>
+			<value>3</value>
+			<value>2</value>
 			<value>1</value>
 		</row>
 		<row>
 			<value>2</value>
-			<value>1</value>
+			<value>3</value>
+			<value>3</value>
 			<value>2</value>
-			<value>1</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>5</value>
+			<value>4</value>
+			<value>3</value>
+		</row>
+		<row>
+			<value>4</value>
+			<value>5</value>
+			<value>4</value>
+			<value>4</value>
 		</row>
 	</table>
 	<table name="mdl_context">
@@ -92,6 +136,21 @@
 		<row>
 			<value>1</value>
 			<value>1</value>
+			<value>50</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>2</value>
+			<value>50</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>2</value>
+			<value>50</value>
+		</row>
+		<row>
+			<value>4</value>
+			<value>3</value>
 			<value>50</value>
 		</row>
 	</table>

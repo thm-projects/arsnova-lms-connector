@@ -87,7 +87,7 @@ public class StudipConnectorDaoImpl implements ConnectorDao {
 
 	private UserRole getMembershipRole(final String roleId) {
 		if (STUDIP_COURSE_DOZENT.equals(roleId)) {
-			return UserRole.MANAGER;
+			return UserRole.TEACHER;
 		}
 
 		// User is course member, may be with right to manage the course

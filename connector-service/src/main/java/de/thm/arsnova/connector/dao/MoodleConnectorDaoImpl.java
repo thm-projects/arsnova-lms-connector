@@ -17,8 +17,9 @@ import de.thm.arsnova.connector.model.UserRole;
 public class MoodleConnectorDaoImpl implements ConnectorDao {
 
 	private static final String TYPE = "moodle";
-	private static final int MOODLE_COURSE_MANAGER = 1;
-	private static final int MOODLE_COURSE_GUEST = 6;
+	private static final int MOODLE_COURSE_EDITINGTEACHER= 3;
+	private static final int MOODLE_COURSE_TEACHER= 4;
+	private static final int MOODLE_COURSE_MEMBER = 5;
 
 	@Autowired
 	private DataSource dataSource;
@@ -77,7 +78,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 				+ "JOIN mdl_enrol ON (mdl_enrol.courseid = mdl_course.id) "
 				+ "JOIN mdl_user_enrolments ON (mdl_enrol.id = mdl_user_enrolments.enrolid) "
 				+ "JOIN mdl_user ON (mdl_user_enrolments.userid = mdl_user.id) "
-				+ "WHERE mdl_user.username = ? AND mdl_enrol.roleid >= 1 AND mdl_enrol.roleid <= 6;",
+				+ "WHERE mdl_user.username = ?;",
 				new String[] {username},
 				new RowMapper<Course>() {
 					public Course mapRow(ResultSet resultSet, int row) throws SQLException {
@@ -94,13 +95,13 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 	}
 
 	private UserRole getMembershipRole(final int moodleRoleId) {
-		if (moodleRoleId == MOODLE_COURSE_MANAGER) {
-			return UserRole.MANAGER;
-		} else if (moodleRoleId == MOODLE_COURSE_GUEST) {
-			return UserRole.OTHER;
+		if (moodleRoleId == MOODLE_COURSE_EDITINGTEACHER || moodleRoleId == MOODLE_COURSE_TEACHER) {
+			return UserRole.TEACHER;
+		} else if (moodleRoleId == MOODLE_COURSE_MEMBER) {
+			return UserRole.MEMBER;
 		}
 
-		// User is course member, may be with right to manage the course
-		return UserRole.MEMBER;
+		// User is course guest
+		return UserRole.OTHER;
 	}
 }

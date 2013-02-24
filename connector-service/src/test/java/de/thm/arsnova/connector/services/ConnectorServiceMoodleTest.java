@@ -124,7 +124,7 @@ public class ConnectorServiceMoodleTest {
 
 	@Test
 	public void testShouldNotReturnCourseForNotEnroledUser() {
-		Courses courses = connectorService.getCourses("ptsr01");
+		Courses courses = connectorService.getCourses("admin");
 		int actual = courses.getCourse().size();
 		int expected = 0;
 
@@ -132,7 +132,7 @@ public class ConnectorServiceMoodleTest {
 	}
 	
 	@Test
-	public void testShouldReturnCourseForEnroledUser() {
+	public void testShouldReturnCoursesForEnroledUser() {
 		Courses courses = connectorService.getCourses("ptsr00");
 		int actual = courses.getCourse().size();
 		int expected = 1;
@@ -145,7 +145,7 @@ public class ConnectorServiceMoodleTest {
 		Membership membership = connectorService.getMembership("ptsr00", "1");
 
 		assertTrue(membership.isMember());
-		assertEquals(UserRole.MANAGER, membership.getUserrole());
+		assertEquals(UserRole.TEACHER, membership.getUserrole());
 	}
 
 	@Test
@@ -159,7 +159,7 @@ public class ConnectorServiceMoodleTest {
 
 	@Test
 	public void testShouldIndicateAnEnroledUser() {
-		Membership membership = connectorService.getMembership("admin", "1");
+		Membership membership = connectorService.getMembership("ptsr00", "1");
 		assertTrue(membership.isMember());
 		assertNotNull(membership.getUserrole());
 	}
@@ -205,11 +205,27 @@ public class ConnectorServiceMoodleTest {
 	}
 
 	@Test
-	public void testShouldReturnCorrectCourseMembership() {
+	public void testShouldReturnCorrectCourseMembershipForTeacher() {
 		Courses courses = connectorService.getCourses("ptsr00");
 		Membership actual = courses.getCourse().get(0).getMembership();
-
+		
 		assertTrue(actual.isMember());
-		assertEquals(UserRole.MANAGER, actual.getUserrole());
+		assertEquals(UserRole.TEACHER, actual.getUserrole());
+	}
+	
+	@Test
+	public void testShouldReturnCorrectCourseMembershipForMember() {
+		Courses courses = connectorService.getCourses("ptsr02");
+		Membership actual = courses.getCourse().get(0).getMembership();
+		
+		assertTrue(actual.isMember());
+		assertEquals(UserRole.MEMBER, actual.getUserrole());
+	}
+	
+	@Test
+	public void testShouldNotIndicateEnroledUserButInvisibleCourse() {
+		Membership membership = connectorService.getMembership("ptsr02", "4");
+		assertFalse(membership.isMember());
+		assertNull(membership.getUserrole());
 	}
 }
