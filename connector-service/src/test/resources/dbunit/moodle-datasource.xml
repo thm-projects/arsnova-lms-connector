@@ -4,15 +4,18 @@
 		<column>id</column>
 		<column>fullname</column>
 		<column>shortname</column>
+		<column>visible</column>
 		<row>
 			<value>1</value>
 			<value>Testkurs 1</value>
 			<value>TK1</value>
+			<value>1</value>
 		</row>
 		<row>
 			<value>2</value>
 			<value>Testkurs 2</value>
 			<value>TK2</value>
+			<value>0</value>
 		</row>
 	</table>
 	<table name="mdl_user">

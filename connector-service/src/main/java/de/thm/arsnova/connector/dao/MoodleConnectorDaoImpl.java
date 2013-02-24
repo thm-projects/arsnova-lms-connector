@@ -47,6 +47,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 				+ "JOIN mdl_user ON (mdl_user_enrolments.userid = mdl_user.id) "
 				+ "JOIN mdl_role_assignments ON (mdl_role_assignments.userid = mdl_user_enrolments.userid) "
 				+ "JOIN mdl_context ON (mdl_context.instanceid = mdl_enrol.courseid AND mdl_context.id = mdl_role_assignments.contextid) "
+				+ "JOIN mdl_course ON (mdl_course.id = mdl_context.instanceid AND mdl_course.visible = 1) "
 				+ "WHERE mdl_context.contextlevel = 50 AND mdl_enrol.courseid = ? AND mdl_user.username = ? "
 				+ "ORDER BY roleid ASC;",
 				new String[] {courseid, username},
