@@ -17,7 +17,7 @@ import de.thm.arsnova.connector.model.UserRole;
 public class MoodleConnectorDaoImpl implements ConnectorDao {
 
 	private static final String TYPE = "moodle";
-	private static final int MOODLE_COURSE_CREATOR = 2;
+	private static final int MOODLE_COURSE_MANAGER = 1;
 	private static final int MOODLE_COURSE_GUEST = 6;
 
 	@Autowired
@@ -93,7 +93,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 	}
 
 	private UserRole getMembershipRole(final int moodleRoleId) {
-		if (moodleRoleId == MOODLE_COURSE_CREATOR) {
+		if (moodleRoleId == MOODLE_COURSE_MANAGER) {
 			return UserRole.MANAGER;
 		} else if (moodleRoleId == MOODLE_COURSE_GUEST) {
 			return UserRole.OTHER;
