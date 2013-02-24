@@ -85,6 +85,23 @@ public class ConnectorServiceMoodleTest {
 				+ "userid bigint,"
 				+ "PRIMARY KEY (id))"
 		);
+		
+		jdbcTemplate.execute(
+				"CREATE TABLE mdl_role_assignments ("
+				+ "id bigint NOT NULL,"
+				+ "userid bigint,"
+				+ "roleid bigint,"
+				+ "contextid bigint,"
+				+ "PRIMARY KEY (id))"
+		);
+		
+		jdbcTemplate.execute(
+				"CREATE TABLE mdl_context ("
+				+ "id bigint NOT NULL,"
+				+ "instanceid bigint,"
+				+ "contextlevel bigint,"
+				+ "PRIMARY KEY (id))"
+		);
 	}
 
 	private IDataSet getDataSet() throws Exception {
@@ -100,6 +117,8 @@ public class ConnectorServiceMoodleTest {
 		jdbcTemplate.execute("DROP TABLE mdl_user");
 		jdbcTemplate.execute("DROP TABLE mdl_enrol");
 		jdbcTemplate.execute("DROP TABLE mdl_user_enrolments");
+		jdbcTemplate.execute("DROP TABLE mdl_role_assignments");
+		jdbcTemplate.execute("DROP TABLE mdl_context");
 	}
 
 	@Test
@@ -125,7 +144,7 @@ public class ConnectorServiceMoodleTest {
 		Membership membership = connectorService.getMembership("ptsr00", "1");
 
 		assertTrue(membership.isMember());
-		assertEquals(UserRole.CREATOR, membership.getUserrole());
+		assertEquals(UserRole.MANAGER, membership.getUserrole());
 	}
 
 	@Test
@@ -190,6 +209,6 @@ public class ConnectorServiceMoodleTest {
 		Membership actual = courses.getCourse().get(0).getMembership();
 
 		assertTrue(actual.isMember());
-		assertEquals(UserRole.CREATOR, actual.getUserrole());
+		assertEquals(UserRole.MANAGER, actual.getUserrole());
 	}
 }

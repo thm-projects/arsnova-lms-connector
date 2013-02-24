@@ -42,10 +42,13 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 	public Membership getMembership(final String username, final String courseid) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		List<Membership> results = jdbcTemplate.query(
-				"SELECT mdl_user.username, roleid FROM mdl_enrol "
+				"SELECT mdl_user.username, mdl_role_assignments.roleid FROM mdl_enrol "
 				+ "JOIN mdl_user_enrolments ON (mdl_enrol.id = mdl_user_enrolments.enrolid) "
 				+ "JOIN mdl_user ON (mdl_user_enrolments.userid = mdl_user.id) "
-				+ "WHERE mdl_enrol.courseid = ? AND mdl_user.username = ?;",
+				+ "JOIN mdl_role_assignments ON (mdl_role_assignments.userid = mdl_user_enrolments.userid) "
+				+ "JOIN mdl_context ON (mdl_context.instanceid = mdl_enrol.courseid AND mdl_context.id = mdl_role_assignments.contextid) "
+				+ "WHERE mdl_context.contextlevel = 50 AND mdl_enrol.courseid = ? AND mdl_user.username = ? "
+				+ "ORDER BY roleid DESC;",
 				new String[] {courseid, username},
 				new RowMapper<Membership>() {
 					public Membership mapRow(ResultSet resultSet, int row) throws SQLException {
@@ -91,7 +94,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 
 	private UserRole getMembershipRole(final int moodleRoleId) {
 		if (moodleRoleId == MOODLE_COURSE_CREATOR) {
-			return UserRole.CREATOR;
+			return UserRole.MANAGER;
 		} else if (moodleRoleId == MOODLE_COURSE_GUEST) {
 			return UserRole.OTHER;
 		}

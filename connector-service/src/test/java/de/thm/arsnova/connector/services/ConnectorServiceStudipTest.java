@@ -180,6 +180,6 @@ public class ConnectorServiceStudipTest {
 		Membership actual = courses.getCourse().get(0).getMembership();
 
 		assertTrue(actual.isMember());
-		assertEquals(UserRole.CREATOR, actual.getUserrole());
+		assertEquals(UserRole.MANAGER, actual.getUserrole());
 	}
 }

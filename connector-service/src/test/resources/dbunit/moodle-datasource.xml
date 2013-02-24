@@ -64,4 +64,32 @@
 			<value>2</value>
 		</row>
 	</table>
+	<table name="mdl_role_assignments">
+		<column>id</column>
+		<column>roleid</column>
+		<column>userid</column>
+		<column>contextid</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>1</value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>2</value>
+			<value>2</value>
+			<value>1</value>
+		</row>
+	</table>
+	<table name="mdl_context">
+		<column>id</column>
+		<column>instanceid</column>
+		<column>contextlevel</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>50</value>
+		</row>
+	</table>
 </dataset>
