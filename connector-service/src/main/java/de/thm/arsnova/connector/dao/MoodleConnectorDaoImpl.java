@@ -48,7 +48,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 				+ "JOIN mdl_role_assignments ON (mdl_role_assignments.userid = mdl_user_enrolments.userid) "
 				+ "JOIN mdl_context ON (mdl_context.instanceid = mdl_enrol.courseid AND mdl_context.id = mdl_role_assignments.contextid) "
 				+ "WHERE mdl_context.contextlevel = 50 AND mdl_enrol.courseid = ? AND mdl_user.username = ? "
-				+ "ORDER BY roleid DESC;",
+				+ "ORDER BY roleid ASC;",
 				new String[] {courseid, username},
 				new RowMapper<Membership>() {
 					public Membership mapRow(ResultSet resultSet, int row) throws SQLException {
@@ -63,7 +63,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 					}
 				}
 		);
-		if (results.size() != 1) {
+		if (results.size() < 1) {
 			return new Membership();
 		}
 		return results.get(0);
