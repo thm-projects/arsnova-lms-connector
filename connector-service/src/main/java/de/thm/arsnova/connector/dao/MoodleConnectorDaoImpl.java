@@ -76,7 +76,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 				+ "JOIN mdl_enrol ON (mdl_enrol.courseid = mdl_course.id) "
 				+ "JOIN mdl_user_enrolments ON (mdl_enrol.id = mdl_user_enrolments.enrolid) "
 				+ "JOIN mdl_user ON (mdl_user_enrolments.userid = mdl_user.id) "
-				+ "WHERE mdl_user.username = ? AND mdl_enrol.roleid >= 2 AND mdl_enrol.roleid <= 6;",
+				+ "WHERE mdl_user.username = ? AND mdl_enrol.roleid >= 1 AND mdl_enrol.roleid <= 6;",
 				new String[] {username},
 				new RowMapper<Course>() {
 					public Course mapRow(ResultSet resultSet, int row) throws SQLException {
