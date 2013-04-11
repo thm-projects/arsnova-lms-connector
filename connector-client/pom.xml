@@ -9,6 +9,7 @@
 
 	<artifactId>connector-client</artifactId>
 	<packaging>jar</packaging>
+	<name>Connector Client Library</name>
 
 	<dependencies>
 		<dependency>

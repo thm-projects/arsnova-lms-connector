@@ -8,6 +8,7 @@
 	</parent>
 	<artifactId>connector-model</artifactId>
 	<packaging>jar</packaging>
+	<name>Connector Model</name>
 
 	<build>
 		<plugins>
