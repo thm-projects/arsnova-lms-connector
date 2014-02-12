@@ -13,7 +13,6 @@
 		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-	<context:component-scan base-package="de.thm.arsnova.connector" />
 	<context:annotation-config />
 
 	<bean id="dataSource"
@@ -23,6 +22,8 @@
 		<property name="username" value="test" />
 		<property name="password" value="" />
 	</bean>
+	
+	<bean class="de.thm.arsnova.connector.services.ConnectorServiceImpl" />
 
 	<bean id="connectorDao"
 		class="de.thm.arsnova.connector.dao.MoodleConnectorDaoImpl"></bean>
