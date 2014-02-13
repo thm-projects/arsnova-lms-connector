@@ -82,8 +82,7 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 				);
 	}
 
-	@Override
-	public List<IliasAnswer> getAnswers(int questionId) {
+	private List<IliasAnswer> getAnswers(int questionId) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		return jdbcTemplate.query(
