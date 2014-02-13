@@ -13,7 +13,7 @@ import de.thm.arsnova.connector.dao.UniRepDao;
 public class UniRepServiceImpl implements UniRepService {
 
 	@Autowired
-	UniRepDao uniRepDao;
+	private UniRepDao uniRepDao;
 
 	@Override
 	public List<IliasCategoryNode> getTreeObjects(int refId) {

@@ -18,8 +18,6 @@ import de.thm.arsnova.connector.core.IliasQuestion;
 
 public class IliasConnectorDaoImpl implements UniRepDao {
 
-	private static final String TYPE = "ilias";
-
 	@Autowired
 	private DataSource dataSource;
 
@@ -89,17 +87,18 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		return jdbcTemplate.query(
-				"SELECT answertext, points FROM qpl_a_sc WHERE question_fi = ? UNION SELECT answertext, points FROM qpl_a_mc WHERE question_fi = ?",
-				new String[] {String.valueOf(questionId), String.valueOf(questionId)},
-				new RowMapper<IliasAnswer>() {
-					@Override
-					public IliasAnswer mapRow(ResultSet resultSet, int row) throws SQLException {
-						return new IliasAnswer(
-								resultSet.getString("answertext"),
-								resultSet.getInt("points")
-								);
-					}
-				}
+				"SELECT answertext, points FROM qpl_a_sc WHERE question_fi = ? "
+						+ "UNION SELECT answertext, points FROM qpl_a_mc WHERE question_fi = ?",
+						new String[] {String.valueOf(questionId), String.valueOf(questionId)},
+						new RowMapper<IliasAnswer>() {
+							@Override
+							public IliasAnswer mapRow(ResultSet resultSet, int row) throws SQLException {
+								return new IliasAnswer(
+										resultSet.getString("answertext"),
+										resultSet.getInt("points")
+										);
+							}
+						}
 				);
 	}
 

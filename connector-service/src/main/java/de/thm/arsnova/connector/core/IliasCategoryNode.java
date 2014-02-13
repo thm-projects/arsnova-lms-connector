@@ -28,7 +28,8 @@ public class IliasCategoryNode extends ResourceSupport {
 		this.add(linkTo(UniRepController.class).slash(String.valueOf(child)).withSelfRel());
 
 		if (type.equals("qpl")) {
-			this.add(linkTo(UniRepController.class).slash("question").slash(String.valueOf(child)).withRel("questions"));
+			this.add(linkTo(UniRepController.class).slash("question").slash(String.valueOf(child))
+					.withRel("questions"));
 		}
 	}
 
