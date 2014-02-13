@@ -19,33 +19,33 @@ import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private @Value("${service.username}") String username;
 	private @Value("${service.password}") String password;
-	
+
 	// LDAP
 	private @Value("${ldap.serverUrl}") String ldapServerUrl;
 	private @Value("${ldap.userSearchBase}") String ldapUserSearchBase;
 	private @Value("${ldap.userSearchFilter}") String ldapUserSearchFilter;
-	
+
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser(username)
-			.password(password).roles("ADMIN");
-	
+		.password(password).roles("ADMIN");
+
 		auth.ldapAuthentication().contextSource(ldapContextSource())
-			.userSearchBase(ldapUserSearchBase)
-			.userSearchFilter(ldapUserSearchFilter);
+		.userSearchBase(ldapUserSearchBase)
+		.userSearchFilter(ldapUserSearchFilter);
 	}
-	
+
 	@Bean
 	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {	
+	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
-	
+
 	@Bean
 	public BaseLdapPathContextSource ldapContextSource() {
 		return new DefaultSpringSecurityContextSource(ldapServerUrl);
 	}
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();

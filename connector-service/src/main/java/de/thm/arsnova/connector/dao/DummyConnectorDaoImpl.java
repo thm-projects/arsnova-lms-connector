@@ -11,12 +11,14 @@ public class DummyConnectorDaoImpl implements ConnectorDao {
 
 	private static final String TYPE = "dummy";
 
+	@Override
 	public List<String> getCourseUsers(String courseid) {
 		List<String> result = new ArrayList<String>();
 		result.add("test");
 		return result;
 	}
 
+	@Override
 	public List<Course> getMembersCourses(String username) {
 		List<Course> result = new ArrayList<Course>();
 		Course course = new Course();

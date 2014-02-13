@@ -15,7 +15,7 @@ import de.thm.arsnova.connector.services.ConnectorService;
 @Controller
 @RequestMapping(value = "/{username}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
 public class ConnectorController {
-	
+
 	@Autowired
 	ConnectorService connectorService;
 
@@ -24,7 +24,7 @@ public class ConnectorController {
 	public Membership getMembership(@PathVariable String username, @PathVariable String courseid) {
 		return connectorService.getMembership(username, courseid);
 	}
-	
+
 	@RequestMapping("/courses")
 	@ResponseBody
 	public Courses getCourses(@PathVariable String username) {

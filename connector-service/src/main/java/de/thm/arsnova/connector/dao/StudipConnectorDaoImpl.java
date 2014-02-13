@@ -22,67 +22,73 @@ public class StudipConnectorDaoImpl implements ConnectorDao {
 	@Autowired
 	private DataSource dataSource;
 
+	@Override
 	public List<String> getCourseUsers(final String courseid) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		return jdbcTemplate.query(
 				"SELECT seminar_user.user_id FROM seminar_user "
-				+ "JOIN auth_user_md5 ON (seminar_user.user_id = auth_user_md5.user_id) "
-				+ "WHERE seminar_user.Seminar_ID; = ?",
-				new String[] {courseid},
-				new RowMapper<String>() {
-					public String mapRow(ResultSet resultSet, int row) throws SQLException {
-						return resultSet.getString("username");
-					}
-				}
-		);
+						+ "JOIN auth_user_md5 ON (seminar_user.user_id = auth_user_md5.user_id) "
+						+ "WHERE seminar_user.Seminar_ID; = ?",
+						new String[] {courseid},
+						new RowMapper<String>() {
+							@Override
+							public String mapRow(ResultSet resultSet, int row) throws SQLException {
+								return resultSet.getString("username");
+							}
+						}
+				);
 	}
 
+	@Override
 	public Membership getMembership(final String username, final String courseid) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		List<Membership> results = jdbcTemplate.query(
 				"SELECT seminar_user.status FROM seminar_user "
-				+ "JOIN auth_user_md5 ON (seminar_user.user_id = auth_user_md5.user_id) "
-				+ "WHERE seminar_user.Seminar_ID = ? AND auth_user_md5.username = ?;",
-				new String[] {courseid, username},
-				new RowMapper<Membership>() {
-					public Membership mapRow(ResultSet resultSet, int row) throws SQLException {
-						Membership membership = new Membership();
-						if (resultSet.wasNull()) {
-							membership.setMember(false);
-							return membership;
+						+ "JOIN auth_user_md5 ON (seminar_user.user_id = auth_user_md5.user_id) "
+						+ "WHERE seminar_user.Seminar_ID = ? AND auth_user_md5.username = ?;",
+						new String[] {courseid, username},
+						new RowMapper<Membership>() {
+							@Override
+							public Membership mapRow(ResultSet resultSet, int row) throws SQLException {
+								Membership membership = new Membership();
+								if (resultSet.wasNull()) {
+									membership.setMember(false);
+									return membership;
+								}
+								membership.setMember(true);
+								membership.setUserrole(getMembershipRole(resultSet.getString("status")));
+								return membership;
+							}
 						}
-						membership.setMember(true);
-						membership.setUserrole(getMembershipRole(resultSet.getString("status")));
-						return membership;
-					}
-				}
-		);
+				);
 		if (results.size() != 1) {
 			return new Membership();
 		}
 		return results.get(0);
 	}
 
+	@Override
 	public List<Course> getMembersCourses(final String username) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		return jdbcTemplate.query(
 				"SELECT seminare.Seminar_ID, seminare.Name, seminare.Untertitel, seminar_user.status FROM seminare "
-				+ "JOIN seminar_user ON (seminar_user.seminar_id = seminare.seminar_id) "
-				+ "JOIN auth_user_md5 ON (seminar_user.user_id = auth_user_md5.user_id) "
-				+ "WHERE auth_user_md5.username = ?;",
-				new String[] {username},
-				new RowMapper<Course>() {
-					public Course mapRow(ResultSet resultSet, int row) throws SQLException {
-						Course course = new Course();
-						course.setId(resultSet.getString("Seminar_ID"));
-						course.setFullname(resultSet.getString("Name"));
-						course.setShortname(resultSet.getString("Name"));
-						course.setType(TYPE);
-						course.setMembership(getMembership(username, resultSet.getString("Seminar_ID")));
-						return course;
-					}
-				}
-		);
+						+ "JOIN seminar_user ON (seminar_user.seminar_id = seminare.seminar_id) "
+						+ "JOIN auth_user_md5 ON (seminar_user.user_id = auth_user_md5.user_id) "
+						+ "WHERE auth_user_md5.username = ?;",
+						new String[] {username},
+						new RowMapper<Course>() {
+							@Override
+							public Course mapRow(ResultSet resultSet, int row) throws SQLException {
+								Course course = new Course();
+								course.setId(resultSet.getString("Seminar_ID"));
+								course.setFullname(resultSet.getString("Name"));
+								course.setShortname(resultSet.getString("Name"));
+								course.setType(TYPE);
+								course.setMembership(getMembership(username, resultSet.getString("Seminar_ID")));
+								return course;
+							}
+						}
+				);
 	}
 
 	private UserRole getMembershipRole(final String roleId) {

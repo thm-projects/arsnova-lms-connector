@@ -14,7 +14,7 @@ public class UniRepServiceImpl implements UniRepService {
 
 	@Autowired
 	UniRepDao uniRepDao;
-	
+
 	@Override
 	public List<IliasCategoryNode> getTreeObjects(int refId) {
 		return uniRepDao.getTreeObjects(refId);
