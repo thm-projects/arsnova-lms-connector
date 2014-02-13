@@ -27,13 +27,18 @@ public class UniRepController {
 	@RequestMapping("/{refId}")
 	@ResponseBody
 	public HttpEntity<List<IliasCategoryNode>> getIliasTreeObjects(@PathVariable int refId) {
-		List<IliasCategoryNode> nodes = service.getTreeObjects(refId);
-		return new ResponseEntity<List<IliasCategoryNode>>(nodes, HttpStatus.OK);
+		return new ResponseEntity<List<IliasCategoryNode>>(
+				service.getTreeObjects(refId),
+				HttpStatus.OK
+				);
 	}
 
 	@RequestMapping("/question/{refId}")
 	@ResponseBody
-	public List<IliasQuestion> getIliasQuestion(@PathVariable int refId) {
-		return service.getQuestions(refId);
+	public HttpEntity<List<IliasQuestion>> getIliasQuestion(@PathVariable int refId) {
+		return new ResponseEntity<List<IliasQuestion>>(
+				service.getQuestions(refId),
+				HttpStatus.OK
+				);
 	}
 }
