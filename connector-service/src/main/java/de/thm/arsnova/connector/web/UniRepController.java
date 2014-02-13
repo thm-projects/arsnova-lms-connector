@@ -18,22 +18,22 @@ import de.thm.arsnova.connector.core.IliasQuestion;
 import de.thm.arsnova.connector.services.UniRepService;
 
 @Controller
-@RequestMapping(value = "/ilias", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/ilias", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 public class UniRepController {
 
 	@Autowired
-	UniRepService service;
+	private UniRepService service;
 
 	@RequestMapping("/{refId}")
 	@ResponseBody
-	public HttpEntity<List<IliasCategoryNode>> getIliasTreeObjects(@PathVariable int refId) throws Exception {
+	public HttpEntity<List<IliasCategoryNode>> getIliasTreeObjects(@PathVariable int refId) {
 		List<IliasCategoryNode> nodes = service.getTreeObjects(refId);
 		return new ResponseEntity<List<IliasCategoryNode>>(nodes, HttpStatus.OK);
 	}
 
 	@RequestMapping("/question/{refId}")
 	@ResponseBody
-	public List<IliasQuestion> getIliasQuestion(@PathVariable int refId) throws Exception {
+	public List<IliasQuestion> getIliasQuestion(@PathVariable int refId) {
 		return service.getQuestions(refId);
 	}
 }

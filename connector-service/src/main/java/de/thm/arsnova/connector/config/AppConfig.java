@@ -2,12 +2,11 @@ package de.thm.arsnova.connector.config;
 
 import java.sql.SQLException;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import de.thm.arsnova.connector.dao.ConnectorDao;
@@ -21,8 +20,12 @@ import de.thm.arsnova.connector.dao.UniRepDao;
 @PropertySource("file:///etc/arsnova/connector.properties")
 public class AppConfig {
 
-	@Autowired
-	Environment env;
+	@Value("jdbc.driverClassName") private String jdbcDriverClassName;
+	@Value("jdbc.url") private String jdbcUrl;
+	@Value("jdbc.username") private String jdbcUsername;
+	@Value("jdbc.password") private String jdbcPassword;
+
+	@Value("dao.implementation") private String daoImplementation;
 
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -32,17 +35,16 @@ public class AppConfig {
 	@Bean
 	public DriverManagerDataSource dataSource() throws SQLException {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
-		dataSource.setUrl(env.getProperty("jdbc.url"));
-		dataSource.setUsername(env.getProperty("jdbc.username"));
-		dataSource.setPassword(env.getProperty("jdbc.password"));
+		dataSource.setDriverClassName(jdbcDriverClassName);
+		dataSource.setUrl(jdbcUrl);
+		dataSource.setUsername(jdbcUsername);
+		dataSource.setPassword(jdbcPassword);
 		return dataSource;
 	}
 
 	@Bean
 	public ConnectorDao connectorDao() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		String classname = env.getProperty("dao.implementation");
-		return (ConnectorDao)Class.forName(classname).newInstance();
+		return (ConnectorDao) Class.forName(daoImplementation).newInstance();
 	}
 
 	@Bean

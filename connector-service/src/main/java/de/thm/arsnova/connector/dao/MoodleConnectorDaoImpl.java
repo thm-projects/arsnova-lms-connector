@@ -17,8 +17,8 @@ import de.thm.arsnova.connector.model.UserRole;
 public class MoodleConnectorDaoImpl implements ConnectorDao {
 
 	private static final String TYPE = "moodle";
-	private static final int MOODLE_COURSE_EDITINGTEACHER= 3;
-	private static final int MOODLE_COURSE_TEACHER= 4;
+	private static final int MOODLE_COURSE_EDITINGTEACHER = 3;
+	private static final int MOODLE_COURSE_TEACHER = 4;
 	private static final int MOODLE_COURSE_MEMBER = 5;
 
 	@Autowired

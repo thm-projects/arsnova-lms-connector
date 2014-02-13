@@ -17,13 +17,13 @@ import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
 @EnableWebMvcSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	private @Value("${service.username}") String username;
-	private @Value("${service.password}") String password;
+	@Value("${service.username}") private String username;
+	@Value("${service.password}") private String password;
 
 	// LDAP
-	private @Value("${ldap.serverUrl}") String ldapServerUrl;
-	private @Value("${ldap.userSearchBase}") String ldapUserSearchBase;
-	private @Value("${ldap.userSearchFilter}") String ldapUserSearchFilter;
+	@Value("${ldap.serverUrl}") private String ldapServerUrl;
+	@Value("${ldap.userSearchBase}") private String ldapUserSearchBase;
+	@Value("${ldap.userSearchFilter}") private String ldapUserSearchFilter;
 
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

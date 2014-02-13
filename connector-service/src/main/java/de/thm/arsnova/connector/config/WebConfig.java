@@ -6,6 +6,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages={"de.thm.arsnova.connector.web"})
+@ComponentScan(basePackages = {"de.thm.arsnova.connector.web" })
 public class WebConfig {
 }

@@ -13,10 +13,10 @@ import de.thm.arsnova.connector.web.UniRepController;
 
 public class IliasCategoryNode extends ResourceSupport {
 
-	protected int child;
-	protected int parent;
-	protected String title;
-	protected String type;
+	private int child;
+	private int parent;
+	private String title;
+	private String type;
 	protected List<Short> children;
 
 	public IliasCategoryNode(int child, int parent, String title, String type) {
@@ -67,10 +67,10 @@ public class IliasCategoryNode extends ResourceSupport {
 		children.add(new Short(id, this.child));
 	}
 
-	@JsonSerialize(include=Inclusion.NON_NULL)
+	@JsonSerialize(include = Inclusion.NON_NULL)
 	public static class Short extends IliasCategoryNode {
 		public Short(int id, int parent) {
-			super(id,parent,null,null);
+			super(id, parent, null, null);
 			this.children = null;
 		}
 	}

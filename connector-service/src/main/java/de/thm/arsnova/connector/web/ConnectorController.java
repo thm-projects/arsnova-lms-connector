@@ -13,11 +13,11 @@ import de.thm.arsnova.connector.model.Membership;
 import de.thm.arsnova.connector.services.ConnectorService;
 
 @Controller
-@RequestMapping(value = "/{username}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ConnectorController {
 
 	@Autowired
-	ConnectorService connectorService;
+	private ConnectorService connectorService;
 
 	@RequestMapping("/membership/{courseid}")
 	@ResponseBody
