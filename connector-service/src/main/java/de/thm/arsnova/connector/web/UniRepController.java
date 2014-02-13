@@ -1,7 +1,5 @@
 package de.thm.arsnova.connector.web;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;

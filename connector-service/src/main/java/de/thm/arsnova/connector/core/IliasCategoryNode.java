@@ -20,7 +20,7 @@ public class IliasCategoryNode extends ResourceSupport {
 	protected List<Short> children;
 	
 	public IliasCategoryNode(int child, int parent, String title, String type) {
-		this.children = new ArrayList<>();
+		this.children = new ArrayList<Short>();
 		this.child = child;
 		this.parent = parent;
 		this.title = title;

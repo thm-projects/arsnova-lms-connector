@@ -132,8 +132,8 @@
 	</build>
 	
 	<modules>
+		<module>connector-model</module>
 		<module>connector-client</module>
 		<module>connector-service</module>
-		<module>connector-model</module>
 	</modules>
 </project>
