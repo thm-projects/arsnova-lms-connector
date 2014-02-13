@@ -1,5 +1,7 @@
 package de.thm.arsnova.connector.services;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import de.thm.arsnova.connector.model.Courses;
 import de.thm.arsnova.connector.model.Membership;
 
@@ -15,6 +17,7 @@ public interface ConnectorService {
 	 * @param courseid The course ID as used in target platform
 	 * @return The state of membership
 	 */
+	@PreAuthorize(value = "hasRole('ARSNOVA')")
 	Membership getMembership(String username, String courseid);
 
 	/** This service method resturns a list of courses the user is member
@@ -22,5 +25,6 @@ public interface ConnectorService {
 	 * @param username The users name as used in target platform
 	 * @return The list of courses
 	 */
+	@PreAuthorize(value = "hasRole('ARSNOVA')")
 	Courses getCourses(String username);
 }
