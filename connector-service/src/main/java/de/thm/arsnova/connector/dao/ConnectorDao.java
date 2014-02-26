@@ -7,14 +7,14 @@ import de.thm.arsnova.connector.model.Membership;
 
 public interface ConnectorDao {
 	/** Returns users enlisted in course identified by ID
-	 * 
+	 *
 	 * @param courseid The course ID which identifies a course. This might be a number or a alphanumeric value
 	 * @return A list of user IDs
 	 */
 	List<String> getCourseUsers(String courseid);
 
 	/** Returns a list of courses the user is enlisted in
-	 * 
+	 *
 	 * @param username The users ID, equal to the user ID in authentication system
 	 * @return A list of courses
 	 */
