@@ -21,7 +21,7 @@ public interface ConnectorDao {
 	List<Course> getMembersCourses(String username);
 
 	/** Returns the state of enlistment for one user in one course
-	 * 
+	 *
 	 * @param username The users ID, equal to the user ID in authentication system
 	 * @param courseid The course ID which identifies a course. This might be a number or a alphanumeric value
 	 * @return Information about the membership of one user in this course

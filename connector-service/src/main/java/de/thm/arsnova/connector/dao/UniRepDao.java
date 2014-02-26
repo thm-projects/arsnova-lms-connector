@@ -2,8 +2,8 @@ package de.thm.arsnova.connector.dao;
 
 import java.util.List;
 
-import de.thm.arsnova.connector.core.IliasCategoryNode;
-import de.thm.arsnova.connector.core.IliasQuestion;
+import de.thm.arsnova.connector.model.IliasCategoryNode;
+import de.thm.arsnova.connector.model.IliasQuestion;
 
 public interface UniRepDao {
 	/** Returns a flat dump of the Ilias repository tree.

@@ -17,8 +17,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import de.thm.arsnova.connector.core.IliasCategoryNode;
-import de.thm.arsnova.connector.core.IliasQuestion;
+import de.thm.arsnova.connector.model.IliasCategoryNode;
+import de.thm.arsnova.connector.model.IliasQuestion;
 import de.thm.arsnova.connector.services.UniRepService;
 
 public class UniRepControllerTest {

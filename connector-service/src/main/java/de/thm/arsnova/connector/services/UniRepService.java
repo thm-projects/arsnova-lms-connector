@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 
-import de.thm.arsnova.connector.core.IliasCategoryNode;
-import de.thm.arsnova.connector.core.IliasQuestion;
+import de.thm.arsnova.connector.model.IliasCategoryNode;
+import de.thm.arsnova.connector.model.IliasQuestion;
 
 /** This service class provides access to ilias repository
  *

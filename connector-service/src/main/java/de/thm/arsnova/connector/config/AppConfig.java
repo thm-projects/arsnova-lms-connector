@@ -29,8 +29,7 @@ public class AppConfig {
 
 	@Value("dao.implementation") private String daoImplementation;
 
-	@Autowired
-	Environment env;
+	@Autowired private Environment env;
 
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {

@@ -13,8 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import de.thm.arsnova.connector.core.IliasCategoryNode;
 import de.thm.arsnova.connector.dao.UniRepDao;
+import de.thm.arsnova.connector.model.IliasCategoryNode;
 
 public class UniRepServiceTest {
 

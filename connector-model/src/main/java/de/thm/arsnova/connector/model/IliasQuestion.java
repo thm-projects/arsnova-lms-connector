@@ -1,4 +1,4 @@
-package de.thm.arsnova.connector.core;
+package de.thm.arsnova.connector.model;
 
 import java.util.List;
 
