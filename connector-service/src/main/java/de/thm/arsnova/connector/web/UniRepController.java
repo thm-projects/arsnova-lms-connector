@@ -1,7 +1,5 @@
 package de.thm.arsnova.connector.web;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,14 +31,6 @@ public class UniRepController {
 	public HttpEntity<List<IliasCategoryNode>> getIliasTreeObjects(@PathVariable int refId) {
 		try {
 			List<IliasCategoryNode> nodeList = service.getTreeObjects(refId);
-
-			for (IliasCategoryNode node : nodeList) {
-				node.add(linkTo(UniRepController.class).slash(String.valueOf(node.getChild())).withSelfRel());
-				if ("qpl".equals(node.getType())) {
-					node.add(linkTo(UniRepController.class).slash("question").slash(String.valueOf(node.getChild()))
-							.withRel("questions"));
-				}
-			}
 			return new ResponseEntity<List<IliasCategoryNode>>(nodeList, HttpStatus.OK);
 		} catch ( ServiceUnavailableException e ) {
 			return new ResponseEntity<List<IliasCategoryNode>>(new ArrayList<IliasCategoryNode>(), HttpStatus.SERVICE_UNAVAILABLE);

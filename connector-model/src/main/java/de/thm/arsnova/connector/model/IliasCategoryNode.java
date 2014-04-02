@@ -5,28 +5,30 @@ import java.util.List;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
-import org.springframework.hateoas.ResourceSupport;
 
-public class IliasCategoryNode extends ResourceSupport {
+@JsonSerialize(include = Inclusion.NON_NULL)
+public class IliasCategoryNode {
 
-	private int child;
+	private int id;
 	private int parent;
 	private String title;
 	private String type;
-	private List<Short> children;
+	private int questionCount;
+	private List<IliasCategoryNode> children;
 
-	public IliasCategoryNode(int child, int parent, String title, String type) {
-		this.child = child;
+	public IliasCategoryNode(int child, int parent, String title, String type, int questionCount) {
+		this.id = child;
 		this.parent = parent;
 		this.title = title;
 		this.type = type;
+		this.questionCount = questionCount;
 	}
 
-	public int getChild() {
-		return child;
+	public int getId() {
+		return id;
 	}
-	public void setChild(int child) {
-		this.child = child;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getParent() {
@@ -50,20 +52,32 @@ public class IliasCategoryNode extends ResourceSupport {
 		this.type = type;
 	}
 
-	public List<Short> getChildren() {
-		return children;
+	public int getQuestionCount() {
+		return questionCount;
 	}
-	public void addChild(int id) {
-		if (this.children == null) {
-			this.children = new ArrayList<Short>();
-		}
-		this.children.add(new Short(id, this.child));
+	public void setQuestionCount(int questionCount) {
+		this.questionCount = questionCount;
 	}
 
-	@JsonSerialize(include = Inclusion.NON_NULL)
-	public static class Short extends IliasCategoryNode {
-		public Short(int id, int parent) {
-			super(id, parent, null, null);
+	public List<IliasCategoryNode> getChildren() {
+		return children;
+	}
+	public void addChild(IliasCategoryNode node) {
+		if (node == null) throw new IllegalArgumentException();
+		if (this.children == null) {
+			this.children = new ArrayList<IliasCategoryNode>();
 		}
+		this.children.add(node);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+
+		if (obj instanceof IliasCategoryNode) {
+			IliasCategoryNode other = (IliasCategoryNode) obj;
+			return this.id == other.getId() && this.parent == other.getParent();
+		}
+		return false;
 	}
 }

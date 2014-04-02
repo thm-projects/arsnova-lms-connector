@@ -1,5 +1,6 @@
 package de.thm.arsnova.connector.services;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,23 +14,54 @@ import de.thm.arsnova.connector.model.IliasQuestion;
 @Service
 public class UniRepServiceImpl implements UniRepService {
 
+	private final String[] neededTypes = {"cat", "qpl", "tst"};
+
 	@Autowired(required = false)
 	private UniRepDao uniRepDao;
 
 	@Override
-
-	public List<IliasCategoryNode> getTreeObjects(int refId) throws ServiceUnavailableException {
+	public List<IliasCategoryNode> getTreeObjects(int refId)
+			throws ServiceUnavailableException {
 		if (uniRepDao == null) {
 			throw new ServiceUnavailableException();
 		}
-		return uniRepDao.getTreeObjects(refId);
+
+		List<IliasCategoryNode> result = uniRepDao.getTreeObjects(refId);
+		while(removeBranchesWithoutQuestionPools(result));
+
+		return result;
 	}
 
 	@Override
-	public List<IliasQuestion> getQuestions(int refId) throws ServiceUnavailableException {
+	public List<IliasQuestion> getQuestions(int refId)
+			throws ServiceUnavailableException {
 		if (uniRepDao == null) {
 			throw new ServiceUnavailableException();
 		}
 		return uniRepDao.getQuestion(refId);
+	}
+
+	private boolean removeBranchesWithoutQuestionPools( List<IliasCategoryNode> nodes ) throws ServiceUnavailableException {
+
+		if (nodes == null) return false;
+
+		Iterator<IliasCategoryNode> it = nodes.iterator();
+
+		boolean hasRemovedNodes = false;
+
+		while (it.hasNext()) {
+			IliasCategoryNode node = it.next();
+
+			if (node.getQuestionCount() == 0 && (node.getChildren() == null || node.getChildren().size() == 0)) {
+				it.remove();
+				hasRemovedNodes = true;
+				continue;
+			}
+
+			removeBranchesWithoutQuestionPools(node.getChildren());
+		}
+
+		return hasRemovedNodes;
+
 	}
 }

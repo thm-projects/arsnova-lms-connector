@@ -2,7 +2,9 @@ package de.thm.arsnova.connector.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -25,6 +27,8 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 	public List<IliasCategoryNode> getTreeObjects(int refId) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
+		final Map<Integer, Integer> questionCount = this.getQuestionCount(refId);
+
 		List<IliasCategoryNode> nodeList = jdbcTemplate.query(
 				"SELECT t2.*, d.type, d.title FROM tree AS t1"
 						+ " JOIN tree AS t2 ON t2.lft BETWEEN t1.lft AND t1.rgt AND t1.tree = t2.tree"
@@ -39,21 +43,49 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 										resultSet.getInt("child"),
 										resultSet.getInt("parent"),
 										resultSet.getString("title"),
-										resultSet.getString("type")
+										resultSet.getString("type"),
+										questionCount.get(resultSet.getInt("child")) == null ? 0 : questionCount.get(resultSet.getInt("child"))
 										);
 							}
 						}
 				);
 
 		for (IliasCategoryNode node : nodeList) {
-			for (IliasCategoryNode n : nodeList) {
-				if (node.getParent() == n.getChild()) {
-					n.addChild(node.getChild());
+			for (IliasCategoryNode parentNode : nodeList) {
+				if (node.getParent() == parentNode.getId()) {
+					parentNode.addChild(node);
 				}
 			}
 		}
 
 		return nodeList;
+	}
+
+	private Map<Integer, Integer> getQuestionCount(int refId) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+		final Map<Integer, Integer> result = new HashMap<Integer, Integer>();
+
+		jdbcTemplate.query(
+				"SELECT r.ref_id, COUNT(r.ref_id) AS count FROM tree AS t1"
+						+ " JOIN tree AS t2 ON t2.lft BETWEEN t1.lft AND t1.rgt AND t1.tree = t2.tree"
+						+ " JOIN object_reference AS r ON r.ref_id=t2.child "
+						+ " JOIN object_data as d ON d.obj_id=r.obj_id"
+						+ " JOIN qpl_questions as q ON q.obj_fi=r.obj_id"
+						+ " WHERE t1.child=? GROUP BY r.ref_id;",
+						new String[] {String.valueOf(refId)},
+						new RowMapper<Integer>() {
+							@Override
+							public Integer mapRow(ResultSet resultSet, int row) throws SQLException {
+								result.put(
+										resultSet.getInt("ref_id"),
+										resultSet.getInt("count"));
+								return 0;
+							}
+						}
+				);
+
+		return result;
 	}
 
 	@Override
@@ -117,5 +149,26 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 					}
 				}
 				);
+	}
+
+	private String getMetaDataFieldId(String metaDataTitle) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+		List<String> result = jdbcTemplate.query(
+				"SELECT field_id FROM adv_md_record JOIN adv_mdf_definition ON (record_id = record_id) WHERE adv_md_record.title = ?",
+				new String[] {metaDataTitle},
+				new RowMapper<String>() {
+					@Override
+					public String mapRow(ResultSet resultSet, int row) throws SQLException {
+						return resultSet.getString("field_id");
+					}
+				}
+				);
+
+		if (result.size() == 1) {
+			return result.get(0);
+		}
+
+		return null;
 	}
 }
