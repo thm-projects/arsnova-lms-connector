@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<table name="tree">
+		<column>lft</column>
+		<column>rgt</column>
+		<column>Untertitel</column>
+		<row>
+			<value>1</value>
+			<value>Testkurs 1</value>
+			<value>TK1</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>Testkurs 2</value>
+			<value>TK2</value>
+		</row>
+	</table>
+	<table name="object_reference">
+		<column>user_id</column>
+		<column>username</column>
+		<row>
+			<value>1</value>
+			<value>admin</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>ptsr00</value>
+		</row>
+		<row>
+			<value>3</value>
+			<value>ptsr01</value>
+		</row>
+	</table>
+	<table name="object_data">
+		<column>user_id</column>
+		<column>Seminar_ID</column>
+		<column>status</column>
+		<row>
+			<value>1</value>
+			<value>1</value>
+			<value>dozent</value>
+		</row>
+		<row>
+			<value>2</value>
+			<value>2</value>
+			<value>author</value>
+		</row>
+	</table>
+</dataset>

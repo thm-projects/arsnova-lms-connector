@@ -21,6 +21,9 @@ public class DummyConnectorDaoImpl implements ConnectorDao {
 	@Override
 	public List<Course> getMembersCourses(String username) {
 		List<Course> result = new ArrayList<Course>();
+		if ("dummy".equals(username)) {
+			return result;
+		}
 		Course course = new Course();
 		course.setFullname("Dummy Course");
 		course.setId("1");
@@ -32,8 +35,10 @@ public class DummyConnectorDaoImpl implements ConnectorDao {
 	@Override
 	public Membership getMembership(String username, String courseid) {
 		Membership membership = new Membership();
-		membership.setMember(true);
-		membership.setUserrole(UserRole.MEMBER);
+		membership.setMember( ! "dummy".equals(username) );
+		if (! "dummy".equals(username)) {
+			membership.setUserrole(UserRole.MEMBER);
+		}
 		return membership;
 	}
 }

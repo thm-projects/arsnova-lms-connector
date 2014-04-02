@@ -77,8 +77,7 @@ public class ConnectorControllerTest {
 
 	@Test
 	public void testShouldNotReturnEmptyCourses() throws Exception {
-		mockMvc.perform(get("/ptsr01/courses").accept(MediaType.APPLICATION_JSON))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		mockMvc.perform(get("/ptsr01/courses").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk());
 	}
 }

@@ -28,7 +28,8 @@ public class UniRepServiceTest {
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 
-		when(dao.getTreeObjects(anyInt())).thenReturn(new ArrayList<IliasCategoryNode>());
+		when(dao.getTreeObjects(anyInt())).thenReturn(
+				new ArrayList<IliasCategoryNode>());
 	}
 
 	@Test
@@ -42,5 +43,4 @@ public class UniRepServiceTest {
 		assertNotNull(dao.getQuestion(42));
 		assertEquals(0, dao.getQuestion(42).size());
 	}
-
 }

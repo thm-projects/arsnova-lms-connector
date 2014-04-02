@@ -2,8 +2,9 @@ package de.thm.arsnova.connector.services;
 
 import java.util.List;
 
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PostAuthorize;
 
+import de.thm.arsnova.connector.core.ServiceUnavailableException;
 import de.thm.arsnova.connector.model.IliasCategoryNode;
 import de.thm.arsnova.connector.model.IliasQuestion;
 
@@ -17,15 +18,17 @@ public interface UniRepService {
 	 *
 	 * @param refId The root nodes ID as reference ID
 	 * @return A list of category nodes
+	 * @throws ServiceUnavailableException
 	 */
-	@PreAuthorize("isAuthenticated()")
-	List<IliasCategoryNode> getTreeObjects(int refId);
+	@PostAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasPermission(#refId,'uniRepTree','read'))")
+	List<IliasCategoryNode> getTreeObjects(int refId) throws ServiceUnavailableException;
 
 	/** Returns a list of questions identified by the parent question pool reference ID
 	 *
 	 * @param refId The reference id of the question pool containing this question
 	 * @return A list of questions containing the question, possible answers and feedback.
+	 * @throws ServiceUnavailableException
 	 */
-	@PreAuthorize("isAuthenticated()")
-	List<IliasQuestion> getQuestions(int refId);
+	@PostAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasPermission(#refId,'uniRepQuestion','read'))")
+	List<IliasQuestion> getQuestions(int refId) throws ServiceUnavailableException;
 }

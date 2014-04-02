@@ -26,12 +26,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import de.thm.arsnova.connector.config.StudipTestConfig;
 import de.thm.arsnova.connector.model.Courses;
 import de.thm.arsnova.connector.model.Membership;
 import de.thm.arsnova.connector.model.UserRole;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/test/resources/spring-test-studip.xml" })
+@ContextConfiguration( classes = {StudipTestConfig.class} )
 public class ConnectorServiceStudipTest {
 
 	@Autowired
@@ -56,26 +57,26 @@ public class ConnectorServiceStudipTest {
 	private void createTables(JdbcTemplate jdbcTemplate) {
 		jdbcTemplate.execute(
 				"CREATE TABLE seminare ("
-				+ "Seminar_ID varchar(254) NOT NULL,"
-				+ "Name varchar(254),"
-				+ "Untertitel varchar(254),"
-				+ "PRIMARY KEY (Seminar_ID))"
-		);
+						+ "Seminar_ID varchar(254) NOT NULL,"
+						+ "Name varchar(254),"
+						+ "Untertitel varchar(254),"
+						+ "PRIMARY KEY (Seminar_ID))"
+				);
 
 		jdbcTemplate.execute(
 				"CREATE TABLE auth_user_md5 ("
-				+ "user_id varchar(254) NOT NULL,"
-				+ "username varchar(254),"
-				+ "PRIMARY KEY (user_id))"
-		);
+						+ "user_id varchar(254) NOT NULL,"
+						+ "username varchar(254),"
+						+ "PRIMARY KEY (user_id))"
+				);
 
 		jdbcTemplate.execute(
 				"CREATE TABLE seminar_user ("
-				+ "user_id varchar(254) NOT NULL,"
-				+ "Seminar_id varchar(254) NOT NULL,"
-				+ "status varchar(254),"
-				+ "PRIMARY KEY (user_id, Seminar_id))"
-		);
+						+ "user_id varchar(254) NOT NULL,"
+						+ "Seminar_id varchar(254) NOT NULL,"
+						+ "status varchar(254),"
+						+ "PRIMARY KEY (user_id, Seminar_id))"
+				);
 	}
 
 	private IDataSet getDataSet() throws Exception {
@@ -100,7 +101,7 @@ public class ConnectorServiceStudipTest {
 
 		assertEquals(expected, actual);
 	}
-	
+
 	@Test
 	public void testShouldReturnCourseForEnroledUser() {
 		Courses courses = connectorService.getCourses("ptsr00");
@@ -133,20 +134,20 @@ public class ConnectorServiceStudipTest {
 		assertTrue(membership.isMember());
 		assertNotNull(membership.getUserrole());
 	}
-	
+
 	@Test
 	public void testShouldNotIndicateUnenroledUsers() {
 		Membership membership = connectorService.getMembership("ptsr01", "1");
 		assertFalse(membership.isMember());
 		assertNull(membership.getUserrole());
 	}
-	
+
 	@Test
 	public void testShouldReturnFalseOnUnknownCourse() {
 		Membership membership = connectorService.getMembership("ptsr00", "12345678");
 		assertFalse(membership.isMember());
 	}
-	
+
 	@Test
 	public void testShouldReturnFalseOnUnknownUser() {
 		Membership membership = connectorService.getMembership("iamnothere", "1");

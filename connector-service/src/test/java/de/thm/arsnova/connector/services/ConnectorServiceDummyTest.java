@@ -9,12 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import de.thm.arsnova.connector.config.DummyTestConfig;
 import de.thm.arsnova.connector.model.Courses;
 import de.thm.arsnova.connector.model.Membership;
 import de.thm.arsnova.connector.model.UserRole;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/test/resources/spring-test-dummy.xml" })
+@ContextConfiguration( classes = {DummyTestConfig.class} )
 public class ConnectorServiceDummyTest {
 
 	@Autowired

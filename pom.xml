@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.thm.arsnova.connector</groupId>
 	<artifactId>connector</artifactId>
-	<version>0.30.0-SNAPSHOT</version>
+	<version>0.40.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>ARSnova Connector Service</name>
@@ -15,7 +15,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-version>4.0.0.RELEASE</spring-version>
+		<spring-version>4.0.3.RELEASE</spring-version>
 	</properties>
 
 	<repositories>
@@ -98,7 +98,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.11</version>
+				<version>2.12</version>
 				<configuration>
 					<configLocation>ARSnova-checkstyle-checker.xml</configLocation>
 				</configuration>
@@ -120,7 +120,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>cobertura-maven-plugin</artifactId>
-				<version>2.5.1</version>
+				<version>2.6</version>
 				<configuration>
 					<formats>
 						<format>xml</format>

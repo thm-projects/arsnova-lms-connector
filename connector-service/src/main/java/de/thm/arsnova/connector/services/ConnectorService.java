@@ -17,7 +17,7 @@ public interface ConnectorService {
 	 * @param courseid The course ID as used in target platform
 	 * @return The state of membership
 	 */
-	@PreAuthorize(value = "hasRole('ARSNOVA')")
+	@PreAuthorize(value = "hasRole('ADMIN') or hasPermission(#username, 'membership', 'read')")
 	Membership getMembership(String username, String courseid);
 
 	/** This service method resturns a list of courses the user is member
@@ -25,6 +25,6 @@ public interface ConnectorService {
 	 * @param username The users name as used in target platform
 	 * @return The list of courses
 	 */
-	@PreAuthorize(value = "hasRole('ARSNOVA')")
+	@PreAuthorize(value = "hasRole('ADMIN') or hasPermission(#username, 'courses', 'read')")
 	Courses getCourses(String username);
 }

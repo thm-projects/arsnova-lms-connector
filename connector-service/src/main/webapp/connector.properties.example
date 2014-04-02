@@ -11,5 +11,5 @@ dao.implementation=de.thm.arsnova.connector.dao.MoodleConnectorDaoImpl
 # Uncomment the following line to get a dummy implementation
 # dao.implementation=de.thm.arsnova.connector.dao.DummyConnectorDaoImpl
 
-service.username=test
-service.password=test
+admin.username=test
+admin.password=test

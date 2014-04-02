@@ -36,13 +36,23 @@ public class AppConfig {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
 
-	@Bean
+	@Bean(name = "dataSource")
 	public DriverManagerDataSource dataSource() throws SQLException {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
 		dataSource.setUrl(env.getProperty("jdbc.url"));
 		dataSource.setUsername(env.getProperty("jdbc.username"));
 		dataSource.setPassword(env.getProperty("jdbc.password"));
+		return dataSource;
+	}
+
+	@Bean(name = "configDataSource")
+	public DriverManagerDataSource configDataSource() throws SQLException {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		dataSource.setDriverClassName("org.hsqldb.jdbc.JDBCDriver");
+		dataSource.setUrl("file:///etc/arsnova/connector.db");
+		dataSource.setUsername("whatever");
+		dataSource.setPassword("topsecret");
 		return dataSource;
 	}
 
@@ -53,6 +63,9 @@ public class AppConfig {
 
 	@Bean
 	public UniRepDao uniRepDao() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		return new IliasConnectorDaoImpl();
+		if ("enable".equals(env.getProperty("service.startIliasConnector"))) {
+			return new IliasConnectorDaoImpl();
+		}
+		return null;
 	}
 }
