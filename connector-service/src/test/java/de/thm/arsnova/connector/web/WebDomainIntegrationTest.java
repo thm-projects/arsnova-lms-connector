@@ -17,7 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -49,7 +49,7 @@ public class WebDomainIntegrationTest {
 	@Test
 	public void testShouldReturnMembership() throws Exception {
 		List<GrantedAuthority> ga = new ArrayList<GrantedAuthority>();
-		ga.add(new GrantedAuthorityImpl("ADMIN"));
+		ga.add(new SimpleGrantedAuthority("ADMIN"));
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("admin", "secret", ga);
 		SecurityContextHolder.getContext().setAuthentication(token);
 		mockMvc.perform(get("/test/membership/42").accept(MediaType.APPLICATION_JSON))
@@ -77,7 +77,7 @@ public class WebDomainIntegrationTest {
 	@Test
 	public void testShouldReturnCourses() throws Exception {
 		List<GrantedAuthority> ga = new ArrayList<GrantedAuthority>();
-		ga.add(new GrantedAuthorityImpl("ADMIN"));
+		ga.add(new SimpleGrantedAuthority("ADMIN"));
 		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("admin", "secret", ga);
 		SecurityContextHolder.getContext().setAuthentication(token);
 		mockMvc.perform(get("/test/courses").accept(MediaType.APPLICATION_JSON))

@@ -1,0 +1,2 @@
+
+include "connector-model", "connector-client", "connector-service"

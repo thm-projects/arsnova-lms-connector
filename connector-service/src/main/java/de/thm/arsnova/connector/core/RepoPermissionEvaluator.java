@@ -28,7 +28,7 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 	}
 
 	/** Checks permission
-	 * 
+	 *
 	 */
 	@Override
 	public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
@@ -60,7 +60,7 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 
 				Membership membership = client.getMembership(ud.getUsername(), "undefined");
 
-				if ("read".equals(permission) && ud.getUsername().equals(targetId) && membership.isMember() ) {
+				if ("read".equals(permission) && ud.getUsername().equals(targetId) ) {
 					return true;
 				}
 				break;

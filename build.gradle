@@ -1,0 +1,28 @@
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+	
+	sourceCompatibility = 1.7
+	version = '0.50.0-SNAPSHOT'
+	
+	springVersion = '4.0.+'
+	springSecurityVersion = '3.2.+'
+	
+	repositories {
+	    mavenCentral()
+	    mavenLocal()
+	}
+	
+	dependencies {
+	    compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+	    compile group: 'org.springframework', name: 'spring-context', version: springVersion
+	    compile group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion
+	    
+	    testCompile group: 'junit', name: 'junit', version: '4.+'
+	    testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
+	}
+	
+	test {
+	    systemProperties 'property': 'value'
+	}
+}
