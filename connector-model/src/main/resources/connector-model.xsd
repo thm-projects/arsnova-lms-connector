@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema targetNamespace="http://arsnova.thm.de/schema/model"
+<schema targetNamespace="http://arsnova.thm.de/connector/model"
 	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
-	xmlns:tns="http://arsnova.thm.de/schema/model">
+	xmlns:tns="http://arsnova.thm.de/connector/model">
 
 	<element name="courses">
 		<complexType>

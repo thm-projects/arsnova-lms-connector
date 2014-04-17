@@ -22,7 +22,7 @@ public class SecurityTestConfig extends WebSecurityConfigurerAdapter {
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("admin")
 		.password("secret").authorities("ADMIN")
-		.and().withUser("user").password("secret");
+		.and().withUser("user").password("secret").authorities("USER");
 	}
 
 	@Bean
