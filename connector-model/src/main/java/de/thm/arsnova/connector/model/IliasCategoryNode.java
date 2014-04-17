@@ -16,8 +16,8 @@ public class IliasCategoryNode {
 	private int questionCount;
 	private List<IliasCategoryNode> children;
 
-	public IliasCategoryNode(int child, int parent, String title, String type, int questionCount) {
-		this.id = child;
+	public IliasCategoryNode(int id, int parent, String title, String type, int questionCount) {
+		this.id = id;
 		this.parent = parent;
 		this.title = title;
 		this.type = type;

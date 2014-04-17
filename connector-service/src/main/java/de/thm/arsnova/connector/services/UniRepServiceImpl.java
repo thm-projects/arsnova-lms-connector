@@ -14,8 +14,6 @@ import de.thm.arsnova.connector.model.IliasQuestion;
 @Service
 public class UniRepServiceImpl implements UniRepService {
 
-	private final String[] neededTypes = {"cat", "qpl", "tst"};
-
 	@Autowired(required = false)
 	private UniRepDao uniRepDao;
 
@@ -29,7 +27,7 @@ public class UniRepServiceImpl implements UniRepService {
 		List<IliasCategoryNode> result = uniRepDao.getTreeObjects(refId);
 		while(removeBranchesWithoutQuestionPools(result));
 
-		return result;
+		return this.removeNodesNotMarked(result);
 	}
 
 	@Override
@@ -52,6 +50,8 @@ public class UniRepServiceImpl implements UniRepService {
 		while (it.hasNext()) {
 			IliasCategoryNode node = it.next();
 
+			if (node == null) continue;
+
 			if (node.getQuestionCount() == 0 && (node.getChildren() == null || node.getChildren().size() == 0)) {
 				it.remove();
 				hasRemovedNodes = true;
@@ -63,5 +63,26 @@ public class UniRepServiceImpl implements UniRepService {
 
 		return hasRemovedNodes;
 
+	}
+
+	private List<IliasCategoryNode> removeNodesNotMarked(List<IliasCategoryNode> nodes) {
+		List<String> disabledRefIds = uniRepDao.getReferenceIdsWithMetaDataFlagDisabled("UniRepApp");
+
+		if (nodes == null)return null;
+
+		Iterator<IliasCategoryNode> it = nodes.iterator();
+
+		while (it.hasNext()) {
+			IliasCategoryNode node = it.next();
+
+			if (disabledRefIds.contains(String.valueOf(node.getId()))) {
+				it.remove();
+				continue;
+			}
+
+			removeNodesNotMarked(node.getChildren());
+		}
+
+		return nodes;
 	}
 }

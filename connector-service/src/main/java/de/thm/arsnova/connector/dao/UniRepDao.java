@@ -19,4 +19,6 @@ public interface UniRepDao {
 	 * @return A list of questions containing the question, possible answers and feedback.
 	 */
 	List<IliasQuestion> getQuestion(int refId);
+
+	List<String> getReferenceIdsWithMetaDataFlagDisabled(String metaDataTitle);
 }

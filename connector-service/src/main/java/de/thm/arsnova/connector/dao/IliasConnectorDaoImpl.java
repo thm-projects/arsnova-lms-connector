@@ -28,7 +28,6 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		final Map<Integer, Integer> questionCount = this.getQuestionCount(refId);
-
 		List<IliasCategoryNode> nodeList = jdbcTemplate.query(
 				"SELECT t2.*, d.type, d.title FROM tree AS t1"
 						+ " JOIN tree AS t2 ON t2.lft BETWEEN t1.lft AND t1.rgt AND t1.tree = t2.tree"
@@ -46,6 +45,7 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 										resultSet.getString("type"),
 										questionCount.get(resultSet.getInt("child")) == null ? 0 : questionCount.get(resultSet.getInt("child"))
 										);
+
 							}
 						}
 				);
@@ -155,7 +155,7 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		List<String> result = jdbcTemplate.query(
-				"SELECT field_id FROM adv_md_record JOIN adv_mdf_definition ON (record_id = record_id) WHERE adv_md_record.title = ?",
+				"SELECT field_id, rec.title FROM adv_md_record AS rec JOIN adv_mdf_definition AS def ON (rec.record_id = def.record_id) WHERE rec.title = ?",
 				new String[] {metaDataTitle},
 				new RowMapper<String>() {
 					@Override
@@ -170,5 +170,21 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 		}
 
 		return null;
+	}
+
+	@Override
+	public List<String> getReferenceIdsWithMetaDataFlagDisabled(String metaDataTitle) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+		return jdbcTemplate.query(
+				"SELECT value, ref_id FROM adv_md_values AS v JOIN object_reference AS r ON (v.obj_id = r.obj_id) WHERE field_id = ? AND value = 'no';",
+				new String[] {getMetaDataFieldId(metaDataTitle)},
+				new RowMapper<String>() {
+					@Override
+					public String mapRow(ResultSet resultSet, int row) throws SQLException {
+						return resultSet.getString("ref_id");
+					}
+				}
+				);
 	}
 }
