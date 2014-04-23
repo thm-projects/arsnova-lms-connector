@@ -1,7 +1,9 @@
 package de.thm.arsnova.connector.services;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,16 @@ public class UniRepServiceImpl implements UniRepService {
 	@Autowired(required = false)
 	private UniRepDao uniRepDao;
 
+	private final Map<Integer, List<IliasCategoryNode>> cache = new HashMap<>();
+
 	@Override
 	public List<IliasCategoryNode> getTreeObjects(int refId)
 			throws ServiceUnavailableException {
+
+		if (cache.containsKey(refId)) {
+			return cache.get(refId);
+		}
+
 		if (uniRepDao == null) {
 			throw new ServiceUnavailableException();
 		}
@@ -27,7 +36,11 @@ public class UniRepServiceImpl implements UniRepService {
 		List<IliasCategoryNode> result = uniRepDao.getTreeObjects(refId);
 		while(removeBranchesWithoutQuestionPools(result));
 
-		return this.removeNodesNotMarked(result);
+		result = this.removeNodesNotMarked(result);
+
+		cache.put(refId, result);
+
+		return result;
 	}
 
 	@Override
@@ -80,7 +93,9 @@ public class UniRepServiceImpl implements UniRepService {
 				continue;
 			}
 
-			removeNodesNotMarked(node.getChildren());
+			if ("cat".equals(node.getType()) || "root".equals(node.getType())) {
+				removeNodesNotMarked(node.getChildren());
+			}
 		}
 
 		return nodes;

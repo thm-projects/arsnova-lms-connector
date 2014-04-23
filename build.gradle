@@ -2,8 +2,6 @@ subprojects {
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
 	
-	apply plugin: 'sonar-runner'
-
 	sourceCompatibility = 1.7
 	version = '0.50.0-SNAPSHOT'
 	
@@ -27,13 +25,5 @@ subprojects {
 	
 	test {
 	    systemProperties 'property': 'value'
-	}
-
-	subprojects {
-		sonarRunner {
-			sonarProperties {
-				property 'sonar.sourceEncoding', 'UTF-8'
-			}
-		}
 	}
 }
