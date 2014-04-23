@@ -31,6 +31,6 @@ AbstractAnnotationConfigDispatcherServletInitializer {
 		characterEncodingFilter.setEncoding("UTF-8");
 
 		CorsFilter corsFilter = new CorsFilter();
-		return new Filter[] {characterEncodingFilter, corsFilter };
+		return new Filter[] {characterEncodingFilter, corsFilter};
 	}
 }
