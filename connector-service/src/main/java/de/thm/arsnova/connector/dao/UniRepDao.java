@@ -1,6 +1,7 @@
 package de.thm.arsnova.connector.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import de.thm.arsnova.connector.model.IliasCategoryNode;
 import de.thm.arsnova.connector.model.IliasQuestion;
@@ -20,5 +21,5 @@ public interface UniRepDao {
 	 */
 	List<IliasQuestion> getQuestion(int refId);
 
-	List<String> getReferenceIdsWithMetaDataFlagDisabled(String metaDataTitle);
+	Map<String, String> getReferenceIdsWithMetaDataFlag(String metaDataTitle);
 }

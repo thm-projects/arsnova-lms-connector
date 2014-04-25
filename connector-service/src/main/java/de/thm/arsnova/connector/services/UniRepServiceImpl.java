@@ -2,6 +2,7 @@ package de.thm.arsnova.connector.services;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class UniRepServiceImpl implements UniRepService {
 		List<IliasCategoryNode> result = uniRepDao.getTreeObjects(refId);
 		while(removeBranchesWithoutQuestionPools(result));
 
-		return this.removeNodesNotMarked(result);
+		return this.removeNotMarkedNodes(result, false);
 	}
 
 	@Override
@@ -65,9 +66,9 @@ public class UniRepServiceImpl implements UniRepService {
 
 	}
 
-	private List<IliasCategoryNode> removeNodesNotMarked(List<IliasCategoryNode> nodes) {
-		List<String> disabledRefIds = uniRepDao.getReferenceIdsWithMetaDataFlagDisabled("UniRepApp");
-
+	private List<IliasCategoryNode> removeNotMarkedNodes(List<IliasCategoryNode> nodes, boolean isParentMarked) {
+		Map<String, String> metaTagRefIds = uniRepDao.getReferenceIdsWithMetaDataFlag("UniRepApp");
+		
 		if (nodes == null)return null;
 
 		Iterator<IliasCategoryNode> it = nodes.iterator();
@@ -75,13 +76,27 @@ public class UniRepServiceImpl implements UniRepService {
 		while (it.hasNext()) {
 			IliasCategoryNode node = it.next();
 
-			if (disabledRefIds.contains(String.valueOf(node.getId()))) {
-				it.remove();
-				continue;
+			if (metaTagRefIds.containsKey(String.valueOf(node.getId()))) {
+				if("no".equals(metaTagRefIds.get(String.valueOf(node.getId())))) {
+					it.remove();
+					continue;
+				}
 			}
 
-			if ("cat".equals(node.getType()) || "root".equals(node.getType())) {
-				removeNodesNotMarked(node.getChildren());
+			else if("yes".equals(metaTagRefIds.get(String.valueOf(node.getId())))) {
+				removeNotMarkedNodes(node.getChildren(), true);
+			}
+			
+			else {
+				if(isParentMarked) {
+					removeNotMarkedNodes(node.getChildren(), true);
+				}
+				else {
+					removeNotMarkedNodes(node.getChildren(), false);
+					if(node.getChildren() == null || node.getChildren().size() == 0) {
+						it.remove();
+					}
+				}
 			}
 		}
 
