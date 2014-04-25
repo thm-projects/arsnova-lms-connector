@@ -175,20 +175,26 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 
 		return null;
 	}
-
+	
 	@Override
-	public List<String> getReferenceIdsWithMetaDataFlagDisabled(String metaDataTitle) {
+	public Map<String, String> getReferenceIdsWithMetaDataFlag(String metaDataTitle) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		
+		final Map<String, String> result = new HashMap<String, String>();
 
-		return jdbcTemplate.query(
-				"SELECT value, ref_id FROM adv_md_values AS v JOIN object_reference AS r ON (v.obj_id = r.obj_id) WHERE field_id = ? AND value = 'no';",
+		jdbcTemplate.query(
+				"SELECT value, ref_id FROM adv_md_values AS v JOIN object_reference AS r ON (v.obj_id = r.obj_id) WHERE field_id = ? AND value = 'yes' OR value = 'no'",
 				new String[] {getMetaDataFieldId(metaDataTitle)},
 				new RowMapper<String>() {
 					@Override
 					public String mapRow(ResultSet resultSet, int row) throws SQLException {
-						return resultSet.getString("ref_id");
+						return result.put(
+								resultSet.getString("ref_id"),
+								resultSet.getString("value"));
 					}
 				}
 				);
+
+		return result;
 	}
 }
