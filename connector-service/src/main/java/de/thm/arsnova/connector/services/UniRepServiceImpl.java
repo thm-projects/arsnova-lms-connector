@@ -81,10 +81,10 @@ public class UniRepServiceImpl implements UniRepService {
 					it.remove();
 					continue;
 				}
-			}
-
-			else if("yes".equals(metaTagRefIds.get(String.valueOf(node.getId())))) {
-				removeNotMarkedNodes(node.getChildren(), true);
+				
+				else if("yes".equals(metaTagRefIds.get(String.valueOf(node.getId())))) {
+					removeNotMarkedNodes(node.getChildren(), true);
+				}
 			}
 			
 			else {
