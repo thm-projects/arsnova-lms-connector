@@ -35,6 +35,7 @@ subprojects {
 				}
 				url "https://maven.mni.thm.de/content/repositories/snapshots/"
 			}
+			mavenLocal()
 		}
 	}
 }
