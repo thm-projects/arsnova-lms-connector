@@ -1,29 +1,32 @@
 apply plugin: 'jaxb'
 
 jar {
-    manifest {
-        attributes 'Implementation-Title': 'Connector-Model', 'Implementation-Version': version
-    }
-}
-
-dependencies {
-	jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.4-1'
-}
-
-buildscript {
-	repositories {
-    	mavenCentral()
-  	}
-	
-	dependencies {
-    	classpath 'no.entitas.gradle.jaxb:gradle-jaxb-plugin:2.0'
+	manifest {
+		attributes 'Implementation-Title': 'Connector-Model', 'Implementation-Version': version
 	}
 }
 
+dependencies { jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.4-1' }
+
+buildscript {
+	repositories { mavenCentral() }
+
+	dependencies { classpath 'no.entitas.gradle.jaxb:gradle-jaxb-plugin:2.0' }
+}
+
 sourceSets {
-    main {
-        jaxb {
-            srcDir 'src/main/resources/'
-        }
-    }
+	main {
+		jaxb { srcDir 'src/main/resources/' }
+	}
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			groupId 'de.thm.arsnova.connector'
+			artifactId 'connector-model'
+			version version
+			from components.java
+		}
+	}
 }
