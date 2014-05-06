@@ -9,9 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.client.HttpClientErrorException;
 
-import de.thm.arsnova.connector.client.ConnectorClientImpl;
 import de.thm.arsnova.connector.dao.ConnectorDao;
-import de.thm.arsnova.connector.model.Membership;
 
 public class RepoPermissionEvaluator implements PermissionEvaluator {
 
@@ -52,14 +50,6 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 
 			case "uniRepQuestion":
 			case "uniRepTree":
-				// Get membership from StudIP
-				ConnectorClientImpl client = new ConnectorClientImpl();
-				client.setServiceLocation(url);
-				client.setUsername(username);
-				client.setPassword(password);
-
-				Membership membership = client.getMembership(ud.getUsername(), "undefined");
-
 				if ("read".equals(permission) && ud.getUsername().equals(targetId) ) {
 					return true;
 				}
