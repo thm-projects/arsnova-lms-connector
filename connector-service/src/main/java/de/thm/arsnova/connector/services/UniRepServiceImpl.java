@@ -59,7 +59,9 @@ public class UniRepServiceImpl implements UniRepService {
 				continue;
 			}
 
-			removeBranchesWithoutQuestionPools(node.getChildren());
+			if (removeBranchesWithoutQuestionPools(node.getChildren())) {
+				hasRemovedNodes = true;
+			}
 		}
 
 		return hasRemovedNodes;
@@ -68,7 +70,7 @@ public class UniRepServiceImpl implements UniRepService {
 
 	private List<IliasCategoryNode> removeNotMarkedNodes(List<IliasCategoryNode> nodes, boolean isParentMarked) {
 		Map<String, String> metaTagRefIds = uniRepDao.getReferenceIdsWithMetaDataFlag("UniRepApp");
-		
+
 		if (nodes == null)return null;
 
 		Iterator<IliasCategoryNode> it = nodes.iterator();
@@ -81,12 +83,12 @@ public class UniRepServiceImpl implements UniRepService {
 					it.remove();
 					continue;
 				}
-				
+
 				else if("yes".equals(metaTagRefIds.get(String.valueOf(node.getId())))) {
 					removeNotMarkedNodes(node.getChildren(), true);
 				}
 			}
-			
+
 			else {
 				if(isParentMarked) {
 					removeNotMarkedNodes(node.getChildren(), true);

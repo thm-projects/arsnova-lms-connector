@@ -13,12 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import de.thm.arsnova.connector.dao.UniRepDao.Filter;
+import de.thm.arsnova.connector.dao.UniRepDao.Filter.Type;
 import de.thm.arsnova.connector.model.IliasAnswer;
 import de.thm.arsnova.connector.model.IliasCategoryNode;
 import de.thm.arsnova.connector.model.IliasFeedback;
 import de.thm.arsnova.connector.model.IliasQuestion;
 
-
+@Filter(Type.TEST)
 public class IliasConnectorDaoImpl implements UniRepDao {
 
 	@Autowired
