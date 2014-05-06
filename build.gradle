@@ -4,7 +4,7 @@ subprojects {
 	apply plugin: 'maven-publish'
 
 	sourceCompatibility = 1.7
-	version = '0.50.0-SNAPSHOT'
+	version = '0.51.0-SNAPSHOT'
 
 	springVersion = '4.0.+'
 	springSecurityVersion = '3.2.+'
@@ -25,25 +25,17 @@ subprojects {
 	}
 
 	test { systemProperties 'property': 'value' }
-	
+
 	publishing {
 		repositories {
 			maven {
 				credentials {
-					username getUsername()
-					password getPassword()
+					username project.hasProperty('mavenUsername') ?  mavenUsername : ''
+					password project.hasProperty('mavenPassword') ?  mavenPassword : ''
 				}
-				url "https://maven.mni.thm.de/content/repositories/snapshots/"
+				url project.hasProperty('mavenUrl') ? mavenUrl : "http://maven.mni.thm.de/content/repositories/snapshots/"
 			}
 			mavenLocal()
 		}
 	}
-}
-
-def getUsername() {
-	return mavenUsername == null ? '' : mavenUsername;
-}
-
-def getPassword() {
-	return mavenPassword == null ? '' : mavenPassword;
 }
