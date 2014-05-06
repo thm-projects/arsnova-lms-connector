@@ -6,8 +6,10 @@ subprojects {
 	sourceCompatibility = 1.7
 	version = '0.51.1-SNAPSHOT'
 
-	springVersion = '4.0.4.RELEASE'
-	springSecurityVersion = '3.2.3.RELEASE'
+	ext {
+		springVersion = '4.0.4.RELEASE'
+		springSecurityVersion = '3.2.3.RELEASE'
+	}
 
 	repositories {
 		mavenCentral()
