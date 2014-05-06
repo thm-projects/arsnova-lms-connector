@@ -28,12 +28,26 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 	public List<IliasCategoryNode> getTreeObjects(int refId) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
+		String typefilter = "";
+
+		if (this.getClass().getAnnotation(UniRepDao.Filter.class) != null) {
+			switch (this.getClass().getAnnotation(UniRepDao.Filter.class).value()) {
+			case QUESTION_POOL:
+				typefilter = " AND type <> 'tst'";
+				break;
+			case TEST:
+				typefilter = " AND type <> 'qpl'";
+				break;
+			}
+		}
+
 		final Map<Integer, Integer> questionCount = this.getQuestionCount(refId);
 		List<IliasCategoryNode> nodeList = jdbcTemplate.query(
 				"SELECT t2.*, d.type, d.title FROM tree AS t1"
 						+ " JOIN tree AS t2 ON t2.lft BETWEEN t1.lft AND t1.rgt AND t1.tree = t2.tree"
 						+ " JOIN object_reference AS r ON r.ref_id=t2.child "
 						+ " JOIN object_data as d ON d.obj_id=r.obj_id"
+						+ typefilter
 						+ " WHERE t1.child=? ORDER BY parent;",
 						new String[] {String.valueOf(refId)},
 						new RowMapper<IliasCategoryNode>() {
@@ -175,11 +189,11 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 
 		return null;
 	}
-	
+
 	@Override
 	public Map<String, String> getReferenceIdsWithMetaDataFlag(String metaDataTitle) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		
+
 		final Map<String, String> result = new HashMap<String, String>();
 
 		jdbcTemplate.query(

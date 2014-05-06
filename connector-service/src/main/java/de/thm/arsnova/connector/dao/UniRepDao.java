@@ -1,5 +1,9 @@
 package de.thm.arsnova.connector.dao;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.List;
 import java.util.Map;
 
@@ -22,4 +26,16 @@ public interface UniRepDao {
 	List<IliasQuestion> getQuestion(int refId);
 
 	Map<String, String> getReferenceIdsWithMetaDataFlag(String metaDataTitle);
+
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.TYPE)
+	public @interface Filter {
+
+		public enum Type {
+			QUESTION_POOL,
+			TEST
+		}
+
+		public Type value();
+	}
 }
