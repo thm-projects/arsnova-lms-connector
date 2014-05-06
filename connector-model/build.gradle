@@ -9,7 +9,10 @@ jar {
 dependencies { jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.4-1' }
 
 buildscript {
-	repositories { mavenCentral() }
+	repositories {
+		mavenCentral()
+		mavenLocal()
+	}
 
 	dependencies { classpath 'no.entitas.gradle.jaxb:gradle-jaxb-plugin:2.0' }
 }
