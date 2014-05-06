@@ -30,12 +30,20 @@ subprojects {
 		repositories {
 			maven {
 				credentials {
-					username mavenUsername
-					password mavenPassword
+					username getUsername()
+					password getPassword()
 				}
 				url "https://maven.mni.thm.de/content/repositories/snapshots/"
 			}
 			mavenLocal()
 		}
 	}
+}
+
+def getUsername() {
+	return mavenUsername == null ? '' : mavenUsername;
+}
+
+def getPassword() {
+	return mavenPassword == null ? '' : mavenPassword;
 }
