@@ -25,17 +25,33 @@ public interface UniRepDao {
 	 */
 	List<IliasQuestion> getQuestion(int refId);
 
+	/** Returns a map containing reference ids and the value of the meta data
+	 *
+	 * @param metaDataTitle The meta data to be returned
+	 * @return A map with reference id - meta data value pairs
+	 */
 	Map<String, String> getReferenceIdsWithMetaDataFlag(String metaDataTitle);
 
+	/** Marks classes implementing {@link UniRepDao} to filter results
+	 *
+	 * @author Paul-Christian Volkmer
+	 * @since 0.50.0
+	 */
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface Filter {
 
+		/** Usable values for {@link Filter}
+		 */
 		public enum Type {
+			/** Filter to limit result set to question pools */
 			QUESTION_POOL,
+			/** Filter to limit result set to tests */
 			TEST
 		}
 
+		/** Declares wich kind of tree objects should be returned
+		 */
 		public Type value();
 	}
 }
