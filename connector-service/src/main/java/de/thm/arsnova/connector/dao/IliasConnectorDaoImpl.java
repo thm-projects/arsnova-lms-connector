@@ -109,39 +109,39 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 				}
 				);
 	}
-	
+
 	@Override
 	public List<IliasQuestion> getRandomTestQuestions(int refId) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		
+
 		List<IliasQuestion> iliasQuestions = jdbcTemplate.query(
-				"SELECT * FROM qpl_questions JOIN object_reference ON (obj_fi = obj_id) WHERE question_id IN " 
-					+ "(SELECT qst_fi FROM tree AS t1 "
-					+ "JOIN tree AS t2 ON t2.lft BETWEEN t1.lft AND t1.rgt AND t1.tree = t2.tree "
-					+ "JOIN object_reference AS r ON r.ref_id=t2.child "
-					+ "JOIN object_data as d ON d.obj_id=r.obj_id "
-					+ "JOIN tst_tests as tests ON tests.obj_fi=r.obj_id "
-					+ "JOIN tst_rnd_cpy as rnd ON rnd.tst_fi=tests.test_id "
-					+ "WHERE t1.child=?);",
-					new String[] {String.valueOf(refId)},
-					new RowMapper<IliasQuestion>() {
-						@Override
-						public IliasQuestion mapRow(ResultSet resultSet, int row) throws SQLException {
-							IliasQuestion q = new IliasQuestion();
-							q.setDescription(resultSet.getString("description"));
-							q.setId(resultSet.getInt("question_id"));
-							q.setPoints(resultSet.getInt("points"));
-							q.setText(resultSet.getString("question_text"));
-							q.setTimestamp(resultSet.getInt("tstamp"));
-							q.setTitle(resultSet.getString("title"));
-							q.setType(resultSet.getInt("question_type_fi"));
-							q.setAnswers(getAnswers(resultSet.getInt("question_id")));
-							q.setFeedback(getFeedback(resultSet.getInt("question_id")));
-							return q;
+				"SELECT * FROM qpl_questions JOIN object_reference ON (obj_fi = obj_id) WHERE question_id IN "
+						+ "(SELECT qst_fi FROM tree AS t1 "
+						+ "JOIN tree AS t2 ON t2.lft BETWEEN t1.lft AND t1.rgt AND t1.tree = t2.tree "
+						+ "JOIN object_reference AS r ON r.ref_id=t2.child "
+						+ "JOIN object_data as d ON d.obj_id=r.obj_id "
+						+ "JOIN tst_tests as tests ON tests.obj_fi=r.obj_id "
+						+ "JOIN tst_rnd_cpy as rnd ON rnd.tst_fi=tests.test_id "
+						+ "WHERE t1.child=?);",
+						new String[] {String.valueOf(refId)},
+						new RowMapper<IliasQuestion>() {
+							@Override
+							public IliasQuestion mapRow(ResultSet resultSet, int row) throws SQLException {
+								IliasQuestion q = new IliasQuestion();
+								q.setDescription(resultSet.getString("description"));
+								q.setId(resultSet.getInt("question_id"));
+								q.setPoints(resultSet.getInt("points"));
+								q.setText(resultSet.getString("question_text"));
+								q.setTimestamp(resultSet.getInt("tstamp"));
+								q.setTitle(resultSet.getString("title"));
+								q.setType(resultSet.getInt("question_type_fi"));
+								q.setAnswers(getAnswers(resultSet.getInt("question_id")));
+								q.setFeedback(getFeedback(resultSet.getInt("question_id")));
+								return q;
+							}
 						}
-					}
-					);
-		
+				);
+
 		return iliasQuestions;
 	}
 
@@ -206,6 +206,35 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 						}
 				);
 		return false;
+	}
+
+	@Override
+	public int getQuestionAmountPerTest(int refId) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+		List<Integer> list = jdbcTemplate.query(
+				"SELECT quest_amount_per_test FROM tree AS t1 "
+						+ "JOIN tree AS t2 ON t2.lft BETWEEN t1.lft AND t1.rgt AND t1.tree = t2.tree "
+						+ "JOIN object_reference AS r ON r.ref_id=t2.child "
+						+ "JOIN object_data as d ON d.obj_id=r.obj_id "
+						+ "JOIN tst_tests as tests ON tests.obj_fi=r.obj_id "
+						+ "JOIN tst_rnd_quest_set_cfg AS rq ON rq.test_fi=tests.test_id "
+						+ "WHERE t1.child = ?",
+						new String[] {String.valueOf(refId)},
+						new RowMapper<Integer>() {
+							@Override
+							public Integer mapRow(ResultSet resultSet, int row)
+									throws SQLException {
+								return resultSet.getInt("quest_amount_per_test");
+							}
+						}
+				);
+
+		if (list.size() == 1) {
+			return list.get(0);
+		}
+
+		return 0;
 	}
 
 	private List<IliasAnswer> getAnswers(int questionId) {

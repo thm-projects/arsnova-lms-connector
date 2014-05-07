@@ -39,13 +39,17 @@ public class UniRepController {
 
 	@RequestMapping("/question/{refId}")
 	@ResponseBody
-	public HttpEntity<List<IliasQuestion>> getIliasQuestion(@PathVariable int refId) {
+	public HttpEntity<List<IliasQuestion>> getIliasQuestions(@PathVariable int refId) {
 		try {
-			return new ResponseEntity<List<IliasQuestion>>(
+			/*return new ResponseEntity<List<IliasQuestion>>(
 					service.getQuestions(refId),
 					HttpStatus.OK
+					);*/
+			return new ResponseEntity<List<IliasQuestion>>(
+					service.getRandomQuestions(refId),
+					HttpStatus.OK
 					);
-		} catch (ServiceUnavailableException e) {
+		} catch (Exception e) {
 			return new ResponseEntity<List<IliasQuestion>>(new ArrayList<IliasQuestion>(), HttpStatus.SERVICE_UNAVAILABLE);
 		}
 	}

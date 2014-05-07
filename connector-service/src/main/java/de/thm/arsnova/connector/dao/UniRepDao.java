@@ -46,6 +46,13 @@ public interface UniRepDao {
 	 */
 	boolean isRandomQuestionSet(int refId);
 
+	/** Returns amount of questions in referenced test
+	 *
+	 * @param refId The reference id of the test to be checked
+	 * @return Number of amounts per test
+	 */
+	int getQuestionAmountPerTest(int refId);
+
 	/** Marks classes implementing {@link UniRepDao} to filter results
 	 *
 	 * @author Paul-Christian Volkmer

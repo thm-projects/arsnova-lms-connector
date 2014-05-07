@@ -1,8 +1,11 @@
 package de.thm.arsnova.connector.services;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,24 @@ public class UniRepServiceImpl implements UniRepService {
 			throw new ServiceUnavailableException();
 		}
 		return uniRepDao.getQuestion(refId);
+	}
+
+	@Override
+	public List<IliasQuestion> getRandomQuestions(int refId) {
+		int amountOfQuestions = uniRepDao.getQuestionAmountPerTest(refId);
+		List<IliasQuestion> allQuestions = uniRepDao.getRandomTestQuestions(refId);
+
+		Set<Integer> randomIds = new HashSet<>();
+		while (randomIds.size() < amountOfQuestions) {
+			randomIds.add((int)Math.floor(Math.random() * allQuestions.size()));
+		}
+
+		List<IliasQuestion> result = new ArrayList<>();
+		for (int id : randomIds) {
+			result.add(allQuestions.get(id));
+		}
+
+		return result;
 	}
 
 	private boolean removeBranchesWithoutQuestionPools( List<IliasCategoryNode> nodes ) throws ServiceUnavailableException {
