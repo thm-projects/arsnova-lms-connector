@@ -1,6 +1,10 @@
 package de.thm.arsnova.connector.client;
 
+import java.util.List;
+
 import de.thm.arsnova.connector.model.Courses;
+import de.thm.arsnova.connector.model.IliasCategoryNode;
+import de.thm.arsnova.connector.model.IliasQuestion;
 import de.thm.arsnova.connector.model.Membership;
 
 /**
@@ -39,6 +43,7 @@ public interface ConnectorClient {
 	 * @return The state of membership
 	 * @deprecated
 	 */
+	@Deprecated
 	Membership isMember(String username, String courseid);
 
 	/** This service method returns the state of membership
@@ -55,4 +60,8 @@ public interface ConnectorClient {
 	 * @return The list of courses
 	 */
 	Courses getCourses(String username);
+
+	List<IliasCategoryNode> getTreeObjects(int refId);
+
+	List<IliasQuestion> getQuestions(int refId);
 }
