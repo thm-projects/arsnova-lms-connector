@@ -32,6 +32,13 @@ public interface UniRepDao {
 	 */
 	Map<String, String> getReferenceIdsWithMetaDataFlag(String metaDataTitle);
 
+	/** Returns TRUE if referenced repository object is a test with random question selection
+	 *
+	 * @param refId The reference id of the test to be checked
+	 * @return TRUE if this object is a test with random question selection
+	 */
+	boolean isRandomQuestionSet(int refId);
+
 	/** Marks classes implementing {@link UniRepDao} to filter results
 	 *
 	 * @author Paul-Christian Volkmer
