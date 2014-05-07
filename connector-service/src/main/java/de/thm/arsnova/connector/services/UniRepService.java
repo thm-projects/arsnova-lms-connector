@@ -14,14 +14,14 @@ import de.thm.arsnova.connector.model.IliasQuestion;
  * @since 0.20.0
  */
 public interface UniRepService {
-	/** Returns a flat dump of the Ilias repository tree.
+	/** Returns a dump of the Ilias repository tree.
 	 *
 	 * @param refId The root nodes ID as reference ID
 	 * @return A list of category nodes
 	 * @throws ServiceUnavailableException
 	 */
 	@PostAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasPermission(#refId,'uniRepTree','read'))")
-	List<IliasCategoryNode> getTreeObjects(int refId) throws ServiceUnavailableException;
+	IliasCategoryNode getTreeObjects(int refId) throws ServiceUnavailableException;
 
 	/** Returns a list of questions identified by the parent question pool reference ID
 	 *

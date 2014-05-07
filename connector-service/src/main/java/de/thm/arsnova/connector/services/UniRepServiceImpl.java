@@ -19,7 +19,7 @@ public class UniRepServiceImpl implements UniRepService {
 	private UniRepDao uniRepDao;
 
 	@Override
-	public List<IliasCategoryNode> getTreeObjects(int refId)
+	public IliasCategoryNode getTreeObjects(int refId)
 			throws ServiceUnavailableException {
 		if (uniRepDao == null) {
 			throw new ServiceUnavailableException();
@@ -28,7 +28,12 @@ public class UniRepServiceImpl implements UniRepService {
 		List<IliasCategoryNode> result = uniRepDao.getTreeObjects(refId);
 		while(removeBranchesWithoutQuestionPools(result));
 
-		return this.removeNotMarkedNodes(result, false);
+		result = this.removeNotMarkedNodes(result, false);
+
+		if (result.size() == 1) {
+			return result.get(0);
+		}
+		throw new ServiceUnavailableException();
 	}
 
 	@Override

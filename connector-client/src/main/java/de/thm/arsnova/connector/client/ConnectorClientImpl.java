@@ -1,6 +1,7 @@
 package de.thm.arsnova.connector.client;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
@@ -21,9 +22,10 @@ public class ConnectorClientImpl implements ConnectorClient {
 
 	private static final String ISMEMBER_URI = "/{username}/membership/{courseid}";
 	private static final String GETCOURSES_URI = "/{username}/courses";
-	private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 	private static final String ILIAS_TREEOBJECTS_URI = "/ilias/{refid}";
 	private static final String ILIAS_QUESTIONS_URI = "/ilias/question/{refid}";
+
+	private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
 	private String uriHostPart;
 	private String httpUsername;
@@ -75,31 +77,29 @@ public class ConnectorClientImpl implements ConnectorClient {
 	}
 
 	@Override
-	public List<IliasCategoryNode> getTreeObjects(int refId) {
-		Class<List<IliasCategoryNode>> clazz = null;
-
-		ResponseEntity<List<IliasCategoryNode>> response = restTemplate.exchange(
+	public IliasCategoryNode getTreeObjects(int refId) {
+		ResponseEntity<IliasCategoryNode> response = restTemplate.exchange(
 				buildRequestUri(ILIAS_TREEOBJECTS_URI),
 				HttpMethod.GET,
 				createNodeListEntity(),
-				clazz,
+				IliasCategoryNode.class,
 				refId
 				);
+
 		return response.getBody();
 	}
 
 	@Override
 	public List<IliasQuestion> getQuestions(int refId) {
-		Class<List<IliasQuestion>> clazz = null;
-
-		ResponseEntity<List<IliasQuestion>> response = restTemplate.exchange(
+		ResponseEntity<IliasQuestion[]> response = restTemplate.exchange(
 				buildRequestUri(ILIAS_QUESTIONS_URI),
 				HttpMethod.GET,
 				createQuestionListEntity(),
-				clazz,
+				IliasQuestion[].class,
 				refId
 				);
-		return response.getBody();
+
+		return Arrays.asList(response.getBody());
 	}
 
 	private HttpEntity<Membership> createMembershipEntity() {

@@ -28,12 +28,12 @@ public class UniRepController {
 
 	@RequestMapping("/{refId}")
 	@ResponseBody
-	public HttpEntity<List<IliasCategoryNode>> getIliasTreeObjects(@PathVariable int refId) {
+	public HttpEntity<IliasCategoryNode> getIliasTreeObjects(@PathVariable int refId) {
 		try {
-			List<IliasCategoryNode> nodeList = service.getTreeObjects(refId);
-			return new ResponseEntity<List<IliasCategoryNode>>(nodeList, HttpStatus.OK);
+			IliasCategoryNode node = service.getTreeObjects(refId);
+			return new ResponseEntity<IliasCategoryNode>(node, HttpStatus.OK);
 		} catch ( ServiceUnavailableException e ) {
-			return new ResponseEntity<List<IliasCategoryNode>>(new ArrayList<IliasCategoryNode>(), HttpStatus.SERVICE_UNAVAILABLE);
+			return new ResponseEntity<IliasCategoryNode>(new IliasCategoryNode(), HttpStatus.SERVICE_UNAVAILABLE);
 		}
 	}
 

@@ -61,7 +61,17 @@ public interface ConnectorClient {
 	 */
 	Courses getCourses(String username);
 
-	List<IliasCategoryNode> getTreeObjects(int refId);
+	/** Returns a dump of the Ilias repository tree.
+	 *
+	 * @param refId The root nodes ID as reference ID
+	 * @return A list of category nodes
+	 */
+	IliasCategoryNode getTreeObjects(int refId);
 
+	/** Returns a list of questions identified by the parent question pool reference ID
+	 *
+	 * @param refId The reference id of the question pool containing this question
+	 * @return A list of questions containing the question, possible answers and feedback.
+	 */
 	List<IliasQuestion> getQuestions(int refId);
 }

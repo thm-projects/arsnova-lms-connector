@@ -37,7 +37,7 @@ public class UniRepControllerTest {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = standaloneSetup(controller).build();
 
-		when(service.getTreeObjects(anyInt())).thenReturn(new ArrayList<IliasCategoryNode>());
+		when(service.getTreeObjects(anyInt())).thenReturn(new IliasCategoryNode());
 		when(service.getQuestions(anyInt())).thenReturn(new ArrayList<IliasQuestion>());
 	}
 
