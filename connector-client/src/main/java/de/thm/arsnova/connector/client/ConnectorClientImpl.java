@@ -102,6 +102,20 @@ public class ConnectorClientImpl implements ConnectorClient {
 		return Arrays.asList(response.getBody());
 	}
 
+	@Override
+	public List<IliasQuestion> getQuestions(int refId, IliasQuestionSource source) {
+		ResponseEntity<IliasQuestion[]> response = restTemplate.exchange(
+				buildRequestUri(ILIAS_QUESTIONS_URI + "?source={source}"),
+				HttpMethod.GET,
+				createQuestionListEntity(),
+				IliasQuestion[].class,
+				refId,
+				source
+				);
+
+		return Arrays.asList(response.getBody());
+	}
+
 	private HttpEntity<Membership> createMembershipEntity() {
 		return new HttpEntity<Membership>(getAuthorizationHeader());
 	}

@@ -27,7 +27,7 @@ public class UniRepController {
 	@Autowired(required = false)
 	private UniRepService service;
 
-	public enum QuestionSelection {
+	public enum QuestionSource {
 		RANDOM_TEST,
 		QUESTION_POOL
 	}
@@ -47,10 +47,10 @@ public class UniRepController {
 	@ResponseBody
 	public HttpEntity<List<IliasQuestion>> getIliasQuestions(
 			@PathVariable int refId,
-			@RequestParam(value = "select", defaultValue = "RANDOM_TEST") QuestionSelection selection
+			@RequestParam(value = "source", defaultValue = "RANDOM_TEST") QuestionSource source
 			) {
 		try {
-			switch (selection) {
+			switch (source) {
 			case QUESTION_POOL:
 				return new ResponseEntity<List<IliasQuestion>>(
 						service.getQuestions(refId),

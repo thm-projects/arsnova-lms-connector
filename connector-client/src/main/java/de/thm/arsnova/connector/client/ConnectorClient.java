@@ -36,6 +36,12 @@ import de.thm.arsnova.connector.model.Membership;
  *
  */
 public interface ConnectorClient {
+
+	public enum IliasQuestionSource {
+		RANDOM_TEST,
+		QUESTION_POOL
+	}
+
 	/** This service method returns the state of membership
 	 *
 	 * @param username The users name as used in target platform
@@ -70,8 +76,18 @@ public interface ConnectorClient {
 
 	/** Returns a list of questions identified by the parent question pool reference ID
 	 *
+	 * The question source defaults to RANDOM_SOURCE
+	 *
 	 * @param refId The reference id of the question pool containing this question
 	 * @return A list of questions containing the question, possible answers and feedback.
 	 */
 	List<IliasQuestion> getQuestions(int refId);
+
+	/** Returns a list of questions identified by the parent question pool reference ID
+	 *
+	 * @param refId The reference id of the question pool containing this question
+	 * @param source The source of the questions
+	 * @return A list of questions containing the question, possible answers and feedback.
+	 */
+	List<IliasQuestion> getQuestions(int refId, IliasQuestionSource source);
 }
