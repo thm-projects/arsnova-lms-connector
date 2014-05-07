@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import de.thm.arsnova.connector.core.ServiceUnavailableException;
@@ -26,6 +27,11 @@ public class UniRepController {
 	@Autowired(required = false)
 	private UniRepService service;
 
+	public enum QuestionSelection {
+		RANDOM_TEST,
+		QUESTION_POOL
+	}
+
 	@RequestMapping("/{refId}")
 	@ResponseBody
 	public HttpEntity<IliasCategoryNode> getIliasTreeObjects(@PathVariable int refId) {
@@ -39,16 +45,24 @@ public class UniRepController {
 
 	@RequestMapping("/question/{refId}")
 	@ResponseBody
-	public HttpEntity<List<IliasQuestion>> getIliasQuestions(@PathVariable int refId) {
+	public HttpEntity<List<IliasQuestion>> getIliasQuestions(
+			@PathVariable int refId,
+			@RequestParam(value = "select", defaultValue = "RANDOM_TEST") QuestionSelection selection
+			) {
 		try {
-			/*return new ResponseEntity<List<IliasQuestion>>(
-					service.getQuestions(refId),
-					HttpStatus.OK
-					);*/
-			return new ResponseEntity<List<IliasQuestion>>(
-					service.getRandomQuestions(refId),
-					HttpStatus.OK
-					);
+			switch (selection) {
+			case QUESTION_POOL:
+				return new ResponseEntity<List<IliasQuestion>>(
+						service.getQuestions(refId),
+						HttpStatus.OK
+						);
+			case RANDOM_TEST:
+			default:
+				return new ResponseEntity<List<IliasQuestion>>(
+						service.getRandomQuestions(refId),
+						HttpStatus.OK
+						);
+			}
 		} catch (Exception e) {
 			return new ResponseEntity<List<IliasQuestion>>(new ArrayList<IliasQuestion>(), HttpStatus.SERVICE_UNAVAILABLE);
 		}
