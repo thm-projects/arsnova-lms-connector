@@ -25,6 +25,11 @@ public interface UniRepDao {
 	 */
 	List<IliasQuestion> getQuestion(int refId);
 	
+	/** Returns a list of questions identified by the parent question pool reference ID from random tests
+	 *
+	 * @param refId The reference id of the question pool containing this question
+	 * @return A list of questions containing the question, possible answers and feedback.
+	 */
 	List<IliasQuestion> getRandomTestQuestions(int refId);
 
 	/** Returns a map containing reference ids and the value of the meta data
