@@ -24,6 +24,8 @@ public interface UniRepDao {
 	 * @return A list of questions containing the question, possible answers and feedback.
 	 */
 	List<IliasQuestion> getQuestion(int refId);
+	
+	List<IliasQuestion> getRandomTestQuestions(int refId);
 
 	/** Returns a map containing reference ids and the value of the meta data
 	 *
@@ -61,4 +63,6 @@ public interface UniRepDao {
 		 */
 		public Type value();
 	}
+
+	
 }
