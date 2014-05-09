@@ -33,11 +33,6 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 		if (authentication.getPrincipal() instanceof String) return false;
 
 		UserDetails ud = (UserDetails)authentication.getPrincipal();
-		System.out.println(ud.getUsername());
-		System.out.println(targetId);
-		System.out.println(targetType);
-		System.out.println(permission);
-		System.out.println(ud.getAuthorities());
 
 		try {
 			switch (targetType) {

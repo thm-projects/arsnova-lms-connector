@@ -16,6 +16,8 @@ import de.thm.arsnova.connector.services.ConfigurationService;
 import de.thm.arsnova.connector.services.ConfigurationServiceImpl;
 import de.thm.arsnova.connector.services.EnabledCategoryService;
 import de.thm.arsnova.connector.services.EnabledCategoryServiceImpl;
+import de.thm.arsnova.connector.services.InternalUserService;
+import de.thm.arsnova.connector.services.InternalUserServiceImpl;
 
 @Configuration
 @EnableJpaRepositories("de.thm.arsnova.connector.persistence.repository")
@@ -29,6 +31,11 @@ public class RepositoryTestConfig {
 	@Bean
 	public EnabledCategoryService enabledCategoryService() {
 		return new EnabledCategoryServiceImpl();
+	}
+
+	@Bean
+	public InternalUserService internalUserService() {
+		return new InternalUserServiceImpl();
 	}
 
 	@Bean(name = "configDataSource")

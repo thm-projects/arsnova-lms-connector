@@ -24,7 +24,7 @@ public class ConfigurationServiceTest {
 	private DataSource dataSource;
 
 	@Test
-	public void testShouldNotReturnCourseForNotEnroledUser() {
+	public void testShouldAddAndReadConfiguration() {
 		Configuration config = new Configuration();
 		config.setKey("Testkey");
 		config.setValue("Testvalue");

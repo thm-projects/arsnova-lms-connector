@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
@@ -25,6 +26,7 @@ import de.thm.arsnova.connector.dao.UniRepDao;
 		"de.thm.arsnova.connector.dao",
 		"de.thm.arsnova.connector.services"
 })
+@EnableJpaRepositories("de.thm.arsnova.connector.persistence.repository")
 @PropertySource("file:///etc/arsnova/connector.properties")
 public class AppConfig {
 
