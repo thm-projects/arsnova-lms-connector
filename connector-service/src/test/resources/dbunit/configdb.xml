@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<table name="configuration">
+		<column>key</column>
+		<column>value</column>
+		<row>
+			<value>key1</value>
+			<value>value1</value>
+		</row>
+		<row>
+			<value>key2</value>
+			<value>value2</value>
+		</row>
+	</table>
+</dataset>

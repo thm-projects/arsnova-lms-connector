@@ -1,6 +1,7 @@
 package de.thm.arsnova.connector.config;
 
 import java.sql.SQLException;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +11,11 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.OpenJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import de.thm.arsnova.connector.dao.ConnectorDao;
 import de.thm.arsnova.connector.dao.IliasConnectorDaoImpl;
@@ -54,6 +60,34 @@ public class AppConfig {
 		dataSource.setUsername("whatever");
 		dataSource.setPassword("topsecret");
 		return dataSource;
+	}
+
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws SQLException {
+		LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
+		lef.setDataSource(configDataSource());
+		lef.setJpaVendorAdapter(jpaVendorAdapter());
+		lef.setPackagesToScan("de.thm.arsnova.connector.persistence.domain");
+		Properties jpaProperties = new Properties();
+		jpaProperties.put("openjpa.RuntimeUnenhancedClasses", "supported");
+		lef.setJpaProperties(jpaProperties);
+		lef.afterPropertiesSet();
+		return lef;
+	}
+
+	@Bean
+	public JpaVendorAdapter jpaVendorAdapter() {
+		OpenJpaVendorAdapter jpaVendorAdapter = new OpenJpaVendorAdapter();
+		jpaVendorAdapter.setShowSql(false);
+		jpaVendorAdapter.setGenerateDdl(true);
+		return jpaVendorAdapter;
+	}
+
+	@Bean
+	public PlatformTransactionManager transactionManager() throws SQLException {
+		JpaTransactionManager txManager = new JpaTransactionManager();
+		txManager.setEntityManagerFactory(entityManagerFactory().getObject());
+		return txManager;
 	}
 
 	@Bean
