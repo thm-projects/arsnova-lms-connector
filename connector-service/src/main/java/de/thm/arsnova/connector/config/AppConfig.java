@@ -58,7 +58,7 @@ public class AppConfig {
 	public DriverManagerDataSource configDataSource() throws SQLException {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("org.hsqldb.jdbc.JDBCDriver");
-		dataSource.setUrl("file:///etc/arsnova/connector.db");
+		dataSource.setUrl("jdbc:hsqldb:file:/etc/arsnova/connector.db");
 		dataSource.setUsername("whatever");
 		dataSource.setPassword("topsecret");
 		return dataSource;
