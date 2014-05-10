@@ -45,7 +45,7 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 
 			case "uniRepQuestion":
 			case "uniRepTree":
-				if ("read".equals(permission) && ud.getUsername().equals(targetId) ) {
+				if ("read".equals(permission)) {
 					return true;
 				}
 				break;
