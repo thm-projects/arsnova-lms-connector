@@ -16,7 +16,7 @@ import de.thm.arsnova.connector.config.RepositoryTestConfig;
 import de.thm.arsnova.connector.persistence.domain.EnabledCategory;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration( classes = {RepositoryTestConfig.class} )
+@ContextConfiguration( classes = {RepositoryTestConfig.class, RepositoryTestConfig.class} )
 public class EnabledCategoryServiceTest {
 
 	@Autowired

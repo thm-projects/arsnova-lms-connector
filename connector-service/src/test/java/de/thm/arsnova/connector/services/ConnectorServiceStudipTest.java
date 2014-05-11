@@ -26,13 +26,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import de.thm.arsnova.connector.config.RepositoryTestConfig;
 import de.thm.arsnova.connector.config.StudipTestConfig;
 import de.thm.arsnova.connector.model.Courses;
 import de.thm.arsnova.connector.model.Membership;
 import de.thm.arsnova.connector.model.UserRole;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration( classes = {StudipTestConfig.class} )
+@ContextConfiguration( classes = {StudipTestConfig.class, RepositoryTestConfig.class} )
 public class ConnectorServiceStudipTest {
 
 	@Autowired
