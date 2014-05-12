@@ -102,4 +102,11 @@ public class WebDomainIntegrationTest {
 
 		fail("AccessDeniedException expected");
 	}
+
+	@Test
+	public void testShouldGetServiceUnavailableResponse() throws Exception {
+		mockMvc.perform(get("/ilias/question/123").param("source", "QUESTION_POOL").accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isServiceUnavailable())
+		.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+	}
 }

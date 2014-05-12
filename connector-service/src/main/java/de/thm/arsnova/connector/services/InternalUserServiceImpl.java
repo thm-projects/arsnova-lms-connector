@@ -2,11 +2,12 @@ package de.thm.arsnova.connector.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.token.Sha512DigestUtils;
+import org.springframework.stereotype.Service;
 
 import de.thm.arsnova.connector.persistence.domain.User;
 import de.thm.arsnova.connector.persistence.repository.UserRepository;
 
-
+@Service
 public class InternalUserServiceImpl implements InternalUserService {
 
 	@Autowired

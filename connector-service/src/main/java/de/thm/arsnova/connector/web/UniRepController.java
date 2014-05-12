@@ -33,6 +33,10 @@ public class UniRepController {
 
 	@RequestMapping("/{refId}")
 	public HttpEntity<IliasCategoryNode> getIliasTreeObjects(@PathVariable int refId) {
+		if (service == null) {
+			return new ResponseEntity<IliasCategoryNode>(new IliasCategoryNode(), HttpStatus.SERVICE_UNAVAILABLE);
+		}
+
 		try {
 			IliasCategoryNode node = service.getTreeObjects(refId);
 			return new ResponseEntity<IliasCategoryNode>(node, HttpStatus.OK);
@@ -46,6 +50,10 @@ public class UniRepController {
 			@PathVariable int refId,
 			@RequestParam(value = "source", defaultValue = "RANDOM_TEST") QuestionSource source
 			) {
+		if (service == null) {
+			return new ResponseEntity<List<IliasQuestion>>(new ArrayList<IliasQuestion>(), HttpStatus.SERVICE_UNAVAILABLE);
+		}
+
 		try {
 			switch (source) {
 			case QUESTION_POOL:
