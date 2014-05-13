@@ -30,4 +30,13 @@ public class EnabledCategoryServiceImpl implements EnabledCategoryService {
 	public List<EnabledCategory> getEnabledCategories() {
 		return repo.findAll();
 	}
+
+	@Override
+	public boolean isEnabledCategory(int refId) {
+		for (EnabledCategory ec : getEnabledCategories()) {
+			if (ec.getRefId() == refId) return true;
+		}
+
+		return false;
+	}
 }

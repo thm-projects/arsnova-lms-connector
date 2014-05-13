@@ -27,4 +27,16 @@
 			<value>0</value>
 		</row>
 	</table>
+	<table name="enabled_category">
+		<column>ref_id</column>
+		<row>
+			<value>2</value>
+		</row>
+		<row>
+			<value>3</value>
+		</row>
+		<row>
+			<value>5</value>
+		</row>
+	</table>
 </dataset>

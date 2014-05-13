@@ -1,5 +1,6 @@
 package de.thm.arsnova.connector.persistence.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -12,6 +13,7 @@ public class EnabledCategory {
 
 	@Id
 	@Unique
+	@Column(name = "ref_id")
 	int refId;
 
 	public int getRefId() {

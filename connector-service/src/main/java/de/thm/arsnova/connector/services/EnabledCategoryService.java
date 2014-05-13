@@ -14,4 +14,6 @@ public interface EnabledCategoryService {
 	public void disableCategory(int refId);
 
 	public List<EnabledCategory> getEnabledCategories();
+
+	public boolean isEnabledCategory(int refId);
 }
