@@ -1,5 +1,6 @@
 package de.thm.arsnova.connector.persistence.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -12,8 +13,11 @@ public class User {
 
 	@Id
 	@Unique
+	@Column(name = "user_id")
 	private String userId;
+	@Column(name = "password")
 	private String password;
+	@Column(name = "is_admin")
 	private boolean isAdmin;
 
 	public String getUserId() {

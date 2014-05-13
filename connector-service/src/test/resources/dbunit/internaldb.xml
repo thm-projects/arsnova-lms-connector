@@ -12,4 +12,19 @@
 			<value>value2</value>
 		</row>
 	</table>
+	<table name="user">
+		<column>user_id</column>
+		<column>password</column>
+		<column>is_admin</column>
+		<row>
+			<value>itsr00</value>
+			<value></value>
+			<value>1</value>
+		</row>
+		<row>
+			<value>itsr01</value>
+			<value></value>
+			<value>0</value>
+		</row>
+	</table>
 </dataset>
