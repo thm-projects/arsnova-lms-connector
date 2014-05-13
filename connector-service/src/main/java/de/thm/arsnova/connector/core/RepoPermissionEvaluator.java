@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.client.HttpClientErrorException;
 
 import de.thm.arsnova.connector.dao.ConnectorDao;
+import de.thm.arsnova.connector.services.InternalUserService;
 
 public class RepoPermissionEvaluator implements PermissionEvaluator {
 
@@ -19,6 +20,9 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 
 	@Autowired
 	ConnectorDao dao;
+
+	@Autowired
+	InternalUserService internalUserService;
 
 	@Override
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
@@ -33,11 +37,8 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 		if (authentication.getPrincipal() instanceof String) return false;
 
 		UserDetails ud = (UserDetails)authentication.getPrincipal();
-		System.out.println(ud.getUsername());
-		System.out.println(targetId);
-		System.out.println(targetType);
-		System.out.println(permission);
-		System.out.println(ud.getAuthorities());
+
+		if (isAdmin(ud)) return true;
 
 		try {
 			switch (targetType) {
@@ -59,5 +60,9 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 			return false;
 		}
 		return false;
+	}
+
+	private boolean isAdmin(UserDetails user) {
+		return internalUserService.getUser(user.getUsername()).isAdmin();
 	}
 }

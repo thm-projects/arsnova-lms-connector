@@ -27,12 +27,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import de.thm.arsnova.connector.config.MoodleTestConfig;
+import de.thm.arsnova.connector.config.RepositoryTestConfig;
 import de.thm.arsnova.connector.model.Courses;
 import de.thm.arsnova.connector.model.Membership;
 import de.thm.arsnova.connector.model.UserRole;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration( classes = {MoodleTestConfig.class} )
+@ContextConfiguration( classes = {MoodleTestConfig.class, RepositoryTestConfig.class} )
 public class ConnectorServiceMoodleTest {
 
 	@Autowired
