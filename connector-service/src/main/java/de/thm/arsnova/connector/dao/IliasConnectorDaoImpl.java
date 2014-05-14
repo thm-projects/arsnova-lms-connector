@@ -10,9 +10,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 
 import de.thm.arsnova.connector.dao.UniRepDao.Filter;
@@ -191,7 +189,7 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 	public boolean isRandomQuestionSet(int refId) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-		jdbcTemplate.query(
+		return jdbcTemplate.queryForObject(
 				"SELECT question_set_type FROM tree AS t1 "
 						+ "JOIN tree AS t2 ON t2.lft BETWEEN t1.lft AND t1.rgt AND t1.tree = t2.tree "
 						+ "JOIN object_reference AS r ON r.ref_id=t2.child "
@@ -199,15 +197,13 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 						+ "JOIN tst_tests as tests ON tests.obj_fi=r.obj_id "
 						+ "WHERE t1.child = ?",
 						new String[] {String.valueOf(refId)},
-						new ResultSetExtractor<Boolean>() {
+						new RowMapper<Boolean>() {
 							@Override
-							public Boolean extractData(ResultSet resultSet)
-									throws SQLException, DataAccessException {
+							public Boolean mapRow(ResultSet resultSet, int row) throws SQLException {
 								return "RANDOM_QUEST_SET".equals(resultSet.getString("question_set_type"));
 							}
 						}
 				);
-		return false;
 	}
 
 	@Override
