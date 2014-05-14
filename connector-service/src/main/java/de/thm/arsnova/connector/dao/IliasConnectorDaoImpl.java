@@ -20,7 +20,7 @@ import de.thm.arsnova.connector.model.IliasCategoryNode;
 import de.thm.arsnova.connector.model.IliasFeedback;
 import de.thm.arsnova.connector.model.IliasQuestion;
 
-@Filter(Type.QUESTION_POOL)
+@Filter(Type.TEST)
 public class IliasConnectorDaoImpl implements UniRepDao {
 
 	@Autowired

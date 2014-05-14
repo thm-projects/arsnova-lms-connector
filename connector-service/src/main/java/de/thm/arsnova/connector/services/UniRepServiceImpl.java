@@ -29,9 +29,9 @@ public class UniRepServiceImpl implements UniRepService {
 		}
 
 		List<IliasCategoryNode> result = uniRepDao.getTreeObjects(refId);
-		while(removeBranchesWithoutQuestionPools(result));
-
 		result = this.removeNotMarkedNodes(result, false);
+		
+		while(removeBranchesWithoutQuestionPools(result));
 
 		if (result.size() == 1) {
 			return result.get(0);
@@ -95,12 +95,12 @@ public class UniRepServiceImpl implements UniRepService {
 		}
 
 		return hasRemovedNodes;
-
 	}
 
 	private List<IliasCategoryNode> removeNotMarkedNodes(List<IliasCategoryNode> nodes, boolean isParentMarked) {
-		Map<String, String> metaTagRefIds = uniRepDao.getReferenceIdsWithMetaDataFlag("UniRepApp");
-
+		Map<String, String> categoryMetaTagRefIds = uniRepDao.getReferenceIdsWithMetaDataFlag("UniRepApp");
+		Map<String, String> courseMetaTagRefIds = uniRepDao.getReferenceIdsWithMetaDataFlag("UniRepCourse");
+		
 		if (nodes == null) {
 			return null;
 		}
@@ -109,26 +109,38 @@ public class UniRepServiceImpl implements UniRepService {
 
 		while (it.hasNext()) {
 			IliasCategoryNode node = it.next();
-
-			if (metaTagRefIds.containsKey(String.valueOf(node.getId()))) {
-				if("no".equals(metaTagRefIds.get(String.valueOf(node.getId())))) {
+			
+			if("crs".equals(node.getType())) {
+				if("yes".equals(courseMetaTagRefIds.get(String.valueOf(node.getId())))) {
+					continue;
+				}
+				else {
 					it.remove();
 					continue;
 				}
-
-				else if("yes".equals(metaTagRefIds.get(String.valueOf(node.getId())))) {
-					removeNotMarkedNodes(node.getChildren(), true);
-				}
 			}
-
+			
 			else {
-				if(isParentMarked) {
-					removeNotMarkedNodes(node.getChildren(), true);
-				}
-				else {
-					removeNotMarkedNodes(node.getChildren(), false);
-					if(node.getChildren() == null || node.getChildren().size() == 0) {
+				if (categoryMetaTagRefIds.containsKey(String.valueOf(node.getId()))) {
+					if("no".equals(categoryMetaTagRefIds.get(String.valueOf(node.getId())))) {
 						it.remove();
+						continue;
+					}
+
+					else if("yes".equals(categoryMetaTagRefIds.get(String.valueOf(node.getId())))) {
+						removeNotMarkedNodes(node.getChildren(), true);
+					}
+				}
+
+				else {
+					if(isParentMarked) {
+						removeNotMarkedNodes(node.getChildren(), true);
+					}
+					else {
+						removeNotMarkedNodes(node.getChildren(), false);
+						if(node.getChildren() == null || node.getChildren().size() == 0) {
+							it.remove();
+						}
 					}
 				}
 			}
