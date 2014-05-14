@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
@@ -30,14 +29,8 @@ import de.thm.arsnova.connector.dao.UniRepDao;
 @PropertySource("file:///etc/arsnova/connector.properties")
 public class AppConfig {
 
-	@Value("jdbc.driverClassName") private String jdbcDriverClassName;
-	@Value("jdbc.url") private String jdbcUrl;
-	@Value("jdbc.username") private String jdbcUsername;
-	@Value("jdbc.password") private String jdbcPassword;
-
-	@Value("dao.implementation") private String daoImplementation;
-
-	@Autowired private Environment env;
+	@Autowired
+	private Environment env;
 
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {

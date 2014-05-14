@@ -24,7 +24,7 @@ public interface UniRepDao {
 	 * @return A list of questions containing the question, possible answers and feedback.
 	 */
 	List<IliasQuestion> getQuestion(int refId);
-	
+
 	/** Returns a list of questions identified by the parent question pool reference ID from random tests
 	 *
 	 * @param refId The reference id of the question pool containing this question
@@ -73,8 +73,6 @@ public interface UniRepDao {
 
 		/** Declares wich kind of tree objects should be returned
 		 */
-		public Type value();
+		Type value();
 	}
-
-	
 }

@@ -78,7 +78,9 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 		}
 
 		List<IliasCategoryNode> result = new ArrayList<>();
-		if (nodeList.size() > 0) result.add(nodeList.get(0));
+		if (nodeList.size() > 0) {
+			result.add(nodeList.get(0));
+		}
 
 		return result;
 	}

@@ -10,7 +10,7 @@ import de.thm.arsnova.connector.persistence.repository.ConfigurationRepository;
 public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Autowired
-	ConfigurationRepository repo;
+	private ConfigurationRepository repo;
 
 	@Override
 	public Configuration getConfigurationElement(String key) {

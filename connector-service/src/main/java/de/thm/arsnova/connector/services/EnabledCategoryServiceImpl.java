@@ -12,7 +12,7 @@ import de.thm.arsnova.connector.persistence.repository.EnabledCategoryRepository
 public class EnabledCategoryServiceImpl implements EnabledCategoryService {
 
 	@Autowired
-	EnabledCategoryRepository repo;
+	private EnabledCategoryRepository repo;
 
 	@Override
 	public void enableCategory(int refId) {
@@ -34,7 +34,9 @@ public class EnabledCategoryServiceImpl implements EnabledCategoryService {
 	@Override
 	public boolean isEnabledCategory(int refId) {
 		for (EnabledCategory ec : getEnabledCategories()) {
-			if (ec.getRefId() == refId) return true;
+			if (ec.getRefId() == refId) {
+				return true;
+			}
 		}
 
 		return false;

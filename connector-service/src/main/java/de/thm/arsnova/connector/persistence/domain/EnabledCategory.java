@@ -14,7 +14,7 @@ public class EnabledCategory {
 	@Id
 	@Unique
 	@Column(name = "ref_id")
-	int refId;
+	private int refId;
 
 	public int getRefId() {
 		return refId;

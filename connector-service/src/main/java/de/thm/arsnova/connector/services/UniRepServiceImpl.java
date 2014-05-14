@@ -68,7 +68,9 @@ public class UniRepServiceImpl implements UniRepService {
 
 	private boolean removeBranchesWithoutQuestionPools( List<IliasCategoryNode> nodes ) throws ServiceUnavailableException {
 
-		if (nodes == null) return false;
+		if (nodes == null) {
+			return false;
+		}
 
 		Iterator<IliasCategoryNode> it = nodes.iterator();
 
@@ -77,7 +79,9 @@ public class UniRepServiceImpl implements UniRepService {
 		while (it.hasNext()) {
 			IliasCategoryNode node = it.next();
 
-			if (node == null) continue;
+			if (node == null) {
+				continue;
+			}
 
 			if (node.getQuestionCount() == 0 && (node.getChildren() == null || node.getChildren().size() == 0)) {
 				it.remove();
@@ -97,7 +101,9 @@ public class UniRepServiceImpl implements UniRepService {
 	private List<IliasCategoryNode> removeNotMarkedNodes(List<IliasCategoryNode> nodes, boolean isParentMarked) {
 		Map<String, String> metaTagRefIds = uniRepDao.getReferenceIdsWithMetaDataFlag("UniRepApp");
 
-		if (nodes == null)return null;
+		if (nodes == null) {
+			return null;
+		}
 
 		Iterator<IliasCategoryNode> it = nodes.iterator();
 

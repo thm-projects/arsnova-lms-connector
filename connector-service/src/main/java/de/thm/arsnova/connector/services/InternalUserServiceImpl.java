@@ -11,7 +11,7 @@ import de.thm.arsnova.connector.persistence.repository.UserRepository;
 public class InternalUserServiceImpl implements InternalUserService {
 
 	@Autowired
-	UserRepository repo;
+	private UserRepository repo;
 
 	@Override
 	public User getUser(String userid) {

@@ -42,15 +42,26 @@ public class User {
 	}
 
 	@Override
+	public int hashCode() {
+		return (this.userId + this.isAdmin).hashCode();
+	}
+
+	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) return false;
-		if (obj == this) return true;
+		if (obj == null) {
+			return false;
+		}
+		if (obj == this) {
+			return true;
+		}
 		if (obj instanceof User) {
 			User other = (User) obj;
 			if (
 					(this.userId != null && this.userId.equals(other.getUserId()))
-					&& (this.isAdmin = other.isAdmin())
-					) return true;
+					&& (this.isAdmin == other.isAdmin())
+					) {
+				return true;
+			}
 		}
 		return false;
 	}
