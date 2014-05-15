@@ -13,6 +13,7 @@ public class IliasCategoryNode {
 	private int parent;
 	private String title;
 	private String type;
+	private String leaf;
 	private int questionCount;
 	private List<IliasCategoryNode> children;
 
@@ -59,6 +60,13 @@ public class IliasCategoryNode {
 	}
 	public void setQuestionCount(int questionCount) {
 		this.questionCount = questionCount;
+	}
+	
+	public String getLeaf() {
+		return leaf;
+	}
+	public void setLeaf(String leaf) {
+		this.leaf = leaf;
 	}
 
 	public List<IliasCategoryNode> getChildren() {

@@ -85,11 +85,15 @@ public class UniRepServiceImpl implements UniRepService {
 			if (node == null) {
 				continue;
 			}
-
-			if (node.getQuestionCount() == 0 && (node.getChildren() == null || node.getChildren().size() == 0)) {
-				it.remove();
-				hasRemovedNodes = true;
-				continue;
+			
+			if(node.getChildren() == null || node.getChildren().size() == 0) {
+				if(node.getQuestionCount() == 0) {
+					it.remove();
+					hasRemovedNodes = true;
+					continue;
+				} else {
+					node.setLeaf("true");
+				}
 			}
 
 			if (removeBranchesWithoutQuestionPools(node.getChildren())) {
