@@ -92,7 +92,7 @@ public class UniRepServiceImpl implements UniRepService {
 					hasRemovedNodes = true;
 					continue;
 				} else {
-					node.setLeaf("true");
+					node.setLeaf(true);
 				}
 			}
 
