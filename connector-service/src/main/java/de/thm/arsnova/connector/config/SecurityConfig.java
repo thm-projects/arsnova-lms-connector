@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public PermissionEvaluator permissionEvaluator() throws Exception {
+	public PermissionEvaluator permissionEvaluator() {
 		return new RepoPermissionEvaluator();
 	}
 
