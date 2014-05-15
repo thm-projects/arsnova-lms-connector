@@ -31,13 +31,4 @@ public interface UniRepService {
 	 */
 	@PostAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasPermission(#refId,'uniRepQuestion','read'))")
 	List<IliasQuestion> getQuestions(int refId) throws ServiceUnavailableException;
-
-	/** Returns a list of random questions identified by the test reference ID
-	 *
-	 * @param refId The reference id of the test containing this question
-	 * @return A random list of questions containing the question, possible answers and feedback.
-	 * @throws ServiceUnavailableException
-	 */
-	@PostAuthorize("isAuthenticated() and (hasRole('ADMIN') or hasPermission(#refId,'uniRepQuestion','read'))")
-	List<IliasQuestion> getRandomQuestions(int refId);
 }

@@ -9,3 +9,4 @@ target/*
 */src/main/jaxb/*
 */build/*
 .gradle/*
+/build/

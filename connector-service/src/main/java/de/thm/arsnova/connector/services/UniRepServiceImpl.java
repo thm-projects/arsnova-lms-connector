@@ -40,16 +40,19 @@ public class UniRepServiceImpl implements UniRepService {
 	}
 
 	@Override
-	public List<IliasQuestion> getQuestions(int refId)
-			throws ServiceUnavailableException {
+	public List<IliasQuestion> getQuestions(int refId) throws ServiceUnavailableException {
 		if (uniRepDao == null) {
 			throw new ServiceUnavailableException();
 		}
-		return uniRepDao.getQuestion(refId);
+		
+		if(uniRepDao.isRandomQuestionSet(refId)) {
+			return this.getRandomQuestions(refId);
+		} else {
+			return uniRepDao.getQuestion(refId);
+		}
 	}
 
-	@Override
-	public List<IliasQuestion> getRandomQuestions(int refId) {
+	private List<IliasQuestion> getRandomQuestions(int refId) {
 		int amountOfQuestions = uniRepDao.getQuestionAmountPerTest(refId);
 		List<IliasQuestion> allQuestions = uniRepDao.getRandomTestQuestions(refId);
 
@@ -82,11 +85,15 @@ public class UniRepServiceImpl implements UniRepService {
 			if (node == null) {
 				continue;
 			}
-
-			if (node.getQuestionCount() == 0 && (node.getChildren() == null || node.getChildren().size() == 0)) {
-				it.remove();
-				hasRemovedNodes = true;
-				continue;
+			
+			if(node.getChildren() == null || node.getChildren().size() == 0) {
+				if(node.getQuestionCount() == 0) {
+					it.remove();
+					hasRemovedNodes = true;
+					continue;
+				} else {
+					node.setLeaf("true");
+				}
 			}
 
 			if (removeBranchesWithoutQuestionPools(node.getChildren())) {

@@ -54,26 +54,4 @@ public class UniRepControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON));
 	}
-
-	@Test
-	public void testShouldGetClientErrorOnInvalidSourceParam() throws Exception {
-		mockMvc.perform(get("/ilias/question/123").param("source", "INVALID").accept(MediaType.APPLICATION_JSON))
-		.andExpect(status().is4xxClientError());
-	}
-
-	@Test
-	public void testShouldReturnRandomQuestions() throws Exception {
-		when(service.getQuestions(anyInt())).thenThrow(new RuntimeException("Not what I expect"));
-		mockMvc.perform(get("/ilias/question/123").param("source", "RANDOM_TEST").accept(MediaType.APPLICATION_JSON))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON));
-	}
-
-	@Test
-	public void testShouldReturnPoolQuestions() throws Exception {
-		when(service.getRandomQuestions(anyInt())).thenThrow(new RuntimeException("Not what I expect"));
-		mockMvc.perform(get("/ilias/question/123").param("source", "QUESTION_POOL").accept(MediaType.APPLICATION_JSON))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON));
-	}
 }
