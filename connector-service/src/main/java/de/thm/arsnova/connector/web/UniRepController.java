@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.thm.arsnova.connector.core.NotFoundException;
 import de.thm.arsnova.connector.core.ServiceUnavailableException;
 import de.thm.arsnova.connector.model.IliasCategoryNode;
 import de.thm.arsnova.connector.model.IliasQuestion;
@@ -39,6 +40,8 @@ public class UniRepController {
 		try {
 			IliasCategoryNode node = service.getTreeObjects(refId);
 			return new ResponseEntity<IliasCategoryNode>(node, HttpStatus.OK);
+		} catch ( NotFoundException e ) {
+			return new ResponseEntity<IliasCategoryNode>(new IliasCategoryNode(), HttpStatus.NOT_FOUND);
 		} catch ( ServiceUnavailableException e ) {
 			return new ResponseEntity<IliasCategoryNode>(new IliasCategoryNode(), HttpStatus.SERVICE_UNAVAILABLE);
 		}

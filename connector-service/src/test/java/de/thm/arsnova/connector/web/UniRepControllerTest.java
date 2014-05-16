@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import de.thm.arsnova.connector.core.NotFoundException;
 import de.thm.arsnova.connector.core.ServiceUnavailableException;
 import de.thm.arsnova.connector.model.IliasCategoryNode;
 import de.thm.arsnova.connector.model.IliasQuestion;
@@ -33,7 +34,7 @@ public class UniRepControllerTest {
 	private UniRepService service;
 
 	@Before
-	public void setup() throws ServiceUnavailableException {
+	public void setup() throws ServiceUnavailableException, NotFoundException {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = standaloneSetup(controller).build();
 
