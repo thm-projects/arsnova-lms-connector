@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.thm.arsnova.connector.core.NotFoundException;
@@ -27,6 +28,7 @@ public class UniRepController {
 	private UniRepService service;
 
 	public enum QuestionSource {
+		ALL,
 		RANDOM_TEST,
 		QUESTION_POOL
 	}
@@ -48,13 +50,22 @@ public class UniRepController {
 	}
 
 	@RequestMapping("/question/{refId}")
-	public HttpEntity<List<IliasQuestion>> getIliasQuestions(@PathVariable int refId) throws ServiceUnavailableException {
+	public HttpEntity<List<IliasQuestion>> getIliasQuestions(
+			@PathVariable int refId,
+			@RequestParam(value = "source", required = false) QuestionSource source) 
+					throws ServiceUnavailableException {
 		if (service == null) {
 			return new ResponseEntity<List<IliasQuestion>>(new ArrayList<IliasQuestion>(), HttpStatus.SERVICE_UNAVAILABLE);
 		}
+		
+		boolean noRandomQuestions = false;
+		
+		if(QuestionSource.ALL.equals(source)) {
+			noRandomQuestions = true;
+		}
 
 		return new ResponseEntity<List<IliasQuestion>>(
-				service.getQuestions(refId),
+				service.getQuestions(refId, noRandomQuestions),
 				HttpStatus.OK
 				);
 	}

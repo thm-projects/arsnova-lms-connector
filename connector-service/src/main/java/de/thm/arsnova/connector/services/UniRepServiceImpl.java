@@ -41,19 +41,20 @@ public class UniRepServiceImpl implements UniRepService {
 	}
 
 	@Override
-	public List<IliasQuestion> getQuestions(int refId) throws ServiceUnavailableException {
+	public List<IliasQuestion> getQuestions(int refId, boolean noRandomQuestions) throws ServiceUnavailableException {
 		if (uniRepDao == null) {
 			throw new ServiceUnavailableException();
 		}
 
-		if(uniRepDao.isRandomQuestionSet(refId)) {
+		if(uniRepDao.isRandomQuestionSet(refId) && !noRandomQuestions) {
 			return this.getRandomQuestions(refId);
 		} else {
 			return uniRepDao.getQuestion(refId);
 		}
 	}
 
-	private List<IliasQuestion> getRandomQuestions(int refId) {
+	@Override
+	public List<IliasQuestion> getRandomQuestions(int refId) {
 		int amountOfQuestions = uniRepDao.getQuestionAmountPerTest(refId);
 		List<IliasQuestion> allQuestions = uniRepDao.getRandomTestQuestions(refId);
 
