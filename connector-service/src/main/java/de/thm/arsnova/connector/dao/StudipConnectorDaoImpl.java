@@ -28,7 +28,7 @@ public class StudipConnectorDaoImpl implements ConnectorDao {
 		return jdbcTemplate.query(
 				"SELECT seminar_user.user_id FROM seminar_user "
 						+ "JOIN auth_user_md5 ON (seminar_user.user_id = auth_user_md5.user_id) "
-						+ "WHERE seminar_user.Seminar_ID; = ?",
+						+ "WHERE seminar_user.Seminar_ID = ?;",
 						new String[] {courseid},
 						new RowMapper<String>() {
 							@Override

@@ -28,8 +28,7 @@ public class UniRepServiceTest {
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 
-		when(dao.getTreeObjects(anyInt())).thenReturn(
-				new ArrayList<IliasCategoryNode>());
+		when(dao.getTreeObjects(anyInt())).thenReturn(new ArrayList<IliasCategoryNode>());
 	}
 
 	@Test
