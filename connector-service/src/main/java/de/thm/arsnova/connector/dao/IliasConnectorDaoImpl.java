@@ -44,6 +44,8 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 		}
 
 		final Map<Integer, Integer> questionCount = this.getQuestionCount(refId);
+		final Map<Integer, Integer> randomQuestionAmount = this.getRandomQuestionAmount(refId);
+
 		List<IliasCategoryNode> nodeList = jdbcTemplate.query(
 				"SELECT t2.*, d.type, d.title FROM tree AS t1"
 						+ " JOIN tree AS t2 ON t2.lft BETWEEN t1.lft AND t1.rgt AND t1.tree = t2.tree"
@@ -55,14 +57,25 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 						new RowMapper<IliasCategoryNode>() {
 							@Override
 							public IliasCategoryNode mapRow(ResultSet resultSet, int row) throws SQLException {
-								return new IliasCategoryNode(
+								IliasCategoryNode node = new IliasCategoryNode(
 										resultSet.getInt("child"),
 										resultSet.getInt("parent"),
 										resultSet.getString("title"),
 										resultSet.getString("type"),
-										questionCount.get(resultSet.getInt("child")) == null ? 0 : questionCount.get(resultSet.getInt("child"))
+										questionCount.get(resultSet.getInt("child")) == null ? 0 : 
+											questionCount.get(resultSet.getInt("child"))
 										);
-
+								
+								if("tst".equals(node.getType())) {
+									if(randomQuestionAmount.get(node.getId()) == null) {
+										node.setIsRandomTest(false);
+									} else {
+										node.setIsRandomTest(true);
+										node.setRandomQuestionCount(randomQuestionAmount.get(node.getId()));
+									}
+								}
+								
+								return node;
 							}
 						}
 				);
@@ -152,7 +165,9 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 		final Map<String, String> result = new HashMap<String, String>();
 
 		jdbcTemplate.query(
-				"SELECT value, ref_id FROM adv_md_values AS v JOIN object_reference AS r ON (v.obj_id = r.obj_id) WHERE field_id = ? AND value = 'yes' OR value = 'no'",
+				"SELECT value, ref_id FROM adv_md_values AS v "
+						+ "JOIN object_reference AS r ON (v.obj_id = r.obj_id) "
+						+ "WHERE field_id = ? AND value = 'yes' OR value = 'no'",
 				new String[] {getMetaDataFieldId(metaDataTitle)},
 				new RowMapper<String>() {
 					@Override
@@ -258,7 +273,9 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		List<String> result = jdbcTemplate.query(
-				"SELECT field_id, rec.title FROM adv_md_record AS rec JOIN adv_mdf_definition AS def ON (rec.record_id = def.record_id) WHERE rec.title = ?",
+				"SELECT field_id, rec.title FROM adv_md_record AS rec "
+						+ "JOIN adv_mdf_definition AS def ON (rec.record_id = def.record_id) "
+						+ "WHERE rec.title = ?",
 				new String[] {metaDataTitle},
 				new RowMapper<String>() {
 					@Override
@@ -273,6 +290,35 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 		}
 
 		return null;
+	}
+	
+	private Map<Integer, Integer> getRandomQuestionAmount(int refId) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+		final Map<Integer, Integer> result = new HashMap<Integer, Integer>();
+
+		jdbcTemplate.query(
+				"SELECT r.ref_id, quest_amount_per_test AS count FROM tree AS t1"
+						+ " JOIN tree AS t2 ON t2.lft BETWEEN t1.lft AND t1.rgt AND t1.tree = t2.tree"
+						+ " JOIN object_reference AS r ON r.ref_id=t2.child "
+						+ " JOIN object_data as d ON d.obj_id=r.obj_id"
+						+ " JOIN qpl_questions as q ON q.obj_fi=r.obj_id"
+						+ " JOIN tst_tests as tests ON tests.obj_fi=r.obj_id"
+						+ " JOIN tst_rnd_quest_set_cfg AS rq ON rq.test_fi=tests.test_id"
+						+ " WHERE t1.child=? GROUP BY r.ref_id;",
+						new String[] {String.valueOf(refId)},
+						new RowMapper<Integer>() {
+							@Override
+							public Integer mapRow(ResultSet resultSet, int row) throws SQLException {
+								result.put(
+										resultSet.getInt("ref_id"),
+										resultSet.getInt("count"));
+								return 0;
+							}
+						}
+				);
+
+		return result;
 	}
 
 	private Map<Integer, Integer> getQuestionCount(int refId) {

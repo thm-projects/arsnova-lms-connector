@@ -15,6 +15,8 @@ public class IliasCategoryNode {
 	private String type;
 	private Boolean leaf;
 	private int questionCount;
+	private Boolean isRandomTest;
+	private Integer randomQuestionAmount;
 	private List<IliasCategoryNode> children;
 
 	public IliasCategoryNode() {}
@@ -60,6 +62,20 @@ public class IliasCategoryNode {
 	}
 	public void setQuestionCount(int questionCount) {
 		this.questionCount = questionCount;
+	}
+	
+	public Boolean getIsRandomTest() {
+		return isRandomTest;
+	}
+	public void setIsRandomTest(Boolean isRandomTest) {
+		this.isRandomTest = isRandomTest;
+	}
+	
+	public Integer getRandomQuestionCount() {
+		return randomQuestionAmount;
+	}
+	public void setRandomQuestionCount(Integer randomQuestionAmount) {
+		this.randomQuestionAmount = randomQuestionAmount;
 	}
 	
 	public Boolean isLeaf() {

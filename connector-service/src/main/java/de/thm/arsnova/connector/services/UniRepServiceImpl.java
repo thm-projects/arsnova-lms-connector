@@ -118,9 +118,10 @@ public class UniRepServiceImpl implements UniRepService {
 
 		while (it.hasNext()) {
 			IliasCategoryNode node = it.next();
+			String nodeId = String.valueOf(node.getId());
 
 			if("crs".equals(node.getType())) {
-				if("yes".equals(courseMetaTagRefIds.get(String.valueOf(node.getId())))) {
+				if("yes".equals(courseMetaTagRefIds.get(nodeId))) {
 					continue;
 				}
 				else {
@@ -130,13 +131,13 @@ public class UniRepServiceImpl implements UniRepService {
 			}
 
 			else {
-				if (categoryMetaTagRefIds.containsKey(String.valueOf(node.getId()))) {
-					if("no".equals(categoryMetaTagRefIds.get(String.valueOf(node.getId())))) {
+				if (categoryMetaTagRefIds.containsKey(nodeId)) {
+					if("no".equals(categoryMetaTagRefIds.get(nodeId))) {
 						it.remove();
 						continue;
 					}
 
-					else if("yes".equals(categoryMetaTagRefIds.get(String.valueOf(node.getId())))) {
+					else if("yes".equals(categoryMetaTagRefIds.get(nodeId))) {
 						removeNotMarkedNodes(node.getChildren(), true);
 					}
 				}
