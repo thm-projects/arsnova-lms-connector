@@ -4,7 +4,7 @@ subprojects {
 	apply plugin: 'maven-publish'
 
 	sourceCompatibility = 1.7
-	version = '0.70.0-SNAPSHOT'
+	version = '0.70.1-SNAPSHOT'
 
 	ext {
 		springVersion = '4.0.4.RELEASE'
