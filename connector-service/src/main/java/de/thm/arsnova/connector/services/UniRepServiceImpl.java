@@ -41,19 +41,20 @@ public class UniRepServiceImpl implements UniRepService {
 	}
 
 	@Override
-	public List<IliasQuestion> getQuestions(int refId) throws ServiceUnavailableException {
+	public List<IliasQuestion> getQuestions(int refId, boolean noRandomQuestions) throws ServiceUnavailableException {
 		if (uniRepDao == null) {
 			throw new ServiceUnavailableException();
 		}
 
-		if(uniRepDao.isRandomQuestionSet(refId)) {
+		if(uniRepDao.isRandomQuestionSet(refId) && !noRandomQuestions) {
 			return this.getRandomQuestions(refId);
 		} else {
 			return uniRepDao.getQuestion(refId);
 		}
 	}
 
-	private List<IliasQuestion> getRandomQuestions(int refId) {
+	@Override
+	public List<IliasQuestion> getRandomQuestions(int refId) {
 		int amountOfQuestions = uniRepDao.getQuestionAmountPerTest(refId);
 		List<IliasQuestion> allQuestions = uniRepDao.getRandomTestQuestions(refId);
 
@@ -117,9 +118,10 @@ public class UniRepServiceImpl implements UniRepService {
 
 		while (it.hasNext()) {
 			IliasCategoryNode node = it.next();
+			String nodeId = String.valueOf(node.getId());
 
 			if("crs".equals(node.getType())) {
-				if("yes".equals(courseMetaTagRefIds.get(String.valueOf(node.getId())))) {
+				if("yes".equals(courseMetaTagRefIds.get(nodeId))) {
 					continue;
 				}
 				else {
@@ -129,13 +131,13 @@ public class UniRepServiceImpl implements UniRepService {
 			}
 
 			else {
-				if (categoryMetaTagRefIds.containsKey(String.valueOf(node.getId()))) {
-					if("no".equals(categoryMetaTagRefIds.get(String.valueOf(node.getId())))) {
+				if (categoryMetaTagRefIds.containsKey(nodeId)) {
+					if("no".equals(categoryMetaTagRefIds.get(nodeId))) {
 						it.remove();
 						continue;
 					}
 
-					else if("yes".equals(categoryMetaTagRefIds.get(String.valueOf(node.getId())))) {
+					else if("yes".equals(categoryMetaTagRefIds.get(nodeId))) {
 						removeNotMarkedNodes(node.getChildren(), true);
 					}
 				}
