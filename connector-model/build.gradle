@@ -23,14 +23,3 @@ sourceSets {
 		jaxb { srcDir 'src/main/resources/' }
 	}
 }
-
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			groupId 'de.thm.arsnova.connector'
-			artifactId 'connector-model'
-			version version
-			from components.java
-		}
-	}
-}

@@ -36,14 +36,3 @@ dependencies {
 }
 
 test { systemProperties 'property': 'value' }
-
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			groupId 'de.thm.arsnova.connector'
-			artifactId 'connector-service'
-			version version
-			from components.web
-		}
-	}
-}

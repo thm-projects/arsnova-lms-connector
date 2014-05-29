@@ -1,10 +1,12 @@
 subprojects {
 	apply plugin: 'java'
 	apply plugin: 'eclipse'
-	apply plugin: 'maven-publish'
+	apply plugin: 'maven'
 
 	sourceCompatibility = 1.7
-	version = '0.70.1-SNAPSHOT'
+
+	group = 'de.thm.arsnova.connector'
+	version = '0.70.2-SNAPSHOT'
 
 	ext {
 		springVersion = '4.0.4.RELEASE'
@@ -28,16 +30,21 @@ subprojects {
 
 	test { systemProperties 'property': 'value' }
 
-	publishing {
-		repositories {
-			maven {
-				credentials {
-					username project.hasProperty('mavenUsername') ?  mavenUsername : ''
-					password project.hasProperty('mavenPassword') ?  mavenPassword : ''
-				}
-				url project.hasProperty('mavenUrl') ? mavenUrl : "http://maven.mni.thm.de/content/repositories/snapshots/"
+	configurations {
+		deployerJars
+	}
+
+	uploadArchives {
+		repositories.mavenDeployer {
+			configuration = configurations.deployerJars
+			repository(
+				url: project.hasProperty('mavenUrl') ? mavenUrl : "http://maven.mni.thm.de/content/repositories/snapshots/"
+			) {
+				authentication(
+					userName: project.hasProperty('mavenUsername') ?  mavenUsername : '',
+					password: project.hasProperty('mavenPassword') ?  mavenUsername : ''
+				)
 			}
-			mavenLocal()
 		}
 	}
 }
