@@ -3,10 +3,10 @@ package de.thm.arsnova.connector.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-@JsonSerialize(include = Inclusion.NON_NULL)
+@JsonInclude(Include.NON_NULL)
 public class IliasCategoryNode {
 
 	private int id;
@@ -21,7 +21,7 @@ public class IliasCategoryNode {
 
 	public IliasCategoryNode() {}
 
-	public IliasCategoryNode(int id, int parent, String title, String type, int questionCount) {
+	public IliasCategoryNode(final int id, final int parent, final String title, final String type, final int questionCount) {
 		this.id = id;
 		this.parent = parent;
 		this.title = title;
@@ -32,77 +32,81 @@ public class IliasCategoryNode {
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(final int id) {
 		this.id = id;
 	}
 
 	public int getParent() {
 		return parent;
 	}
-	public void setParent(int parent) {
+	public void setParent(final int parent) {
 		this.parent = parent;
 	}
 
 	public String getTitle() {
 		return title;
 	}
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
 	public String getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(final String type) {
 		this.type = type;
 	}
 
 	public int getQuestionCount() {
 		return questionCount;
 	}
-	public void setQuestionCount(int questionCount) {
+	public void setQuestionCount(final int questionCount) {
 		this.questionCount = questionCount;
 	}
-	
+
 	public Boolean getIsRandomTest() {
 		return isRandomTest;
 	}
-	public void setIsRandomTest(Boolean isRandomTest) {
+	public void setIsRandomTest(final Boolean isRandomTest) {
 		this.isRandomTest = isRandomTest;
 	}
-	
+
 	public Integer getRandomQuestionCount() {
 		return randomQuestionAmount;
 	}
-	public void setRandomQuestionCount(Integer randomQuestionAmount) {
+	public void setRandomQuestionCount(final Integer randomQuestionAmount) {
 		this.randomQuestionAmount = randomQuestionAmount;
 	}
-	
+
 	public Boolean isLeaf() {
 		return leaf;
 	}
-	public void setLeaf(Boolean leaf) {
+	public void setLeaf(final Boolean leaf) {
 		this.leaf = leaf;
 	}
 
 	public List<IliasCategoryNode> getChildren() {
 		return children;
 	}
-	public void addChild(IliasCategoryNode node) {
-		if (node == null) throw new IllegalArgumentException();
-		if (this.children == null) {
-			this.children = new ArrayList<IliasCategoryNode>();
+	public void addChild(final IliasCategoryNode node) {
+		if (node == null) {
+			throw new IllegalArgumentException();
 		}
-		this.children.add(node);
+		if (children == null) {
+			children = new ArrayList<IliasCategoryNode>();
+		}
+		children.add(node);
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) return false;
+	public boolean equals(final Object obj) {
+		if (obj == null) {
+			return false;
+		}
 
 		if (obj instanceof IliasCategoryNode) {
-			IliasCategoryNode other = (IliasCategoryNode) obj;
-			return this.id == other.getId() && this.parent == other.getParent();
+			final IliasCategoryNode other = (IliasCategoryNode) obj;
+			return id == other.getId() && parent == other.getParent();
 		}
 		return false;
 	}

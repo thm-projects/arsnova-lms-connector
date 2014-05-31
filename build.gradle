@@ -6,11 +6,11 @@ subprojects {
 	sourceCompatibility = 1.7
 
 	group = 'de.thm.arsnova.connector'
-	version = '0.70.2-SNAPSHOT'
+	version = '0.71.0-SNAPSHOT'
 
 	ext {
-		springVersion = '4.0.4.RELEASE'
-		springSecurityVersion = '3.2.3.RELEASE'
+		springVersion = '4.0.5.RELEASE'
+		springSecurityVersion = '3.2.4.RELEASE'
 	}
 
 	repositories {
@@ -22,7 +22,7 @@ subprojects {
 		compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
 		compile group: 'org.springframework', name: 'spring-context', version: springVersion
 		compile group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion
-		compile group: 'org.codehaus.jackson', name: 'jackson-mapper-lgpl', version: '1.9.13'
+		compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.3.3'
 
 		testCompile group: 'junit', name: 'junit', version: '4.11'
 		testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
@@ -30,21 +30,19 @@ subprojects {
 
 	test { systemProperties 'property': 'value' }
 
-	configurations {
-		deployerJars
-	}
+	configurations { deployerJars }
 
 	uploadArchives {
 		repositories.mavenDeployer {
 			configuration = configurations.deployerJars
 			repository(
-				url: project.hasProperty('mavenUrl') ? mavenUrl : "http://maven.mni.thm.de/content/repositories/snapshots/"
-			) {
-				authentication(
-					userName: project.hasProperty('mavenUsername') ?  mavenUsername : '',
-					password: project.hasProperty('mavenPassword') ?  mavenUsername : ''
-				)
-			}
+					url: project.hasProperty('mavenUrl') ? mavenUrl : "http://maven.mni.thm.de/content/repositories/snapshots/"
+					) {
+						authentication(
+								userName: project.hasProperty('mavenUsername') ?  mavenUsername : '',
+								password: project.hasProperty('mavenPassword') ?  mavenUsername : ''
+								)
+					}
 		}
 	}
 }
