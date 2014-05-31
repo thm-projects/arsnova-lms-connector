@@ -37,17 +37,17 @@ public class ConnectorControllerTest {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = standaloneSetup(controller).build();
 
-		Membership membership = new Membership();
+		final Membership membership = new Membership();
 		membership.setMember(true);
 		membership.setUserrole(UserRole.TEACHER);
 
-		Membership fmembership = new Membership();
+		final Membership fmembership = new Membership();
 		fmembership.setMember(false);
 
 		when(service.getMembership(anyString(), anyString())).thenReturn(fmembership);
 		when(service.getMembership(anyString(), startsWith("123"))).thenReturn(membership);
 
-		Courses c1 = new Courses();
+		final Courses c1 = new Courses();
 		c1.getCourse().add(new Course());
 
 		when(service.getCourses(anyString())).thenReturn(new Courses());

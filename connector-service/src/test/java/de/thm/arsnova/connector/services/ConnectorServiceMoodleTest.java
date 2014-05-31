@@ -44,18 +44,18 @@ public class ConnectorServiceMoodleTest {
 
 	@Before
 	public void initDatabase() {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		createTables(jdbcTemplate);
 		try {
-			Connection con = dataSource.getConnection();
-			IDatabaseConnection connection = new DatabaseConnection(con);
+			final Connection con = dataSource.getConnection();
+			final IDatabaseConnection connection = new DatabaseConnection(con);
 			DatabaseOperation.CLEAN_INSERT.execute(connection, getDataSet());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	private void createTables(JdbcTemplate jdbcTemplate) {
+	private void createTables(final JdbcTemplate jdbcTemplate) {
 		jdbcTemplate.execute(
 				"CREATE TABLE mdl_course ("
 						+ "id bigint NOT NULL,"
@@ -108,13 +108,13 @@ public class ConnectorServiceMoodleTest {
 	}
 
 	private IDataSet getDataSet() throws Exception {
-		FileInputStream fis = new FileInputStream(new File("src/test/resources/dbunit/moodle-datasource.xml"));
+		final FileInputStream fis = new FileInputStream(new File("src/test/resources/dbunit/moodle-datasource.xml"));
 		return new XmlDataSet(fis);
 	}
 
 	@After
 	public void cleanupDatabase() {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		jdbcTemplate.execute("DROP TABLE mdl_course");
 		jdbcTemplate.execute("DROP TABLE mdl_user");
@@ -126,25 +126,25 @@ public class ConnectorServiceMoodleTest {
 
 	@Test
 	public void testShouldNotReturnCourseForNotEnroledUser() {
-		Courses courses = connectorService.getCourses("admin");
-		int actual = courses.getCourse().size();
-		int expected = 0;
+		final Courses courses = connectorService.getCourses("admin");
+		final int actual = courses.getCourse().size();
+		final int expected = 0;
 
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void testShouldReturnCoursesForEnroledUser() {
-		Courses courses = connectorService.getCourses("ptsr00");
-		int actual = courses.getCourse().size();
-		int expected = 1;
+		final Courses courses = connectorService.getCourses("ptsr00");
+		final int actual = courses.getCourse().size();
+		final int expected = 1;
 
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void testShouldReturnMembershipForEnroledUser() {
-		Membership membership = connectorService.getMembership("ptsr00", "1");
+		final Membership membership = connectorService.getMembership("ptsr00", "1");
 
 		assertTrue(membership.isMember());
 		assertEquals(UserRole.TEACHER, membership.getUserrole());
@@ -152,51 +152,51 @@ public class ConnectorServiceMoodleTest {
 
 	@Test
 	public void testShouldNotReturnCoursesForNonexistantUsers() {
-		Courses courses = connectorService.getCourses("iamnothere");
-		int actual = courses.getCourse().size();
-		int expected = 0;
+		final Courses courses = connectorService.getCourses("iamnothere");
+		final int actual = courses.getCourse().size();
+		final int expected = 0;
 
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void testShouldIndicateAnEnroledUser() {
-		Membership membership = connectorService.getMembership("ptsr00", "1");
+		final Membership membership = connectorService.getMembership("ptsr00", "1");
 		assertTrue(membership.isMember());
 		assertNotNull(membership.getUserrole());
 	}
 
 	@Test
 	public void testShouldNotIndicateUnenroledUsers() {
-		Membership membership = connectorService.getMembership("ptsr01", "1");
+		final Membership membership = connectorService.getMembership("ptsr01", "1");
 		assertFalse(membership.isMember());
 		assertNull(membership.getUserrole());
 	}
 
 	@Test
 	public void testShouldReturnFalseOnUnknownCourse() {
-		Membership membership = connectorService.getMembership("ptsr00", "12345678");
+		final Membership membership = connectorService.getMembership("ptsr00", "12345678");
 		assertFalse(membership.isMember());
 	}
 
 	@Test
 	public void testShouldReturnFalseOnUnknownUser() {
-		Membership membership = connectorService.getMembership("iamnothere", "1");
+		final Membership membership = connectorService.getMembership("iamnothere", "1");
 		assertFalse(membership.isMember());
 	}
 
 	@Test
 	public void testShouldReturnCorrectCourseType() {
-		Courses courses = connectorService.getCourses("ptsr00");
-		String actual = courses.getCourse().get(0).getType();
-		String expected = "moodle";
+		final Courses courses = connectorService.getCourses("ptsr00");
+		final String actual = courses.getCourse().get(0).getType();
+		final String expected = "moodle";
 
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void testShouldReturnCorrectCourseData() {
-		Courses courses = connectorService.getCourses("ptsr00");
+		final Courses courses = connectorService.getCourses("ptsr00");
 		String actual = courses.getCourse().get(0).getShortname();
 		String expected = "TK1";
 		assertEquals(expected, actual);
@@ -208,8 +208,8 @@ public class ConnectorServiceMoodleTest {
 
 	@Test
 	public void testShouldReturnCorrectCourseMembershipForTeacher() {
-		Courses courses = connectorService.getCourses("ptsr00");
-		Membership actual = courses.getCourse().get(0).getMembership();
+		final Courses courses = connectorService.getCourses("ptsr00");
+		final Membership actual = courses.getCourse().get(0).getMembership();
 
 		assertTrue(actual.isMember());
 		assertEquals(UserRole.TEACHER, actual.getUserrole());
@@ -217,8 +217,8 @@ public class ConnectorServiceMoodleTest {
 
 	@Test
 	public void testShouldReturnCorrectCourseMembershipForMember() {
-		Courses courses = connectorService.getCourses("ptsr02");
-		Membership actual = courses.getCourse().get(0).getMembership();
+		final Courses courses = connectorService.getCourses("ptsr02");
+		final Membership actual = courses.getCourse().get(0).getMembership();
 
 		assertTrue(actual.isMember());
 		assertEquals(UserRole.MEMBER, actual.getUserrole());
@@ -226,7 +226,7 @@ public class ConnectorServiceMoodleTest {
 
 	@Test
 	public void testShouldNotIndicateEnroledUserButInvisibleCourse() {
-		Membership membership = connectorService.getMembership("ptsr02", "4");
+		final Membership membership = connectorService.getMembership("ptsr02", "4");
 		assertFalse(membership.isMember());
 		assertNull(membership.getUserrole());
 	}

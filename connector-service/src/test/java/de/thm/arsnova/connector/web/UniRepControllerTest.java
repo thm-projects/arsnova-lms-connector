@@ -1,7 +1,7 @@
 package de.thm.arsnova.connector.web;
 
-import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -56,14 +56,14 @@ public class UniRepControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON));
 	}
-	
+
 	@Test
 	public void testShouldReturnAllQuestions() throws Exception {
 		mockMvc.perform(get("/ilias/question/123").param("source", "ALL").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON));
 	}
-	
+
 	@Test
 	public void testShouldGetClientErrorOnInvalidSourceParam() throws Exception {
 		mockMvc.perform(get("/ilias/question/123").param("source", "INVALID").accept(MediaType.APPLICATION_JSON))

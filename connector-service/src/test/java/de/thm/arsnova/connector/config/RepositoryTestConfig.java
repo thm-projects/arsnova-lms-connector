@@ -40,7 +40,7 @@ public class RepositoryTestConfig {
 
 	@Bean(name = "configDataSource")
 	public DriverManagerDataSource configDataSource() throws SQLException {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		final DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
 		dataSource.setUrl("jdbc:hsqldb:mem:testdb");
 		dataSource.setUsername("test");
@@ -50,11 +50,11 @@ public class RepositoryTestConfig {
 
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws SQLException {
-		LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
+		final LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
 		lef.setDataSource(configDataSource());
 		lef.setJpaVendorAdapter(jpaVendorAdapter());
 		lef.setPackagesToScan("de.thm.arsnova.connector.persistence.domain");
-		Properties jpaProperties = new Properties();
+		final Properties jpaProperties = new Properties();
 		jpaProperties.put("openjpa.RuntimeUnenhancedClasses", "supported");
 		lef.setJpaProperties(jpaProperties);
 		lef.afterPropertiesSet();
@@ -63,7 +63,7 @@ public class RepositoryTestConfig {
 
 	@Bean
 	public OpenJpaVendorAdapter jpaVendorAdapter() {
-		OpenJpaVendorAdapter jpaVendorAdapter = new OpenJpaVendorAdapter();
+		final OpenJpaVendorAdapter jpaVendorAdapter = new OpenJpaVendorAdapter();
 		jpaVendorAdapter.setShowSql(true);
 		jpaVendorAdapter.setGenerateDdl(true);
 		return jpaVendorAdapter;
@@ -71,7 +71,7 @@ public class RepositoryTestConfig {
 
 	@Bean
 	public PlatformTransactionManager transactionManager() throws SQLException {
-		JpaTransactionManager txManager = new JpaTransactionManager();
+		final JpaTransactionManager txManager = new JpaTransactionManager();
 		txManager.setEntityManagerFactory(entityManagerFactory().getObject());
 		return txManager;
 	}

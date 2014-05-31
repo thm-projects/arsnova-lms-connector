@@ -19,7 +19,7 @@ import de.thm.arsnova.connector.core.RepoPermissionEvaluator;
 public class SecurityTestConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+	public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser("admin")
 		.password("secret").authorities("ADMIN")
 		.and().withUser("user").password("secret").authorities("USER");
@@ -37,7 +37,7 @@ public class SecurityTestConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	protected void configure(final HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.httpBasic();
 	}

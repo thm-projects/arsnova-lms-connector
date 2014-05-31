@@ -41,10 +41,10 @@ public class InternalUserServiceTest {
 	@Before
 	public void initDatabase() {
 		try {
-			Connection con = dataSource.getConnection();
-			IDatabaseConnection connection = new DatabaseConnection(con);
+			final Connection con = dataSource.getConnection();
+			final IDatabaseConnection connection = new DatabaseConnection(con);
 			DatabaseOperation.CLEAN_INSERT.execute(connection, getDataSet());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -54,49 +54,49 @@ public class InternalUserServiceTest {
 	}
 
 	private IDataSet getDataSet() throws Exception {
-		FileInputStream fis = new FileInputStream(new File(
+		final FileInputStream fis = new FileInputStream(new File(
 				"src/test/resources/dbunit/internaldb.xml"));
 		return new XmlDataSet(fis);
 	}
 
 	@Test
 	public void testShouldIndicateAdminUser() {
-		User actual = internalUserService.getUser("itsr00");
+		final User actual = internalUserService.getUser("itsr00");
 		assertTrue(actual.isAdmin());
 	}
 
 	@Test
 	public void testShouldIndicateNonAdminUser() {
-		User actual = internalUserService.getUser("itsr01");
+		final User actual = internalUserService.getUser("itsr01");
 		assertFalse(actual.isAdmin());
 	}
 
 	@Test
 	public void testShouldSaveAndReturnUser() {
-		User expected = new User();
+		final User expected = new User();
 		expected.setUserId("ptsr00");
 		expected.setPassword("secret");
 		expected.setAdmin(true);
 		internalUserService.saveUser(expected);
 
-		User actual = internalUserService.getUser("ptsr00");
+		final User actual = internalUserService.getUser("ptsr00");
 
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void testShouldHashPasswordOnFirstSave() {
-		User expected = new User();
+		final User expected = new User();
 		expected.setUserId("ptsr01");
 		expected.setPassword("secret");
 		expected.setAdmin(true);
 		internalUserService.saveUser(expected);
 
-		User actual = internalUserService.getUser("ptsr01");
+		final User actual = internalUserService.getUser("ptsr01");
 
 		assertNotEquals("secret", actual.getPassword());
 
-		String expectedPassword = "{SHA512}" + Sha512DigestUtils.shaHex("secret");
+		final String expectedPassword = "{SHA512}" + Sha512DigestUtils.shaHex("secret");
 		internalUserService.unmakeAdmin("ptsr01");
 
 		assertEquals(expectedPassword, internalUserService.getUser("ptsr01").getPassword());

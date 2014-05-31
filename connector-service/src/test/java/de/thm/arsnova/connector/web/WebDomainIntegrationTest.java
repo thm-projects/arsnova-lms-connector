@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,7 +35,12 @@ import de.thm.arsnova.connector.config.WebConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration(classes = { DummyTestConfig.class, SecurityTestConfig.class, WebConfig.class, RepositoryTestConfig.class})
+@ContextConfiguration(classes = {
+		DummyTestConfig.class,
+		SecurityTestConfig.class,
+		WebConfig.class,
+		RepositoryTestConfig.class
+})
 public class WebDomainIntegrationTest {
 
 	private MockMvc mockMvc;
@@ -48,10 +54,24 @@ public class WebDomainIntegrationTest {
 	}
 
 	@Test
+	public void testShouldReturnCoursesWithoutCredentials() throws Exception {
+		try {
+			mockMvc.perform(get("/test/courses").accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isOk())
+			.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		} catch (final NestedServletException e) {
+			assertTrue( e.getCause() instanceof AuthenticationCredentialsNotFoundException );
+			return;
+		}
+
+		fail("AccessDeniedException expected");
+	}
+
+	@Test
 	public void testShouldReturnMembership() throws Exception {
-		List<GrantedAuthority> ga = new ArrayList<GrantedAuthority>();
+		final List<GrantedAuthority> ga = new ArrayList<GrantedAuthority>();
 		ga.add(new SimpleGrantedAuthority("ADMIN"));
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("admin", "secret", ga);
+		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("admin", "secret", ga);
 		SecurityContextHolder.getContext().setAuthentication(token);
 		mockMvc.perform(get("/test/membership/42").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
@@ -60,14 +80,14 @@ public class WebDomainIntegrationTest {
 
 	@Test
 	public void testShouldNotReturnMembershipOnInvalidCredentials() throws Exception {
-		List<GrantedAuthority> ga = new ArrayList<GrantedAuthority>();
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("tester", "notsecret", ga);
+		final List<GrantedAuthority> ga = new ArrayList<GrantedAuthority>();
+		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("tester", "notsecret", ga);
 		SecurityContextHolder.getContext().setAuthentication(token);
 
 		try {
 			mockMvc.perform(get("/test/membership/42").accept(MediaType.APPLICATION_JSON))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON));
-		} catch (NestedServletException e) {
+		} catch (final NestedServletException e) {
 			assertTrue( e.getCause() instanceof AccessDeniedException );
 			return;
 		}
@@ -77,9 +97,9 @@ public class WebDomainIntegrationTest {
 
 	@Test
 	public void testShouldReturnCourses() throws Exception {
-		List<GrantedAuthority> ga = new ArrayList<GrantedAuthority>();
+		final List<GrantedAuthority> ga = new ArrayList<GrantedAuthority>();
 		ga.add(new SimpleGrantedAuthority("ADMIN"));
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("admin", "secret", ga);
+		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("admin", "secret", ga);
 		SecurityContextHolder.getContext().setAuthentication(token);
 		mockMvc.perform(get("/test/courses").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
@@ -88,14 +108,14 @@ public class WebDomainIntegrationTest {
 
 	@Test
 	public void testShouldNotReturnCoursesOnInvalidCredentials() throws Exception {
-		List<GrantedAuthority> ga = new ArrayList<GrantedAuthority>();
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("tester", "notsecret", ga);
+		final List<GrantedAuthority> ga = new ArrayList<GrantedAuthority>();
+		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("tester", "notsecret", ga);
 		SecurityContextHolder.getContext().setAuthentication(token);
 
 		try {
 			mockMvc.perform(get("/test/courses").accept(MediaType.APPLICATION_JSON))
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON));
-		} catch (NestedServletException e) {
+		} catch (final NestedServletException e) {
 			assertTrue( e.getCause() instanceof AccessDeniedException );
 			return;
 		}

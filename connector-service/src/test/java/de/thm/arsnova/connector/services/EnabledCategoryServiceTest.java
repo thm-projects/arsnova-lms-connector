@@ -37,10 +37,10 @@ public class EnabledCategoryServiceTest {
 	@Before
 	public void initDatabase() {
 		try {
-			Connection con = dataSource.getConnection();
-			IDatabaseConnection connection = new DatabaseConnection(con);
+			final Connection con = dataSource.getConnection();
+			final IDatabaseConnection connection = new DatabaseConnection(con);
 			DatabaseOperation.CLEAN_INSERT.execute(connection, getDataSet());
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -50,7 +50,7 @@ public class EnabledCategoryServiceTest {
 	}
 
 	private IDataSet getDataSet() throws Exception {
-		FileInputStream fis = new FileInputStream(new File(
+		final FileInputStream fis = new FileInputStream(new File(
 				"src/test/resources/dbunit/internaldb.xml"));
 		return new XmlDataSet(fis);
 	}

@@ -24,15 +24,15 @@ public class ConnectorServiceDummyTest {
 
 	@Test
 	public void testShouldReturnCourseForEnroledUser() {
-		Courses courses = connectorService.getCourses("ptsr00");
-		int actual = courses.getCourse().size();
-		int expected = 1;
+		final Courses courses = connectorService.getCourses("ptsr00");
+		final int actual = courses.getCourse().size();
+		final int expected = 1;
 		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void testShouldReturnMembership() {
-		Membership membership = connectorService.getMembership("ptsr01", "1");
+		final Membership membership = connectorService.getMembership("ptsr01", "1");
 		assertTrue(membership.isMember());
 		assertEquals(UserRole.MEMBER, membership.getUserrole());
 	}

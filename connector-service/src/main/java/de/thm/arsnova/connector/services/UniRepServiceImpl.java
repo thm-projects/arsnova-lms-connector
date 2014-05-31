@@ -23,16 +23,16 @@ public class UniRepServiceImpl implements UniRepService {
 	private UniRepDao uniRepDao;
 
 	@Override
-	public IliasCategoryNode getTreeObjects(int refId)
+	public IliasCategoryNode getTreeObjects(final int refId)
 			throws ServiceUnavailableException, NotFoundException {
 		if (uniRepDao == null) {
 			throw new ServiceUnavailableException();
 		}
 
 		List<IliasCategoryNode> result = uniRepDao.getTreeObjects(refId);
-		result = this.removeNotMarkedNodes(result, false);
+		result = removeNotMarkedNodes(result, false);
 
-		while(removeBranchesWithoutQuestionPools(result));
+		while(removeBranchesWithoutQuestionPools(result)) {};
 
 		if (result.size() == 1) {
 			return result.get(0);
@@ -41,48 +41,53 @@ public class UniRepServiceImpl implements UniRepService {
 	}
 
 	@Override
-	public List<IliasQuestion> getQuestions(int refId, boolean noRandomQuestions) throws ServiceUnavailableException {
+	public List<IliasQuestion> getQuestions(
+			final int refId,
+			final boolean noRandomQuestions
+			) throws ServiceUnavailableException {
 		if (uniRepDao == null) {
 			throw new ServiceUnavailableException();
 		}
 
 		if(uniRepDao.isRandomQuestionSet(refId) && !noRandomQuestions) {
-			return this.getRandomQuestions(refId);
+			return getRandomQuestions(refId);
 		} else {
 			return uniRepDao.getQuestion(refId);
 		}
 	}
 
 	@Override
-	public List<IliasQuestion> getRandomQuestions(int refId) {
-		int amountOfQuestions = uniRepDao.getQuestionAmountPerTest(refId);
-		List<IliasQuestion> allQuestions = uniRepDao.getRandomTestQuestions(refId);
+	public List<IliasQuestion> getRandomQuestions(final int refId) {
+		final int amountOfQuestions = uniRepDao.getQuestionAmountPerTest(refId);
+		final List<IliasQuestion> allQuestions = uniRepDao.getRandomTestQuestions(refId);
 
-		Set<Integer> randomIds = new HashSet<>();
+		final Set<Integer> randomIds = new HashSet<>();
 		while (randomIds.size() < amountOfQuestions) {
 			randomIds.add((int)Math.floor(Math.random() * allQuestions.size()));
 		}
 
-		List<IliasQuestion> result = new ArrayList<>();
-		for (int id : randomIds) {
+		final List<IliasQuestion> result = new ArrayList<>();
+		for (final int id : randomIds) {
 			result.add(allQuestions.get(id));
 		}
 
 		return result;
 	}
 
-	private boolean removeBranchesWithoutQuestionPools( List<IliasCategoryNode> nodes ) throws ServiceUnavailableException {
+	private boolean removeBranchesWithoutQuestionPools(
+			final List<IliasCategoryNode> nodes
+			) throws ServiceUnavailableException {
 
 		if (nodes == null) {
 			return false;
 		}
 
-		Iterator<IliasCategoryNode> it = nodes.iterator();
+		final Iterator<IliasCategoryNode> it = nodes.iterator();
 
 		boolean hasRemovedNodes = false;
 
 		while (it.hasNext()) {
-			IliasCategoryNode node = it.next();
+			final IliasCategoryNode node = it.next();
 
 			if (node == null) {
 				continue;
@@ -106,19 +111,22 @@ public class UniRepServiceImpl implements UniRepService {
 		return hasRemovedNodes;
 	}
 
-	private List<IliasCategoryNode> removeNotMarkedNodes(List<IliasCategoryNode> nodes, boolean isParentMarked) {
-		Map<String, String> categoryMetaTagRefIds = uniRepDao.getReferenceIdsWithMetaDataFlag("UniRepApp");
-		Map<String, String> courseMetaTagRefIds = uniRepDao.getReferenceIdsWithMetaDataFlag("UniRepCourse");
+	private List<IliasCategoryNode> removeNotMarkedNodes(
+			final List<IliasCategoryNode> nodes,
+			final boolean isParentMarked
+			) {
+		final Map<String, String> categoryMetaTagRefIds = uniRepDao.getReferenceIdsWithMetaDataFlag("UniRepApp");
+		final Map<String, String> courseMetaTagRefIds = uniRepDao.getReferenceIdsWithMetaDataFlag("UniRepCourse");
 
 		if (nodes == null) {
 			return null;
 		}
 
-		Iterator<IliasCategoryNode> it = nodes.iterator();
+		final Iterator<IliasCategoryNode> it = nodes.iterator();
 
 		while (it.hasNext()) {
-			IliasCategoryNode node = it.next();
-			String nodeId = String.valueOf(node.getId());
+			final IliasCategoryNode node = it.next();
+			final String nodeId = String.valueOf(node.getId());
 
 			if("crs".equals(node.getType())) {
 				if("yes".equals(courseMetaTagRefIds.get(nodeId))) {
