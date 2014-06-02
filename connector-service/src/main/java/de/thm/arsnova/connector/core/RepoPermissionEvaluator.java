@@ -15,20 +15,24 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 	private InternalUserService internalUserService;
 
 	@Override
-	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
+	public boolean hasPermission(final Authentication authentication,
+			final Object targetDomainObject, final Object permission) {
 		return false;
 	}
 
-	/** Checks permission
+	/**
+	 * Checks permission
 	 *
 	 */
 	@Override
-	public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
+	public boolean hasPermission(final Authentication authentication,
+			final Serializable targetId, final String targetType,
+			final Object permission) {
 		if (authentication.getPrincipal() instanceof String) {
 			return false;
 		}
 
-		UserDetails ud = (UserDetails)authentication.getPrincipal();
+		final UserDetails ud = (UserDetails) authentication.getPrincipal();
 
 		if (isAdmin(ud)) {
 			return true;
@@ -37,7 +41,7 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 		switch (targetType) {
 		case "membership":
 		case "courses":
-			if ("read".equals(permission) && ud.getUsername().equals(targetId) ) {
+			if ("read".equals(permission) && ud.getUsername().equals(targetId)) {
 				return true;
 			}
 			break;
@@ -53,7 +57,7 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 		return false;
 	}
 
-	private boolean isAdmin(UserDetails user) {
+	private boolean isAdmin(final UserDetails user) {
 		return internalUserService.getUser(user.getUsername()).isAdmin();
 	}
 }

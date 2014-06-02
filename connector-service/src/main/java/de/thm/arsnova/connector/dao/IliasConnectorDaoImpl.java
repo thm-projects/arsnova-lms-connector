@@ -27,8 +27,8 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 	private DataSource dataSource;
 
 	@Override
-	public List<IliasCategoryNode> getTreeObjects(int refId) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	public List<IliasCategoryNode> getTreeObjects(final int refId) {
+		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		String typefilter = "";
 
@@ -43,10 +43,10 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 			}
 		}
 
-		final Map<Integer, Integer> questionCount = this.getQuestionCount(refId);
-		final Map<Integer, Integer> randomQuestionAmount = this.getRandomQuestionAmount(refId);
+		final Map<Integer, Integer> questionCount = getQuestionCount(refId);
+		final Map<Integer, Integer> randomQuestionAmount = getRandomQuestionAmount(refId);
 
-		List<IliasCategoryNode> nodeList = jdbcTemplate.query(
+		final List<IliasCategoryNode> nodeList = jdbcTemplate.query(
 				"SELECT t2.*, d.type, d.title FROM tree AS t1"
 						+ " JOIN tree AS t2 ON t2.lft BETWEEN t1.lft AND t1.rgt AND t1.tree = t2.tree"
 						+ " JOIN object_reference AS r ON r.ref_id=t2.child "
@@ -56,16 +56,18 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 						new String[] {String.valueOf(refId)},
 						new RowMapper<IliasCategoryNode>() {
 							@Override
-							public IliasCategoryNode mapRow(ResultSet resultSet, int row) throws SQLException {
-								IliasCategoryNode node = new IliasCategoryNode(
+							public IliasCategoryNode mapRow(
+									final ResultSet resultSet,
+									final int row
+									) throws SQLException {
+								final IliasCategoryNode node = new IliasCategoryNode(
 										resultSet.getInt("child"),
 										resultSet.getInt("parent"),
 										resultSet.getString("title"),
 										resultSet.getString("type"),
-										questionCount.get(resultSet.getInt("child")) == null ? 0 : 
+										questionCount.get(resultSet.getInt("child")) == null ? 0 :
 											questionCount.get(resultSet.getInt("child"))
 										);
-								
 								if("tst".equals(node.getType())) {
 									if(randomQuestionAmount.get(node.getId()) == null) {
 										node.setIsRandomTest(false);
@@ -74,21 +76,20 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 										node.setRandomQuestionCount(randomQuestionAmount.get(node.getId()));
 									}
 								}
-								
 								return node;
 							}
 						}
 				);
 
-		for (IliasCategoryNode node : nodeList) {
-			for (IliasCategoryNode parentNode : nodeList) {
+		for (final IliasCategoryNode node : nodeList) {
+			for (final IliasCategoryNode parentNode : nodeList) {
 				if (node.getParent() == parentNode.getId()) {
 					parentNode.addChild(node);
 				}
 			}
 		}
 
-		List<IliasCategoryNode> result = new ArrayList<>();
+		final List<IliasCategoryNode> result = new ArrayList<>();
 		if (nodeList.size() > 0) {
 			result.add(nodeList.get(0));
 		}
@@ -98,16 +99,16 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 
 
 	@Override
-	public List<IliasQuestion> getQuestion(int refId) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	public List<IliasQuestion> getQuestion(final int refId) {
+		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		return jdbcTemplate.query(
 				"SELECT * FROM qpl_questions JOIN object_reference ON (obj_fi = obj_id) WHERE ref_id=?;",
 				new String[] {String.valueOf(refId)},
 				new RowMapper<IliasQuestion>() {
 					@Override
-					public IliasQuestion mapRow(ResultSet resultSet, int row) throws SQLException {
-						IliasQuestion q = new IliasQuestion();
+					public IliasQuestion mapRow(final ResultSet resultSet, final int row) throws SQLException {
+						final IliasQuestion q = new IliasQuestion();
 						q.setDescription(resultSet.getString("description"));
 						q.setId(resultSet.getInt("question_id"));
 						q.setPoints(resultSet.getInt("points"));
@@ -124,10 +125,10 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 	}
 
 	@Override
-	public List<IliasQuestion> getRandomTestQuestions(int refId) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	public List<IliasQuestion> getRandomTestQuestions(final int refId) {
+		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-		List<IliasQuestion> iliasQuestions = jdbcTemplate.query(
+		final List<IliasQuestion> iliasQuestions = jdbcTemplate.query(
 				"SELECT * FROM qpl_questions JOIN object_reference ON (obj_fi = obj_id) WHERE question_id IN "
 						+ "(SELECT qst_fi FROM tree AS t1 "
 						+ "JOIN tree AS t2 ON t2.lft BETWEEN t1.lft AND t1.rgt AND t1.tree = t2.tree "
@@ -139,8 +140,8 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 						new String[] {String.valueOf(refId)},
 						new RowMapper<IliasQuestion>() {
 							@Override
-							public IliasQuestion mapRow(ResultSet resultSet, int row) throws SQLException {
-								IliasQuestion q = new IliasQuestion();
+							public IliasQuestion mapRow(final ResultSet resultSet, final int row) throws SQLException {
+								final IliasQuestion q = new IliasQuestion();
 								q.setDescription(resultSet.getString("description"));
 								q.setId(resultSet.getInt("question_id"));
 								q.setPoints(resultSet.getInt("points"));
@@ -159,8 +160,8 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 	}
 
 	@Override
-	public Map<String, String> getReferenceIdsWithMetaDataFlag(String metaDataTitle) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	public Map<String, String> getReferenceIdsWithMetaDataFlag(final String metaDataTitle) {
+		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		final Map<String, String> result = new HashMap<String, String>();
 
@@ -168,29 +169,29 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 				"SELECT value, ref_id FROM adv_md_values AS v "
 						+ "JOIN object_reference AS r ON (v.obj_id = r.obj_id) "
 						+ "WHERE field_id = ? AND value = 'yes' OR value = 'no'",
-				new String[] {getMetaDataFieldId(metaDataTitle)},
-				new RowMapper<String>() {
-					@Override
-					public String mapRow(ResultSet resultSet, int row) throws SQLException {
-						return result.put(
-								resultSet.getString("ref_id"),
-								resultSet.getString("value"));
-					}
-				}
+						new String[] {getMetaDataFieldId(metaDataTitle)},
+						new RowMapper<String>() {
+							@Override
+							public String mapRow(final ResultSet resultSet, final int row) throws SQLException {
+								return result.put(
+										resultSet.getString("ref_id"),
+										resultSet.getString("value"));
+							}
+						}
 				);
 
 		return result;
 	}
 
-	public List<IliasFeedback> getFeedback(int questionId) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	public List<IliasFeedback> getFeedback(final int questionId) {
+		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		return jdbcTemplate.query(
 				"SELECT correctness, feedback FROM qpl_fb_generic WHERE question_fi = ?",
 				new String[] {String.valueOf(questionId)},
 				new RowMapper<IliasFeedback>() {
 					@Override
-					public IliasFeedback mapRow(ResultSet resultSet, int row) throws SQLException {
+					public IliasFeedback mapRow(final ResultSet resultSet, final int row) throws SQLException {
 						return new IliasFeedback(
 								resultSet.getString("feedback"),
 								resultSet.getBoolean("correctness")
@@ -201,8 +202,8 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 	}
 
 	@Override
-	public boolean isRandomQuestionSet(int refId) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	public boolean isRandomQuestionSet(final int refId) {
+		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		return jdbcTemplate.queryForObject(
 				"SELECT question_set_type FROM tree AS t1 "
@@ -214,7 +215,7 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 						new String[] {String.valueOf(refId)},
 						new RowMapper<Boolean>() {
 							@Override
-							public Boolean mapRow(ResultSet resultSet, int row) throws SQLException {
+							public Boolean mapRow(final ResultSet resultSet, final int row) throws SQLException {
 								return "RANDOM_QUEST_SET".equals(resultSet.getString("question_set_type"));
 							}
 						}
@@ -222,10 +223,10 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 	}
 
 	@Override
-	public int getQuestionAmountPerTest(int refId) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	public int getQuestionAmountPerTest(final int refId) {
+		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-		List<Integer> list = jdbcTemplate.query(
+		final List<Integer> list = jdbcTemplate.query(
 				"SELECT quest_amount_per_test FROM tree AS t1 "
 						+ "JOIN tree AS t2 ON t2.lft BETWEEN t1.lft AND t1.rgt AND t1.tree = t2.tree "
 						+ "JOIN object_reference AS r ON r.ref_id=t2.child "
@@ -236,7 +237,7 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 						new String[] {String.valueOf(refId)},
 						new RowMapper<Integer>() {
 							@Override
-							public Integer mapRow(ResultSet resultSet, int row)
+							public Integer mapRow(final ResultSet resultSet, final int row)
 									throws SQLException {
 								return resultSet.getInt("quest_amount_per_test");
 							}
@@ -250,8 +251,8 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 		return 0;
 	}
 
-	private List<IliasAnswer> getAnswers(int questionId) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	private List<IliasAnswer> getAnswers(final int questionId) {
+		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		return jdbcTemplate.query(
 				"SELECT answertext, points FROM qpl_a_sc WHERE question_fi = ? "
@@ -259,7 +260,7 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 						new String[] {String.valueOf(questionId), String.valueOf(questionId)},
 						new RowMapper<IliasAnswer>() {
 							@Override
-							public IliasAnswer mapRow(ResultSet resultSet, int row) throws SQLException {
+							public IliasAnswer mapRow(final ResultSet resultSet, final int row) throws SQLException {
 								return new IliasAnswer(
 										resultSet.getString("answertext"),
 										resultSet.getInt("points")
@@ -269,20 +270,20 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 				);
 	}
 
-	private String getMetaDataFieldId(String metaDataTitle) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	private String getMetaDataFieldId(final String metaDataTitle) {
+		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-		List<String> result = jdbcTemplate.query(
+		final List<String> result = jdbcTemplate.query(
 				"SELECT field_id, rec.title FROM adv_md_record AS rec "
 						+ "JOIN adv_mdf_definition AS def ON (rec.record_id = def.record_id) "
 						+ "WHERE rec.title = ?",
-				new String[] {metaDataTitle},
-				new RowMapper<String>() {
-					@Override
-					public String mapRow(ResultSet resultSet, int row) throws SQLException {
-						return resultSet.getString("field_id");
-					}
-				}
+						new String[] {metaDataTitle},
+						new RowMapper<String>() {
+							@Override
+							public String mapRow(final ResultSet resultSet, final int row) throws SQLException {
+								return resultSet.getString("field_id");
+							}
+						}
 				);
 
 		if (result.size() == 1) {
@@ -291,9 +292,9 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 
 		return null;
 	}
-	
-	private Map<Integer, Integer> getRandomQuestionAmount(int refId) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+	private Map<Integer, Integer> getRandomQuestionAmount(final int refId) {
+		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		final Map<Integer, Integer> result = new HashMap<Integer, Integer>();
 
@@ -309,7 +310,7 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 						new String[] {String.valueOf(refId)},
 						new RowMapper<Integer>() {
 							@Override
-							public Integer mapRow(ResultSet resultSet, int row) throws SQLException {
+							public Integer mapRow(final ResultSet resultSet, final int row) throws SQLException {
 								result.put(
 										resultSet.getInt("ref_id"),
 										resultSet.getInt("count"));
@@ -321,8 +322,8 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 		return result;
 	}
 
-	private Map<Integer, Integer> getQuestionCount(int refId) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+	private Map<Integer, Integer> getQuestionCount(final int refId) {
+		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		final Map<Integer, Integer> result = new HashMap<Integer, Integer>();
 
@@ -336,7 +337,7 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 						new String[] {String.valueOf(refId)},
 						new RowMapper<Integer>() {
 							@Override
-							public Integer mapRow(ResultSet resultSet, int row) throws SQLException {
+							public Integer mapRow(final ResultSet resultSet, final int row) throws SQLException {
 								result.put(
 										resultSet.getInt("ref_id"),
 										resultSet.getInt("count"));

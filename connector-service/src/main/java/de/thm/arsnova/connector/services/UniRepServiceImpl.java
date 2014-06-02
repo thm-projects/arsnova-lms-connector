@@ -32,7 +32,8 @@ public class UniRepServiceImpl implements UniRepService {
 		List<IliasCategoryNode> result = uniRepDao.getTreeObjects(refId);
 		result = removeNotMarkedNodes(result, false);
 
-		while(removeBranchesWithoutQuestionPools(result)) {};
+		while (removeBranchesWithoutQuestionPools(result)) {
+		}
 
 		if (result.size() == 1) {
 			return result.get(0);
@@ -41,15 +42,13 @@ public class UniRepServiceImpl implements UniRepService {
 	}
 
 	@Override
-	public List<IliasQuestion> getQuestions(
-			final int refId,
-			final boolean noRandomQuestions
-			) throws ServiceUnavailableException {
+	public List<IliasQuestion> getQuestions(final int refId,
+			final boolean noRandomQuestions) throws ServiceUnavailableException {
 		if (uniRepDao == null) {
 			throw new ServiceUnavailableException();
 		}
 
-		if(uniRepDao.isRandomQuestionSet(refId) && !noRandomQuestions) {
+		if (uniRepDao.isRandomQuestionSet(refId) && !noRandomQuestions) {
 			return getRandomQuestions(refId);
 		} else {
 			return uniRepDao.getQuestion(refId);
@@ -59,11 +58,13 @@ public class UniRepServiceImpl implements UniRepService {
 	@Override
 	public List<IliasQuestion> getRandomQuestions(final int refId) {
 		final int amountOfQuestions = uniRepDao.getQuestionAmountPerTest(refId);
-		final List<IliasQuestion> allQuestions = uniRepDao.getRandomTestQuestions(refId);
+		final List<IliasQuestion> allQuestions = uniRepDao
+				.getRandomTestQuestions(refId);
 
 		final Set<Integer> randomIds = new HashSet<>();
 		while (randomIds.size() < amountOfQuestions) {
-			randomIds.add((int)Math.floor(Math.random() * allQuestions.size()));
+			randomIds
+			.add((int) Math.floor(Math.random() * allQuestions.size()));
 		}
 
 		final List<IliasQuestion> result = new ArrayList<>();
@@ -75,8 +76,8 @@ public class UniRepServiceImpl implements UniRepService {
 	}
 
 	private boolean removeBranchesWithoutQuestionPools(
-			final List<IliasCategoryNode> nodes
-			) throws ServiceUnavailableException {
+			final List<IliasCategoryNode> nodes)
+					throws ServiceUnavailableException {
 
 		if (nodes == null) {
 			return false;
@@ -93,8 +94,8 @@ public class UniRepServiceImpl implements UniRepService {
 				continue;
 			}
 
-			if(node.getChildren() == null || node.getChildren().size() == 0) {
-				if(node.getQuestionCount() == 0) {
+			if (node.getChildren() == null || node.getChildren().size() == 0) {
+				if (node.getQuestionCount() == 0) {
 					it.remove();
 					hasRemovedNodes = true;
 					continue;
@@ -112,11 +113,11 @@ public class UniRepServiceImpl implements UniRepService {
 	}
 
 	private List<IliasCategoryNode> removeNotMarkedNodes(
-			final List<IliasCategoryNode> nodes,
-			final boolean isParentMarked
-			) {
-		final Map<String, String> categoryMetaTagRefIds = uniRepDao.getReferenceIdsWithMetaDataFlag("UniRepApp");
-		final Map<String, String> courseMetaTagRefIds = uniRepDao.getReferenceIdsWithMetaDataFlag("UniRepCourse");
+			final List<IliasCategoryNode> nodes, final boolean isParentMarked) {
+		final Map<String, String> categoryMetaTagRefIds = uniRepDao
+				.getReferenceIdsWithMetaDataFlag("UniRepApp");
+		final Map<String, String> courseMetaTagRefIds = uniRepDao
+				.getReferenceIdsWithMetaDataFlag("UniRepCourse");
 
 		if (nodes == null) {
 			return null;
@@ -128,11 +129,10 @@ public class UniRepServiceImpl implements UniRepService {
 			final IliasCategoryNode node = it.next();
 			final String nodeId = String.valueOf(node.getId());
 
-			if("crs".equals(node.getType())) {
-				if("yes".equals(courseMetaTagRefIds.get(nodeId))) {
+			if ("crs".equals(node.getType())) {
+				if ("yes".equals(courseMetaTagRefIds.get(nodeId))) {
 					continue;
-				}
-				else {
+				} else {
 					it.remove();
 					continue;
 				}
@@ -140,23 +140,23 @@ public class UniRepServiceImpl implements UniRepService {
 
 			else {
 				if (categoryMetaTagRefIds.containsKey(nodeId)) {
-					if("no".equals(categoryMetaTagRefIds.get(nodeId))) {
+					if ("no".equals(categoryMetaTagRefIds.get(nodeId))) {
 						it.remove();
 						continue;
 					}
 
-					else if("yes".equals(categoryMetaTagRefIds.get(nodeId))) {
+					else if ("yes".equals(categoryMetaTagRefIds.get(nodeId))) {
 						removeNotMarkedNodes(node.getChildren(), true);
 					}
 				}
 
 				else {
-					if(isParentMarked) {
+					if (isParentMarked) {
 						removeNotMarkedNodes(node.getChildren(), true);
-					}
-					else {
+					} else {
 						removeNotMarkedNodes(node.getChildren(), false);
-						if(node.getChildren() == null || node.getChildren().size() == 0) {
+						if (node.getChildren() == null
+								|| node.getChildren().size() == 0) {
 							it.remove();
 						}
 					}

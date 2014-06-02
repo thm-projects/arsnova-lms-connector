@@ -12,19 +12,19 @@ public class DummyConnectorDaoImpl implements ConnectorDao {
 	private static final String TYPE = "dummy";
 
 	@Override
-	public List<String> getCourseUsers(String courseid) {
-		List<String> result = new ArrayList<String>();
+	public List<String> getCourseUsers(final String courseid) {
+		final List<String> result = new ArrayList<String>();
 		result.add("test");
 		return result;
 	}
 
 	@Override
-	public List<Course> getMembersCourses(String username) {
-		List<Course> result = new ArrayList<Course>();
-		if ("dummy".equals(username)) {
+	public List<Course> getMembersCourses(final String username) {
+		final List<Course> result = new ArrayList<Course>();
+		if (TYPE.equals(username)) {
 			return result;
 		}
-		Course course = new Course();
+		final Course course = new Course();
 		course.setFullname("Dummy Course");
 		course.setId("1");
 		course.setType(TYPE);
@@ -33,10 +33,10 @@ public class DummyConnectorDaoImpl implements ConnectorDao {
 	}
 
 	@Override
-	public Membership getMembership(String username, String courseid) {
-		Membership membership = new Membership();
-		membership.setMember( ! "dummy".equals(username) );
-		if (! "dummy".equals(username)) {
+	public Membership getMembership(final String username, final String courseid) {
+		final Membership membership = new Membership();
+		membership.setMember(!TYPE.equals(username));
+		if (!TYPE.equals(username)) {
 			membership.setUserrole(UserRole.MEMBER);
 		}
 		return membership;
