@@ -10,3 +10,4 @@ target/*
 */build/*
 .gradle/*
 /build/
+*/bin

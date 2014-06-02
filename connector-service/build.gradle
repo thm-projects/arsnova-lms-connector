@@ -1,5 +1,7 @@
 apply plugin: 'eclipse-wtp'
 apply plugin: 'war'
+apply plugin: 'jacoco'
+apply plugin: 'sonar-runner'
 
 jar {
 	manifest {
@@ -36,3 +38,14 @@ dependencies {
 }
 
 test { systemProperties 'property': 'value' }
+
+sonarRunner {
+	sonarProperties {
+		property "sonar.jacoco.reportPath", "$buildDir/jacoco/test.exec"
+		property "sonar.host.url", project.hasProperty('sonarServerUrl') ?  sonarServerUrl : ''
+		property "sonar.jdbc.url", project.hasProperty('sonarDatabaseUrl') ?  sonarDatabaseUrl : ''
+		property "sonar.jdbc.driverClassName",  project.hasProperty('sonarDatabaseDriverClassName') ?  sonarDatabaseDriverClassName : ''
+		property "sonar.jdbc.username", project.hasProperty('sonarDatabaseUsername') ?  sonarDatabaseUsername : ''
+		property "sonar.jdbc.password", project.hasProperty('sonarDatabasePassword') ?  sonarDatabasePassword : ''
+	}
+}
