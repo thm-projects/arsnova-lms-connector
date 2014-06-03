@@ -129,4 +129,10 @@ public class WebDomainIntegrationTest {
 		.andExpect(status().isServiceUnavailable())
 		.andExpect(content().contentType(MediaType.APPLICATION_JSON));
 	}
+
+	@Test
+	public void testShouldRejectRequestNotAcceptingJson() throws Exception {
+		mockMvc.perform(get("/test/membership/42").accept(MediaType.TEXT_PLAIN))
+		.andExpect(status().isNotAcceptable());
+	}
 }

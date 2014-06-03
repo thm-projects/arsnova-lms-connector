@@ -155,8 +155,10 @@ public class UniRepServiceImpl implements UniRepService {
 						removeNotMarkedNodes(node.getChildren(), true);
 					} else {
 						removeNotMarkedNodes(node.getChildren(), false);
-						if (node.getChildren() == null
-								|| node.getChildren().size() == 0) {
+						if (
+								node.getChildren() == null
+								|| node.getChildren().size() == 0
+								) {
 							it.remove();
 						}
 					}

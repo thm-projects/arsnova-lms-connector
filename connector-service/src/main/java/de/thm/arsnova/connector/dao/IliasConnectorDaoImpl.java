@@ -30,7 +30,7 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 	public List<IliasCategoryNode> getTreeObjects(final int refId) {
 		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-		String typefilter = "";
+		String typefilter = null;
 
 		if (this.getClass().getAnnotation(UniRepDao.Filter.class) != null) {
 			switch (this.getClass().getAnnotation(UniRepDao.Filter.class).value()) {
@@ -39,6 +39,9 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 				break;
 			case TEST:
 				typefilter = " AND type <> 'qpl'";
+				break;
+			default:
+				typefilter = "";
 				break;
 			}
 		}
@@ -68,8 +71,8 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 										questionCount.get(resultSet.getInt("child")) == null ? 0 :
 											questionCount.get(resultSet.getInt("child"))
 										);
-								if("tst".equals(node.getType())) {
-									if(randomQuestionAmount.get(node.getId()) == null) {
+								if ("tst".equals(node.getType())) {
+									if (randomQuestionAmount.get(node.getId()) == null) {
 										node.setIsRandomTest(false);
 									} else {
 										node.setIsRandomTest(true);

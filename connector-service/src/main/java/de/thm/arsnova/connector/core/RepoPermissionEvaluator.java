@@ -15,8 +15,11 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 	private InternalUserService internalUserService;
 
 	@Override
-	public boolean hasPermission(final Authentication authentication,
-			final Object targetDomainObject, final Object permission) {
+	public boolean hasPermission(
+			final Authentication authentication,
+			final Object targetDomainObject,
+			final Object permission
+			) {
 		return false;
 	}
 
@@ -25,9 +28,12 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 	 *
 	 */
 	@Override
-	public boolean hasPermission(final Authentication authentication,
-			final Serializable targetId, final String targetType,
-			final Object permission) {
+	public boolean hasPermission(
+			final Authentication authentication,
+			final Serializable targetId,
+			final String targetType,
+			final Object permission
+			) {
 		if (authentication.getPrincipal() instanceof String) {
 			return false;
 		}
