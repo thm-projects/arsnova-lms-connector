@@ -7,6 +7,7 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import de.thm.arsnova.connector.persistence.domain.User;
 import de.thm.arsnova.connector.services.InternalUserService;
 
 public class RepoPermissionEvaluator implements PermissionEvaluator {
@@ -64,6 +65,11 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 	}
 
 	private boolean isAdmin(final UserDetails user) {
-		return internalUserService.getUser(user.getUsername()).isAdmin();
+		final User u = internalUserService.getUser(user.getUsername());
+
+		if (u == null) {
+			return false;
+		}
+		return u.isAdmin();
 	}
 }
