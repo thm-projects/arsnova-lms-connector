@@ -1,8 +1,13 @@
 package de.thm.arsnova.connector.dao;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -15,10 +20,16 @@ public class StudipRestConnectorDaoImpl implements ConnectorDao {
 
 	private static final String TYPE = "studip";
 
-	private static final String USER_MEMBERSHIP_URI = "/user/{userid}/courses";
-	private static final String USER_SERACH_URI = "/users?needle={username}";
+	private static final String USER_MEMBERSHIP_URI = "{host}/user/{userid}/courses";
+	private static final String USER_SERACH_URI = "{host}/users?needle={username}";
+
+	private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
 	private final RestTemplate restTemplate = new RestTemplate();
+
+	@Value("lms.http.serverUrl") private String uriHostPart;
+	@Value("lms.http.username") private String httpUsername;
+	@Value("lms.http.password") private String httpPassword;
 
 	@Override
 	public List<String> getCourseUsers(final String courseid) {
@@ -30,8 +41,10 @@ public class StudipRestConnectorDaoImpl implements ConnectorDao {
 		Membership membership = new Membership();
 		ResponseEntity<StudipCoursesContainer> courseContainer = restTemplate.exchange(
 			USER_MEMBERSHIP_URI,
-			HttpMethod.GET, null,
+			HttpMethod.GET,
+			new HttpEntity<Void>(getAuthorizationHeader()),
 			StudipCoursesContainer.class,
+			uriHostPart,
 			getUserByName(username).getUserId()
 		);
 
@@ -61,8 +74,10 @@ public class StudipRestConnectorDaoImpl implements ConnectorDao {
 		List<Course> courses = new ArrayList<>();
 		ResponseEntity<StudipCoursesContainer> courseContainer = restTemplate.exchange(
 			USER_MEMBERSHIP_URI,
-			HttpMethod.GET, null,
+			HttpMethod.GET,
+			new HttpEntity<Void>(getAuthorizationHeader()),
 			StudipCoursesContainer.class,
+			uriHostPart,
 			getUserByName(username).getUserId()
 		);
 
@@ -79,12 +94,25 @@ public class StudipRestConnectorDaoImpl implements ConnectorDao {
 	private StudipUser getUserByName(String username) {
 		ResponseEntity<StudipUserContainer> userContainer = restTemplate.exchange(
 			USER_SERACH_URI,
-			HttpMethod.GET, null,
+			HttpMethod.GET,
+			new HttpEntity<Void>(getAuthorizationHeader()),
 			StudipUserContainer.class,
+			uriHostPart,
 			username
 		);
 
 		return userContainer.getBody().getUser();
+	}
+
+	private HttpHeaders getAuthorizationHeader() {
+		HttpHeaders httpHeaders = new HttpHeaders();
+		String authorization = httpUsername + ":" + httpPassword;
+		httpHeaders.add(
+			"Authorization",
+			"Basic " + Base64.encodeBase64String(authorization.getBytes(UTF8_CHARSET))
+		);
+
+		return httpHeaders;
 	}
 
 	private Course buildCourse(StudipCourse sipCourse, UserRole role) {
