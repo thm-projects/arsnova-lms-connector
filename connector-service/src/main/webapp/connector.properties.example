@@ -8,6 +8,8 @@ jdbc.password=secret
 dao.implementation=de.thm.arsnova.connector.dao.MoodleConnectorDaoImpl
 # Uncomment the following line to access Stud.IP
 # dao.implementation=de.thm.arsnova.connector.dao.StudipConnectorDaoImpl
+# Uncomment the following line to access Stud.IP via REST
+# dao.implementation=de.thm.arsnova.connector.dao.StudipRestConnectorDaoImpl
 # Uncomment the following line to get a dummy implementation
 # dao.implementation=de.thm.arsnova.connector.dao.DummyConnectorDaoImpl
 
