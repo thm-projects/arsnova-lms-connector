@@ -13,3 +13,7 @@ dao.implementation=de.thm.arsnova.connector.dao.MoodleConnectorDaoImpl
 
 admin.username=test
 admin.password=test
+
+ldap.serverUrl=
+ldap.userSearchBase=
+ldap.userSearchFilter=

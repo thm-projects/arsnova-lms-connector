@@ -33,9 +33,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.inMemoryAuthentication().withUser(username)
 		.password(password).authorities("ADMIN");
 
-		auth.ldapAuthentication().contextSource(ldapContextSource())
-		.userSearchBase(ldapUserSearchBase)
-		.userSearchFilter(ldapUserSearchFilter);
+		if (!"".equals(ldapServerUrl)) {
+			auth.ldapAuthentication().contextSource(ldapContextSource())
+			.userSearchBase(ldapUserSearchBase)
+			.userSearchFilter(ldapUserSearchFilter);
+		}
 	}
 
 	@Bean
@@ -51,7 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public BaseLdapPathContextSource ldapContextSource() {
-		return new DefaultSpringSecurityContextSource(ldapServerUrl);
+		if (!"".equals(ldapServerUrl)) {
+			return new DefaultSpringSecurityContextSource(ldapServerUrl);
+		}
+
+		return null;
 	}
 
 	@Override
