@@ -111,19 +111,33 @@ public class StudipRestConnectorDaoImpl implements ConnectorDao {
 	public List<Course> getMembersCourses(final String username) {
 		logger.trace("Retrieve courses for {}", username);
 		List<Course> courses = new ArrayList<>();
-		ResponseEntity<StudipCoursesWrapper> courseWrapperEntity = restTemplate.exchange(
-			userMembershipUri,
-			HttpMethod.GET,
-			new HttpEntity<Void>(getAuthorizationHeader()),
-			StudipCoursesWrapper.class,
-			getUserByName(username).getId()
-		);
-
-		for (StudipCourse sipCourse : courseWrapperEntity.getBody().getStudy()) {
-			courses.add(buildCourse(sipCourse, UserRole.MEMBER));
+		StudipUser user = getUserByName(username);
+		if (null == user) {
+			return courses;
 		}
-		for (StudipCourse sipCourse : courseWrapperEntity.getBody().getWork()) {
-			courses.add(buildCourse(sipCourse, UserRole.TEACHER));
+
+		try {
+			ResponseEntity<StudipCoursesWrapper> courseWrapperEntity = restTemplate.exchange(
+				userMembershipUri,
+				HttpMethod.GET,
+				new HttpEntity<Void>(getAuthorizationHeader()),
+				StudipCoursesWrapper.class,
+				user.getId()
+			);
+			List<StudipCourse> sipCourses;
+
+			if (null != (sipCourses = courseWrapperEntity.getBody().getStudy())) {
+				for (StudipCourse sipCourse : sipCourses) {
+					courses.add(buildCourse(sipCourse, UserRole.MEMBER));
+				}
+			}
+			if (null != (sipCourses = courseWrapperEntity.getBody().getWork())) {
+				for (StudipCourse sipCourse : sipCourses) {
+					courses.add(buildCourse(sipCourse, UserRole.TEACHER));
+				}
+			}
+		} catch (RestClientException | HttpMessageNotReadableException e) {
+			/* Stud.IP sends an empty array instead of an object if no courses are found */
 		}
 
 		return courses;
