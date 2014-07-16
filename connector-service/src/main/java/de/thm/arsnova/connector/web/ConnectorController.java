@@ -19,12 +19,12 @@ public class ConnectorController {
 	private ConnectorService connectorService;
 
 	@RequestMapping("/membership/{courseid}")
-	public Membership getMembership(@PathVariable String username, @PathVariable String courseid) {
+	public Membership getMembership(@PathVariable final String username, @PathVariable final String courseid) {
 		return connectorService.getMembership(username, courseid);
 	}
 
 	@RequestMapping("/courses")
-	public Courses getCourses(@PathVariable String username) {
+	public Courses getCourses(@PathVariable final String username) {
 		return connectorService.getCourses(username);
 	}
 }

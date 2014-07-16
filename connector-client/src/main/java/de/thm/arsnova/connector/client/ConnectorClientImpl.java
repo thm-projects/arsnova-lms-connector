@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -31,29 +30,26 @@ public class ConnectorClientImpl implements ConnectorClient {
 	private String httpUsername;
 	private String httpPassword;
 
-	@Autowired
-	public void setServiceLocation(String serviceLocation) {
+	public void setServiceLocation(final String serviceLocation) {
 		uriHostPart = serviceLocation;
 	}
 
-	@Autowired
-	public void setUsername(String username) {
+	public void setUsername(final String username) {
 		httpUsername = username;
 	}
 
-	@Autowired
-	public void setPassword(String password) {
+	public void setPassword(final String password) {
 		httpPassword = password;
 	}
 
 	@Override
-	public Membership isMember(String username, String courseid) {
-		return this.getMembership(username, courseid);
+	public Membership isMember(final String username, final String courseid) {
+		return getMembership(username, courseid);
 	}
 
 	@Override
-	public Membership getMembership(String username, String courseid) {
-		ResponseEntity<Membership> response = restTemplate.exchange(
+	public Membership getMembership(final String username, final String courseid) {
+		final ResponseEntity<Membership> response = restTemplate.exchange(
 				buildRequestUri(ISMEMBER_URI),
 				HttpMethod.GET,
 				createMembershipEntity(),
@@ -65,8 +61,8 @@ public class ConnectorClientImpl implements ConnectorClient {
 	}
 
 	@Override
-	public Courses getCourses(String username) {
-		ResponseEntity<Courses> response = restTemplate.exchange(
+	public Courses getCourses(final String username) {
+		final ResponseEntity<Courses> response = restTemplate.exchange(
 				buildRequestUri(GETCOURSES_URI),
 				HttpMethod.GET,
 				createCoursesEntity(),
@@ -77,8 +73,8 @@ public class ConnectorClientImpl implements ConnectorClient {
 	}
 
 	@Override
-	public IliasCategoryNode getTreeObjects(int refId) {
-		ResponseEntity<IliasCategoryNode> response = restTemplate.exchange(
+	public IliasCategoryNode getTreeObjects(final int refId) {
+		final ResponseEntity<IliasCategoryNode> response = restTemplate.exchange(
 				buildRequestUri(ILIAS_TREEOBJECTS_URI),
 				HttpMethod.GET,
 				createNodeListEntity(),
@@ -90,8 +86,8 @@ public class ConnectorClientImpl implements ConnectorClient {
 	}
 
 	@Override
-	public List<IliasQuestion> getQuestions(int refId) {
-		ResponseEntity<IliasQuestion[]> response = restTemplate.exchange(
+	public List<IliasQuestion> getQuestions(final int refId) {
+		final ResponseEntity<IliasQuestion[]> response = restTemplate.exchange(
 				buildRequestUri(ILIAS_QUESTIONS_URI),
 				HttpMethod.GET,
 				createQuestionListEntity(),
@@ -103,8 +99,8 @@ public class ConnectorClientImpl implements ConnectorClient {
 	}
 
 	@Override
-	public List<IliasQuestion> getQuestions(int refId, IliasQuestionSource source) {
-		ResponseEntity<IliasQuestion[]> response = restTemplate.exchange(
+	public List<IliasQuestion> getQuestions(final int refId, final IliasQuestionSource source) {
+		final ResponseEntity<IliasQuestion[]> response = restTemplate.exchange(
 				buildRequestUri(ILIAS_QUESTIONS_URI + "?source={source}"),
 				HttpMethod.GET,
 				createQuestionListEntity(),
@@ -133,8 +129,8 @@ public class ConnectorClientImpl implements ConnectorClient {
 	}
 
 	private HttpHeaders getAuthorizationHeader() {
-		HttpHeaders httpHeaders = new HttpHeaders();
-		String authorisation = httpUsername + ":" + httpPassword;
+		final HttpHeaders httpHeaders = new HttpHeaders();
+		final String authorisation = httpUsername + ":" + httpPassword;
 		httpHeaders.add(
 				"Authorization",
 				"Basic " + Base64.encodeBase64String(authorisation.getBytes(UTF8_CHARSET))
@@ -142,7 +138,7 @@ public class ConnectorClientImpl implements ConnectorClient {
 		return httpHeaders;
 	}
 
-	private String buildRequestUri(String relativeUri) {
+	private String buildRequestUri(final String relativeUri) {
 		return uriHostPart + relativeUri;
 	}
 }
