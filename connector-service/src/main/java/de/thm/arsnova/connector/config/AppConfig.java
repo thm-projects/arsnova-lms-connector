@@ -3,6 +3,8 @@ package de.thm.arsnova.connector.config;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import javax.annotation.PreDestroy;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -48,8 +50,8 @@ public class AppConfig {
 	}
 
 	@Bean(name = "configDataSource")
-	public DriverManagerDataSource configDataSource() throws SQLException {
-		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+	public HsqlDataSource configDataSource() throws SQLException {
+		HsqlDataSource dataSource = new HsqlDataSource();
 		dataSource.setDriverClassName("org.hsqldb.jdbc.JDBCDriver");
 		dataSource.setUrl("jdbc:hsqldb:file:/etc/arsnova/connector.db");
 		dataSource.setUsername("whatever");
@@ -96,5 +98,17 @@ public class AppConfig {
 			return new IliasConnectorDaoImpl();
 		}
 		return null;
+	}
+
+	private class HsqlDataSource extends DriverManagerDataSource {
+		@PreDestroy
+		public void shutdown() {
+			logger.info("Shutting down HSQLDB");
+			try {
+				this.getConnection().createStatement().execute("SHUTDOWN;");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }
