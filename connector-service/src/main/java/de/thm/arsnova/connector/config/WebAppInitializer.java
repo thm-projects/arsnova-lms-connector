@@ -5,8 +5,6 @@ import javax.servlet.Filter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import de.thm.arsnova.connector.web.CorsFilter;
-
 public class WebAppInitializer extends
 AbstractAnnotationConfigDispatcherServletInitializer {
 
@@ -30,7 +28,6 @@ AbstractAnnotationConfigDispatcherServletInitializer {
 		CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
 		characterEncodingFilter.setEncoding("UTF-8");
 
-		CorsFilter corsFilter = new CorsFilter();
-		return new Filter[] {characterEncodingFilter, corsFilter};
+		return new Filter[] {characterEncodingFilter};
 	}
 }
