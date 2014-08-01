@@ -35,13 +35,14 @@ public class UniRepController {
 		QUESTION_POOL
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/check", method = RequestMethod.GET)
 	public String check() {
 		return "OK";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public void login() {}
+	public void login() {
+	}
 	
 	@RequestMapping(value = "/checklogin", method = RequestMethod.GET)
 	public String checkLogin(HttpServletRequest request) {
