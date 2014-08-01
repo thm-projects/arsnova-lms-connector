@@ -15,10 +15,16 @@ public class User {
 	@Unique
 	@Column(name = "user_id")
 	private String userId;
+	
 	@Column(name = "password")
 	private String password;
+	
 	@Column(name = "is_admin")
 	private boolean isAdmin;
+	
+	@Unique
+	@Column(name = "auth_token")
+	private String authToken;
 
 	public String getUserId() {
 		return userId;
@@ -39,6 +45,14 @@ public class User {
 	}
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+	
+	public void setAuthToken(String authToken) {
+		this.authToken = authToken;
+	}
+	
+	public String getAuthToken() {
+		return authToken;
 	}
 
 	@Override
