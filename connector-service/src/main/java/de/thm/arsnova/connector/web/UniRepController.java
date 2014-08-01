@@ -3,6 +3,8 @@ package de.thm.arsnova.connector.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
@@ -32,8 +34,21 @@ public class UniRepController {
 		RANDOM_TEST,
 		QUESTION_POOL
 	}
-
-	@RequestMapping("/{refId}")
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String check() {
+		return "OK";
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public void login() {}
+	
+	@RequestMapping(value = "/checklogin", method = RequestMethod.GET)
+	public String checkLogin(HttpServletRequest request) {
+		return "OK";
+	}
+	
+	@RequestMapping(value = "/{refId}", method = RequestMethod.GET)
 	public HttpEntity<IliasCategoryNode> getIliasTreeObjects(@PathVariable int refId) {
 		if (service == null) {
 			return new ResponseEntity<IliasCategoryNode>(new IliasCategoryNode(), HttpStatus.SERVICE_UNAVAILABLE);
@@ -49,7 +64,7 @@ public class UniRepController {
 		}
 	}
 
-	@RequestMapping("/question/{refId}")
+	@RequestMapping(value = "/question/{refId}", method = RequestMethod.GET)
 	public HttpEntity<List<IliasQuestion>> getIliasQuestions(
 			@PathVariable int refId,
 			@RequestParam(value = "source", required = false) QuestionSource source) 
