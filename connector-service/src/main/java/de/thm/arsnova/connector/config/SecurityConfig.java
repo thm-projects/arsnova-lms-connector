@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -100,7 +101,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 				.exceptionHandling().defaultAuthenticationEntryPointFor(
 						authHandler().tokenAuthenticationEntryPoint(),
-						authHandler().ajaxRequestMatcher());
+						authHandler().ajaxRequestMatcher()).and()
+						
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		} else {
 			http.httpBasic();
 		}
