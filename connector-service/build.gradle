@@ -17,6 +17,7 @@ repositories {
 dependencies {
 	compile project (':connector-model')
 	compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+	compile group: 'commons-codec', name: 'commons-codec', version: '1.7'
 	compile group: 'org.springframework', name: 'spring-context', version: springVersion
 	compile group: 'org.springframework', name: 'spring-webmvc', version: springVersion
 	compile group: 'org.springframework', name: 'spring-jdbc', version: springVersion
