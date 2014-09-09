@@ -6,7 +6,7 @@ subprojects {
 	sourceCompatibility = 1.7
 
 	group = 'de.thm.arsnova.connector'
-	version = '0.72.0-SNAPSHOT'
+	version = '0.72.0'
 
 	ext {
 		springVersion = '4.0.7.RELEASE'
