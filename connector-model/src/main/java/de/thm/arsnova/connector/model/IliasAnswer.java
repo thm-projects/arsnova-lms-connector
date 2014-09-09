@@ -2,9 +2,9 @@ package de.thm.arsnova.connector.model;
 
 public class IliasAnswer {
 	private String text;
-	private int points;
+	private double points;
 
-	public IliasAnswer(String text, int points) {
+	public IliasAnswer(String text, double points) {
 		this.text = text;
 		this.points = points;
 	}
@@ -15,7 +15,7 @@ public class IliasAnswer {
 		return text;
 	}
 
-	public int getPoints() {
+	public double getPoints() {
 		return points;
 	}
 }

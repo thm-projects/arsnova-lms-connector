@@ -266,7 +266,7 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 							public IliasAnswer mapRow(final ResultSet resultSet, final int row) throws SQLException {
 								return new IliasAnswer(
 										resultSet.getString("answertext"),
-										resultSet.getInt("points")
+										resultSet.getDouble("points")
 										);
 							}
 						}
