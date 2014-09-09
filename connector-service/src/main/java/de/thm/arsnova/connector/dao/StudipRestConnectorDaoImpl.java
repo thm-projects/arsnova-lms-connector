@@ -145,22 +145,26 @@ public class StudipRestConnectorDaoImpl implements ConnectorDao {
 
 	private StudipUser getUserByName(String username) {
 		logger.trace("Retrieve user {}", username);
-		ResponseEntity<StudipUsersWrapper> usersWrapperEntity = restTemplate.exchange(
-			userSearchUri,
-			HttpMethod.GET,
-			new HttpEntity<Void>(getAuthorizationHeader()),
-			StudipUsersWrapper.class,
-			username
-		);
+		try {
+			ResponseEntity<StudipUsersWrapper> usersWrapperEntity = restTemplate.exchange(
+				userSearchUri,
+				HttpMethod.GET,
+				new HttpEntity<Void>(getAuthorizationHeader()),
+				StudipUsersWrapper.class,
+				username
+			);
 
-		for (StudipUser user : usersWrapperEntity.getBody().getUsers()) {
-			if (username.equals(user.getUsername())) {
-				logger.trace("Username {} belongs to user {}", username, user);
+			for (StudipUser user : usersWrapperEntity.getBody().getUsers()) {
+				if (username.equals(user.getUsername())) {
+					logger.trace("Username {} belongs to user {}", username, user);
 
-				return user;
+					return user;
+				}
 			}
+			logger.trace("No user was found for username {}", username);
+		} catch (RestClientException e) {
+			logger.error("Connector failed to retrieve user's ID from Stud.IP: {}", e.getMessage());
 		}
-		logger.trace("No user was found for username {}", username);
 
 		return null;
 	}
