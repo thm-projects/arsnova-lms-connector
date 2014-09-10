@@ -7,7 +7,7 @@ jar {
 	}
 }
 
-dependencies { jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.4-1' }
+dependencies { jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.7' }
 
 buildscript {
 	repositories {
