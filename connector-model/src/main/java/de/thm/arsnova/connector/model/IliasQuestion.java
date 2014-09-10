@@ -5,7 +5,7 @@ import java.util.List;
 public class IliasQuestion {
 	private int id;
 	private int type;
-	private int points;
+	private double points;
 	private String title;
 	private String description;
 	private String text;
@@ -27,10 +27,10 @@ public class IliasQuestion {
 		this.type = type;
 	}
 
-	public int getPoints() {
+	public double getPoints() {
 		return points;
 	}
-	public void setPoints(int points) {
+	public void setPoints(double points) {
 		this.points = points;
 	}
 

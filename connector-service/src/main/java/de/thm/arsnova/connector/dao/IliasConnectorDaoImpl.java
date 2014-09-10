@@ -114,7 +114,7 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 						final IliasQuestion q = new IliasQuestion();
 						q.setDescription(resultSet.getString("description"));
 						q.setId(resultSet.getInt("question_id"));
-						q.setPoints(resultSet.getInt("points"));
+						q.setPoints(resultSet.getDouble("points"));
 						q.setText(resultSet.getString("question_text"));
 						q.setTimestamp(resultSet.getInt("tstamp"));
 						q.setTitle(resultSet.getString("title"));
