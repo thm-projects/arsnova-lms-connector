@@ -105,9 +105,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.addFilterBefore(authFilter(),
 						UsernamePasswordAuthenticationFilter.class)
 
-				.exceptionHandling().defaultAuthenticationEntryPointFor(
-						authHandler().tokenAuthenticationEntryPoint(),
-						authHandler().ajaxRequestMatcher()).and()
+				.exceptionHandling().authenticationEntryPoint(
+						authHandler().tokenAuthenticationEntryPoint()).and()
 						
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		} else {

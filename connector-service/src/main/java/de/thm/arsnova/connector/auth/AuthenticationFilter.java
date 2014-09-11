@@ -82,7 +82,7 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
 	            return;
 	        }
 		}
-        
+		
         chain.doFilter(httpRequest, httpResponse);
     }
 }

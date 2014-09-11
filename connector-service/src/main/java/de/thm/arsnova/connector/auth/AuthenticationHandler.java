@@ -15,19 +15,12 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
-import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 public class AuthenticationHandler {
 	
 	@Autowired
 	private AuthenticationTokenService tokenService;
-	
-    @Bean
-    public RequestMatcher ajaxRequestMatcher() {
-    	return new RequestHeaderRequestMatcher("X-Requested-With", "XMLHttpRequest");
-    }
     
 	@Bean
 	public AuthenticationSuccessHandler authSuccessHandler() {
@@ -36,7 +29,7 @@ public class AuthenticationHandler {
 			public void onAuthenticationSuccess(HttpServletRequest request,
 					HttpServletResponse response, Authentication authentication) 
 					throws IOException, ServletException {
-
+				
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 				tokenService.authenticateUser(authentication, response);
 				response.setStatus(HttpServletResponse.SC_OK);
