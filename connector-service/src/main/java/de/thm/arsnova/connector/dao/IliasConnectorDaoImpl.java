@@ -258,9 +258,9 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
 		return jdbcTemplate.query(
-				"SELECT answertext, points, NULL points_unchecked FROM qpl_a_sc WHERE question_fi = ? "
-						+ "UNION SELECT answertext, points, points_unchecked FROM qpl_a_mc "
-						+ "WHERE question_fi = ?",
+				"SELECT answertext, points, NULL pointsUnchecked FROM qpl_a_sc WHERE question_fi = ? "
+						+ "UNION SELECT answertext, points, points_unchecked as pointsUnchecked"
+						+ " FROM qpl_a_mc WHERE question_fi = ?",
 						new String[] {String.valueOf(questionId), String.valueOf(questionId)},
 						new RowMapper<IliasAnswer>() {
 							@Override
@@ -268,7 +268,7 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 								return new IliasAnswer(
 										resultSet.getString("answertext"),
 										resultSet.getDouble("points"),
-										resultSet.getDouble("points_unchecked")
+										resultSet.getDouble("pointsUnchecked")
 										);
 							}
 						}

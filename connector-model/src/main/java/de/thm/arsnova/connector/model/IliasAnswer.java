@@ -3,12 +3,12 @@ package de.thm.arsnova.connector.model;
 public class IliasAnswer {
 	private String text;
 	private double points;
-	private double points_unchecked;
+	private double pointsUnchecked;
 
-	public IliasAnswer(String text, double points, double points_unchecked) {
+	public IliasAnswer(String text, double points, double pointsUnchecked) {
 		this.text = text;
 		this.points = points;
-		this.points_unchecked = points_unchecked;
+		this.pointsUnchecked = pointsUnchecked;
 	}
 
 	public String getText() {
@@ -20,6 +20,6 @@ public class IliasAnswer {
 	}
 	
 	public double getPointsUnchecked() {
-		return points_unchecked;
+		return pointsUnchecked;
 	}
 }
