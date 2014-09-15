@@ -203,6 +203,27 @@ public class IliasConnectorDaoImpl implements UniRepDao {
 				}
 				);
 	}
+	
+	@Override
+	public boolean isTestOnline(final int refId) {
+		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+		return jdbcTemplate.queryForObject(
+				"SELECT online_status FROM tree AS t1 "
+						+ "JOIN tree AS t2 ON t2.lft BETWEEN t1.lft AND t1.rgt AND t1.tree = t2.tree "
+						+ "JOIN object_reference AS r ON r.ref_id=t2.child "
+						+ "JOIN object_data as d ON d.obj_id=r.obj_id "
+						+ "JOIN tst_tests as tests ON tests.obj_fi=r.obj_id "
+						+ "WHERE t1.child = ?",
+						new String[] {String.valueOf(refId)},
+						new RowMapper<Boolean>() {
+							@Override
+							public Boolean mapRow(final ResultSet resultSet, final int row) throws SQLException {
+								return resultSet.getBoolean("online_status");
+							}
+						}
+				);
+	}
 
 	@Override
 	public boolean isRandomQuestionSet(final int refId) {

@@ -95,7 +95,7 @@ public class UniRepServiceImpl implements UniRepService {
 			}
 
 			if (node.getChildren() == null || node.getChildren().size() == 0) {
-				if (node.getQuestionCount() == 0) {
+				if (node.getQuestionCount() == 0 || !uniRepDao.isTestOnline(node.getId())) {
 					it.remove();
 					hasRemovedNodes = true;
 					continue;

@@ -38,6 +38,13 @@ public interface UniRepDao {
 	 * @return A map with reference id - meta data value pairs
 	 */
 	Map<String, String> getReferenceIdsWithMetaDataFlag(String metaDataTitle);
+	
+	/** Returns TRUE if referenced repository object is a test which is flagged as online
+	 *
+	 * @param refId The reference id of the test to be checked
+	 * @return TRUE if this object is a test which is flagged as online
+	 */
+	boolean isTestOnline(int refId);
 
 	/** Returns TRUE if referenced repository object is a test with random question selection
 	 *
