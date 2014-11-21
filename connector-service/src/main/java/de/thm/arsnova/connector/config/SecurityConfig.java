@@ -33,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	// LDAP
 	@Value("${ldap.serverUrl}") private String ldapServerUrl;
-	@Value("${ldap.bindDn}") private String ldapBindDn;
-	@Value("${ldap.bindPassword}") private String ldapBindPassword;
+	@Value("${ldap.managerDn}") private String ldapManagerDn;
+	@Value("${ldap.managerPassword}") private String ldapManagerPassword;
 	@Value("${ldap.userSearchBase}") private String ldapUserSearchBase;
 	@Value("${ldap.userSearchFilter}") private String ldapUserSearchFilter;
 	
@@ -88,12 +88,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			DefaultSpringSecurityContextSource contextSource = 
 					new DefaultSpringSecurityContextSource(ldapServerUrl);
 			
-			if(!"".equals(ldapBindDn)) {
-				contextSource.setBase(ldapBindDn);
+			if(!"".equals(ldapManagerDn)) {
+				contextSource.setUserDn(ldapManagerDn);
 			}
 			
-			if(!"".equals(ldapBindPassword)) {
-				contextSource.setPassword(ldapBindPassword);
+			if(!"".equals(ldapManagerPassword)) {
+				contextSource.setPassword(ldapManagerPassword);
 			}
 			
 			return contextSource;
