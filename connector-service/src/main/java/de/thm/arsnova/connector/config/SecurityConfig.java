@@ -33,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	// LDAP
 	@Value("${ldap.serverUrl}") private String ldapServerUrl;
+	@Value("${ldap.bindDn}") private String ldapBindDn;
+	@Value("${ldap.bindPassword}") private String ldapBindPassword;
 	@Value("${ldap.userSearchBase}") private String ldapUserSearchBase;
 	@Value("${ldap.userSearchFilter}") private String ldapUserSearchFilter;
 	
@@ -83,7 +85,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public BaseLdapPathContextSource ldapContextSource() {
 		if (!"".equals(ldapServerUrl)) {
-			return new DefaultSpringSecurityContextSource(ldapServerUrl);
+			DefaultSpringSecurityContextSource contextSource = 
+					new DefaultSpringSecurityContextSource(ldapServerUrl);
+			
+			if(!"".equals(ldapBindDn)) {
+				contextSource.setBase(ldapBindDn);
+			}
+			
+			if(!"".equals(ldapBindPassword)) {
+				contextSource.setPassword(ldapBindPassword);
+			}
+			
+			return contextSource;
 		}
 
 		return null;
