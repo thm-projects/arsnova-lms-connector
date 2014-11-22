@@ -33,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	// LDAP
 	@Value("${ldap.serverUrl}") private String ldapServerUrl;
-	@Value("${ldap.managerDn}") private String ldapManagerDn;
-	@Value("${ldap.managerPassword}") private String ldapManagerPassword;
+	@Value("${ldap.managerDn:}") private String ldapManagerDn;
+	@Value("${ldap.managerPassword:}") private String ldapManagerPassword;
 	@Value("${ldap.userSearchBase}") private String ldapUserSearchBase;
 	@Value("${ldap.userSearchFilter}") private String ldapUserSearchFilter;
 	
