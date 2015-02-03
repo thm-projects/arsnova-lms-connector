@@ -53,3 +53,5 @@ sonarRunner {
 		property "sonar.jdbc.password", project.hasProperty('sonarDatabasePassword') ?  sonarDatabasePassword : ''
 	}
 }
+
+tasks.compileJava.dependsOn(':connector-model:xjc')
