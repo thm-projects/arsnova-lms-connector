@@ -9,8 +9,8 @@ subprojects {
 	version = '0.73.0-SNAPSHOT'
 
 	ext {
-		springVersion = '4.0.7.RELEASE'
-		springSecurityVersion = '3.2.4.RELEASE'
+		springVersion = '4.0.9.RELEASE'
+		springSecurityVersion = '3.2.5.RELEASE'
 	}
 
 	repositories {
@@ -22,9 +22,9 @@ subprojects {
 		compile group: 'commons-collections', name: 'commons-collections', version: '3.2.1'
 		compile group: 'org.springframework', name: 'spring-context', version: springVersion
 		compile group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion
-		compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.4.2'
+		compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.5.0'
 
-		testCompile group: 'junit', name: 'junit', version: '4.11'
+		testCompile group: 'junit', name: 'junit', version: '4.12'
 		testCompile group: 'org.springframework', name: 'spring-test', version: springVersion
 	}
 
