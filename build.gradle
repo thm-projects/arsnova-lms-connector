@@ -36,11 +36,11 @@ subprojects {
 		repositories.mavenDeployer {
 			configuration = configurations.deployerJars
 			repository(
-					url: project.hasProperty('mavenUrl') ? mavenUrl : "http://maven.mni.thm.de/content/repositories/snapshots/"
+					url: project.hasProperty('mavenUrl') ? mavenUrl : "https://maven.mni.thm.de/content/repositories/snapshots/"
 					) {
 						authentication(
-								userName: project.hasProperty('mavenUsername') ?  mavenUsername : '',
-								password: project.hasProperty('mavenPassword') ?  mavenUsername : ''
+								userName: project.hasProperty('mavenUsername') ? mavenUsername : '',
+								password: project.hasProperty('mavenPassword') ? mavenPassword : ''
 								)
 					}
 		}
