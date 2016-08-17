@@ -4,6 +4,7 @@ jdbc.username=root
 jdbc.password=secret
 
 lms.http.serverUrl=https://localhost/lms-api
+lms.http.token=abc123
 lms.http.username=connector-user
 lms.http.password=secret
 
