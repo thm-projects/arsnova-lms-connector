@@ -1,4 +1,4 @@
-package de.thm.arsnova.connector.dao.model.moodle_rest;
+package de.thm.arsnova.connector.model.moodle_rest;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
