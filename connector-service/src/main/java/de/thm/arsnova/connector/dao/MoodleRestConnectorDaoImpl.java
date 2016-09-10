@@ -20,11 +20,11 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import de.thm.arsnova.connector.dao.model.moodle_rest.MoodleCourse;
-import de.thm.arsnova.connector.dao.model.moodle_rest.MoodleUser;
 import de.thm.arsnova.connector.model.Course;
 import de.thm.arsnova.connector.model.Membership;
 import de.thm.arsnova.connector.model.UserRole;
+import de.thm.arsnova.connector.model.moodle_rest.MoodleCourse;
+import de.thm.arsnova.connector.model.moodle_rest.MoodleUser;
 
 public class MoodleRestConnectorDaoImpl implements ConnectorDao{
 
