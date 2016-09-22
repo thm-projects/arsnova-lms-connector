@@ -1,18 +1,9 @@
 package de.thm.arsnova.connector.dao;
 import java.net.URLEncoder;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -41,11 +32,6 @@ public class MoodleRestConnectorDaoImpl implements ConnectorDao{
 	private static String usersCoursesURL;
 
 	private final RestTemplate restTemplate = new RestTemplate();
-
-	static{
-		//TODO: Only for testing
-		disableSslVerification();
-	}
 	
 	@PostConstruct
 	public void initialize() {
@@ -157,86 +143,4 @@ public class MoodleRestConnectorDaoImpl implements ConnectorDao{
 		course.setMembership(membership);
 		return course;
 	}
-	
-	//http://stackoverflow.com/questions/875467/java-client-certificates-over-https-ssl
-	private static void disableSslVerification() {
-		try
-		{
-			// Create a trust manager that does not validate certificate chains
-			TrustManager[] trustAllCerts = new TrustManager[] {new X509TrustManager() {
-				public java.security.cert.X509Certificate[] getAcceptedIssuers() {
-					return null;
-				}
-				public void checkClientTrusted(X509Certificate[] certs, String authType) {
-				}
-				public void checkServerTrusted(X509Certificate[] certs, String authType) {
-				}
-			}
-			};
-
-			// Install the all-trusting trust manager
-			SSLContext sc = SSLContext.getInstance("SSL");
-			sc.init(null, trustAllCerts, new java.security.SecureRandom());
-			HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
-
-			// Create all-trusting host name verifier
-			HostnameVerifier allHostsValid = new HostnameVerifier() {
-				public boolean verify(String hostname, SSLSession session) {
-					return true;
-				}
-			};
-
-			// Install the all-trusting host verifier
-			HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (KeyManagementException e) {
-			e.printStackTrace();
-		}
-	}
 }
-
-/*
-//Kept for debugging
-HttpURLConnection connection=null;
-OutputStreamWriter writer =null;
-try {
-	String body="userid="+userId;
-	URL url = new URL( usersCoursesURL );
-	connection = (HttpURLConnection) url.openConnection();
-	connection.setRequestMethod( "POST" );
-	connection.setDoInput( true );
-	connection.setDoOutput( true );
-	connection.setUseCaches( false );
-	connection.setRequestProperty( "Content-Type",
-			"application/x-www-form-urlencoded" );
-	connection.setRequestProperty( "Content-Length", String.valueOf(body.length()) );
-	connection.connect();
-	writer = new OutputStreamWriter( connection.getOutputStream(), "UTF-8" );
-	writer.write( body );
-	writer.flush();
-	System.out.println(body);
-	System.out.println(connection.getResponseCode()+" - "+connection.getResponseMessage());
-	if(connection.getResponseCode()==HttpURLConnection.HTTP_OK)
-	{
-		Map<String, List<String>> header=connection.getHeaderFields();
-		for(String hName:header.keySet())
-		{
-			System.out.println("*********** "+hName);
-			for(String s:header.get(hName))
-				System.out.println(s);
-		}
-	}
-	BufferedReader in = new BufferedReader(new InputStreamReader(
-			connection.getInputStream()));
-	String inputLine;
-	while ((inputLine = in.readLine()) != null) 
-		System.out.println(inputLine);
-	in.close();
-	writer.close();
-}
-catch(IOException ex)
-{
-	ex.printStackTrace();
-}
-*/
