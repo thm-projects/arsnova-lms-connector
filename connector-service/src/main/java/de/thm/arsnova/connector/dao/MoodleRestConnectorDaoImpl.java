@@ -95,6 +95,10 @@ public class MoodleRestConnectorDaoImpl implements ConnectorDao{
 			MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 			map.add("field", URLEncoder.encode("username", "UTF-8"));
 			map.add("values[0]", URLEncoder.encode(username, "UTF-8"));
+			ResponseEntity<String> uw=restTemplate.postForEntity(userInfoByFieldURL, map, String.class);
+			System.out.println("*************************************");
+			System.out.println(uw.getBody());
+			System.out.println("*************************************");
 			ResponseEntity<MoodleUser[]> userWrapper=restTemplate.postForEntity(userInfoByFieldURL, map, MoodleUser[].class);
 			for(MoodleUser mu : userWrapper.getBody())
 			{
@@ -114,6 +118,10 @@ public class MoodleRestConnectorDaoImpl implements ConnectorDao{
 		try {
 			MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
 			map.add("courseid", URLEncoder.encode(courseId, "UTF-8"));
+			ResponseEntity<String> uw=restTemplate.postForEntity(enrolledUserInCourseURL, map, String.class);
+			System.out.println("*************************************");
+			System.out.println(uw.getBody());
+			System.out.println("*************************************");
 			ResponseEntity<MoodleUser[]> userWrapper=restTemplate.postForEntity(enrolledUserInCourseURL, map, MoodleUser[].class);
 			return userWrapper.getBody();
 		} catch (Exception e) {
