@@ -4,12 +4,15 @@ jdbc.username=root
 jdbc.password=secret
 
 lms.http.serverUrl=https://localhost/lms-api
+lms.http.token=abc123
 lms.http.username=connector-user
 lms.http.password=secret
 
 # Select the data access object implementation your target platform
 # Uncomment the following line to access Moodle
-dao.implementation=de.thm.arsnova.connector.dao.MoodleConnectorDaoImpl
+# dao.implementation=de.thm.arsnova.connector.dao.MoodleConnectorDaoImpl
+# Uncomment the following line to access Moodle via REST
+  dao.implementation=de.thm.arsnova.connector.dao.MoodleRestConnectorDaoImpl
 # Uncomment the following line to access Stud.IP
 # dao.implementation=de.thm.arsnova.connector.dao.StudipConnectorDaoImpl
 # Uncomment the following line to access Stud.IP via REST
