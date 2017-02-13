@@ -1,7 +1,11 @@
+plugins {
+  id "org.sonarqube" version "2.1-rc1"
+}
+
 apply plugin: 'eclipse-wtp'
 apply plugin: 'war'
 apply plugin: 'jacoco'
-apply plugin: 'sonar-runner'
+
 
 jar {
 	manifest {
@@ -10,6 +14,7 @@ jar {
 }
 
 repositories {
+	jcenter()
 	mavenCentral()
 	mavenLocal()
 }
@@ -33,6 +38,7 @@ dependencies {
 	compile group: 'org.apache.openjpa', name: 'openjpa', version: '2.3.0'
 	compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.10'
 	compile group: 'org.json', name: 'json', version: '20141113'
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind',version: '2.0.1'
 
 	providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
 
@@ -43,8 +49,8 @@ dependencies {
 
 test { systemProperties 'property': 'value' }
 
-sonarRunner {
-	sonarProperties {
+sonarqube {
+	properties {
 		property "sonar.jacoco.reportPath", "$buildDir/jacoco/test.exec"
 		property "sonar.host.url", project.hasProperty('sonarServerUrl') ?  sonarServerUrl : ''
 		property "sonar.jdbc.url", project.hasProperty('sonarDatabaseUrl') ?  sonarDatabaseUrl : ''
@@ -53,5 +59,6 @@ sonarRunner {
 		property "sonar.jdbc.password", project.hasProperty('sonarDatabasePassword') ?  sonarDatabasePassword : ''
 	}
 }
+
 
 tasks.compileJava.dependsOn(':connector-model:xjc')

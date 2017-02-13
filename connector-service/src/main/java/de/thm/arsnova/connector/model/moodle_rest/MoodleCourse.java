@@ -8,6 +8,7 @@ public class MoodleCourse {
 	private String id;
 	private String shortname;
 	private String fullname;
+	private int roleid;
 
 	public String getId() {
 		return id;
@@ -35,5 +36,13 @@ public class MoodleCourse {
 
 	public void setFullname(String fullname) {
 		this.fullname = fullname;
+	}
+
+	public int getRoleid() {
+		return roleid;
+	}
+
+	public void setRoleid(int roleid) {
+		this.roleid = roleid;
 	}
 }

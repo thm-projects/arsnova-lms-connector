@@ -11,11 +11,12 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import de.thm.arsnova.connector.model.Course;
 import de.thm.arsnova.connector.model.Membership;
 import de.thm.arsnova.connector.model.UserRole;
 import de.thm.arsnova.connector.model.moodle_rest.MoodleCourse;
-import de.thm.arsnova.connector.model.moodle_rest.MoodleUser;
 
 public class MoodleRestConnectorDaoImpl implements ConnectorDao{
 
@@ -23,103 +24,88 @@ public class MoodleRestConnectorDaoImpl implements ConnectorDao{
 	private static final int MOODLE_COURSE_EDITINGTEACHER = 3;
 	private static final int MOODLE_COURSE_TEACHER = 4;
 	private static final int MOODLE_COURSE_MEMBER = 5;
+	
+	private static String ENCODING="UTF-8";
 
 	@Value("${lms.http.token}") private String token ;
 	@Value("${lms.http.serverUrl}") private String domainName;
 
-	private static String enrolledUserInCourseURL;
-	private static String userInfoByFieldURL;
-	private static String usersCoursesURL;
+	private static String getCourseUserURL;
+	private static String getMembersCoursesURL;
+	private static String getMembershipURL;
 
 	private final RestTemplate restTemplate = new RestTemplate();
 	
 	@PostConstruct
 	public void initialize() {
-		enrolledUserInCourseURL = domainName + "/webservice/rest/server.php?wstoken=" + token + "&wsfunction=core_enrol_get_enrolled_users&moodlewsrestformat=json";
-		userInfoByFieldURL = domainName + "/webservice/rest/server.php?wstoken=" + token + "&wsfunction=core_user_get_users_by_field&moodlewsrestformat=json";
-		usersCoursesURL = domainName + "/webservice/rest/server.php?wstoken=" + token + "&wsfunction=core_enrol_get_users_courses&moodlewsrestformat=json";
+		getCourseUserURL = domainName + "/webservice/rest/server.php?wstoken=" + token + "&wsfunction=local_arsnova_connector_get_course_users&moodlewsrestformat=json";
+		getMembersCoursesURL = domainName + "/webservice/rest/server.php?wstoken=" + token + "&wsfunction=local_arsnova_connector_get_users_courses&moodlewsrestformat=json";
+		getMembershipURL = domainName + "/webservice/rest/server.php?wstoken=" + token + "&wsfunction=local_arsnova_connector_get_user_role_in_course&moodlewsrestformat=json";
 	}
 
+	/**
+	 * It seems that this function is never used anywhere, therefore it isn't tested
+	 */
 	@Override
 	public List<String> getCourseUsers(String courseid) {
 		final List<String> result = new ArrayList<String>();
-		for(MoodleUser mu : getUsersInCourse(courseid))
-		{
-			result.add(mu.getUsername());
+		ResponseEntity<String> userWrapper=null;
+		try {
+			MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+			map.add("courseid", URLEncoder.encode(courseid, ENCODING));
+			userWrapper=restTemplate.postForEntity(getCourseUserURL, map, String.class);
+			String[] users= new ObjectMapper().readValue(userWrapper.getBody(), String[].class);
+			for(String s : users)
+			{
+				result.add(s);
+			}
+		} catch (Exception e) {
+			System.out.println(userWrapper.getBody());
+			e.printStackTrace();
 		}
+
 		return result;
 	}
 
-	//Seems to need capability "moodle/course:view", which is not stated in moodle
 	@Override
 	public List<Course> getMembersCourses(String username) {
-		final List<Course> result = new ArrayList<Course>();
-		int userId=getIdByUsername(username);
-		if(userId==-1)
-			return result;	
+		List<Course> result = new ArrayList<Course>();
+		ResponseEntity<String> userWrapper=null;
 		try {
 			MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-			map.add("userid", URLEncoder.encode(""+userId, "UTF-8"));
-			ResponseEntity<MoodleCourse[]> userWrapper=restTemplate.postForEntity(usersCoursesURL, map, MoodleCourse[].class);
-			for(MoodleCourse mc : userWrapper.getBody())
+			map.add("username", URLEncoder.encode(username, ENCODING));
+			userWrapper=restTemplate.postForEntity(getMembersCoursesURL, map, String.class);
+			MoodleCourse[] courses=new ObjectMapper().readValue(userWrapper.getBody(), MoodleCourse[].class);
+			for(MoodleCourse mc : courses)
 			{
 				result.add(buildCourse(mc, getMembership(username, mc.getId())));
 			}
 		} catch (Exception e) {
+			System.out.println(userWrapper.getBody());
 			e.printStackTrace();
 		}
 
 		return result;
 	}
 
-	//TODO: Maybe find a better way to do this as this might produce quite some traffic in courses with many users
 	@Override
 	public Membership getMembership(String username, String courseid) {
-		for(MoodleUser mu:getUsersInCourse(courseid))
-		{
-			if(mu.getUsername().equals(username))
-			{
-				Membership ms=new Membership();
+		Membership ms=new Membership();
+		ResponseEntity<String> userWrapper=null;
+		try {
+			MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
+			map.add("username", URLEncoder.encode(username, ENCODING));
+			map.add("courseid", URLEncoder.encode(courseid, ENCODING));
+			userWrapper=restTemplate.postForEntity(getMembershipURL, map, String.class);
+			ms.setUserrole(getMembershipRole(Integer.parseInt(userWrapper.getBody())));
+			if(ms.getUserrole()!=UserRole.OTHER)
 				ms.setMember(true);
-				ms.setUserrole(getMembershipRole(mu.getFirstMoodleRoleId()));
-				return ms;
-			}
-		}
-		return new Membership();
-	}
-
-	//Seems to need capability "moodle/user:viewalldetails", which is not stated in moodle
-	private int getIdByUsername(String username)
-	{
-		try {
-			MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-			map.add("field", URLEncoder.encode("username", "UTF-8"));
-			map.add("values[0]", URLEncoder.encode(username, "UTF-8"));
-			ResponseEntity<MoodleUser[]> userWrapper=restTemplate.postForEntity(userInfoByFieldURL, map, MoodleUser[].class);
-			for(MoodleUser mu : userWrapper.getBody())
-			{
-				if(mu.getUsername().equals(username))
-				{
-					return mu.getId();
-				}
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println(userWrapper.getBody());
+			ms.setUserrole(UserRole.OTHER);
 		}
-		return -1;
-	}
-	
-	private MoodleUser[] getUsersInCourse(String courseId)
-	{
-		try {
-			MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-			map.add("courseid", URLEncoder.encode(courseId, "UTF-8"));
-			ResponseEntity<MoodleUser[]> userWrapper=restTemplate.postForEntity(enrolledUserInCourseURL, map, MoodleUser[].class);
-			return userWrapper.getBody();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return new MoodleUser[0];
+		return ms;
 	}
 
 	//Copied from MoodleConnectorDao
