@@ -32,7 +32,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 						+ "JOIN mdl_user_enrolments ON (mdl_user.id = mdl_user_enrolments.userid) "
 						+ "JOIN mdl_enrol ON (mdl_user_enrolments.enrolid = mdl_enrol.id) "
 						+ "WHERE mdl_enrol.courseid = ?;",
-						new String[] {courseid},
+						new Object[] {Long.valueOf(courseid)},
 						new RowMapper<String>() {
 							@Override
 							public String mapRow(ResultSet resultSet, int row) throws SQLException {
@@ -57,7 +57,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 						+ "ON (mdl_course.id = mdl_context.instanceid AND mdl_course.visible = 1) "
 						+ "WHERE mdl_context.contextlevel = 50 AND mdl_enrol.courseid = ? AND mdl_user.username = ? "
 						+ "ORDER BY roleid ASC;",
-						new String[] {courseid, username},
+						new Object[] {Long.valueOf(courseid), username},
 						new RowMapper<Membership>() {
 							@Override
 							public Membership mapRow(ResultSet resultSet, int row) throws SQLException {
@@ -92,7 +92,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 							@Override
 							public Course mapRow(ResultSet resultSet, int row) throws SQLException {
 								Course course = new Course();
-								course.setId(resultSet.getString("id"));
+								course.setId(String.valueOf(resultSet.getLong("id")));
 								course.setFullname(resultSet.getString("fullname"));
 								course.setShortname(resultSet.getString("shortname"));
 								course.setType(TYPE);
