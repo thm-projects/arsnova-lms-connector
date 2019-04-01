@@ -44,20 +44,19 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 
 	@Override
 	public Membership getMembership(final String username, final String courseid) {
+		long userId = getUserId(username);
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		List<Membership> results = jdbcTemplate.query(
-				"SELECT mdl_user.username, mdl_role_assignments.roleid FROM mdl_enrol "
+				"SELECT mdl_user_enrolments.userid, mdl_role_assignments.roleid FROM mdl_enrol "
 						+ "JOIN mdl_user_enrolments ON (mdl_enrol.id = mdl_user_enrolments.enrolid) "
-						+ "JOIN mdl_user ON (mdl_user_enrolments.userid = mdl_user.id) "
 						+ "JOIN mdl_role_assignments ON (mdl_role_assignments.userid = mdl_user_enrolments.userid) "
 						+ "JOIN mdl_context "
 						+ "ON (mdl_context.instanceid = mdl_enrol.courseid "
 						+ "AND mdl_context.id = mdl_role_assignments.contextid) "
-						+ "JOIN mdl_course "
-						+ "ON (mdl_course.id = mdl_context.instanceid AND mdl_course.visible = 1) "
-						+ "WHERE mdl_context.contextlevel = 50 AND mdl_enrol.courseid = ? AND mdl_user.username = ? "
+						+ "JOIN mdl_course ON (mdl_course.id = mdl_context.instanceid AND mdl_course.visible = 1) "
+						+ "WHERE mdl_context.contextlevel = 50 AND mdl_enrol.courseid = ? AND mdl_user_enrolments.userid = ? "
 						+ "ORDER BY roleid ASC;",
-						new Object[] {Long.valueOf(courseid), username},
+						new Long[] {Long.valueOf(courseid), userId},
 						new RowMapper<Membership>() {
 							@Override
 							public Membership mapRow(ResultSet resultSet, int row) throws SQLException {
@@ -80,14 +79,14 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 
 	@Override
 	public List<Course> getMembersCourses(final String username) {
+		long userId = getUserId(username);
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		return jdbcTemplate.query(
 				"SELECT mdl_course.id, mdl_course.fullname, mdl_course.shortname FROM mdl_course "
 						+ "JOIN mdl_enrol ON (mdl_enrol.courseid = mdl_course.id) "
 						+ "JOIN mdl_user_enrolments ON (mdl_enrol.id = mdl_user_enrolments.enrolid) "
-						+ "JOIN mdl_user ON (mdl_user_enrolments.userid = mdl_user.id) "
-						+ "WHERE mdl_user.username = ?;",
-						new String[] {username},
+						+ "WHERE mdl_user_enrolments.userid = ?;",
+						new Long[] {userId},
 						new RowMapper<Course>() {
 							@Override
 							public Course mapRow(ResultSet resultSet, int row) throws SQLException {
@@ -101,6 +100,21 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 							}
 						}
 				);
+	}
+
+	private long getUserId(final String username) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		return jdbcTemplate.queryForObject(
+				"SELECT mdl_user.id FROM mdl_user "
+						+ "WHERE mdl_user.username = ?;",
+				new String[] {username},
+				new RowMapper<Long>() {
+					@Override
+					public Long mapRow(ResultSet resultSet, int row) throws SQLException {
+						return resultSet.getLong("id");
+					}
+				}
+		);
 	}
 
 	private UserRole getMembershipRole(final int moodleRoleId) {
