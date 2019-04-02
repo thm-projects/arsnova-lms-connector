@@ -1,29 +1,12 @@
 package de.thm.arsnova.connector.persistence.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import org.apache.openjpa.persistence.jdbc.Unique;
-
-@Entity
-@Table(name = "user")
 public class User {
-
-	@Id
-	@Unique
-	@Column(name = "user_id")
 	private String userId;
-	
-	@Column(name = "password")
+
 	private String password;
-	
-	@Column(name = "is_admin")
+
 	private boolean isAdmin;
-	
-	@Unique
-	@Column(name = "auth_token")
+
 	private String authToken;
 
 	public String getUserId() {

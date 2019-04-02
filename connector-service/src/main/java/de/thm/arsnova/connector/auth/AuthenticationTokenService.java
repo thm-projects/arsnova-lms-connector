@@ -2,12 +2,13 @@ package de.thm.arsnova.connector.auth;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.Authentication;
@@ -15,13 +16,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import de.thm.arsnova.connector.persistence.domain.User;
-import de.thm.arsnova.connector.persistence.repository.UserRepository;
 
 @Service
 public class AuthenticationTokenService {
-	
-	@Autowired
-	private UserRepository userRep;
+	private Map<String, User> tokenToUserMappings = new HashMap<>();
 	
 	public final String HEADER_SECURITY_TOKEN = "X-Auth-Token"; 
 	
@@ -53,7 +51,7 @@ public class AuthenticationTokenService {
 		User user = null;
 		
 		if(token != null) {
-			user = userRep.findByToken(token);
+			user = tokenToUserMappings.get(token);
 		}
 		
 		return user;
@@ -83,16 +81,13 @@ public class AuthenticationTokenService {
 	 * @return The authentication token string.
 	*/
 	private String createAndStoreToken(UserDetails ud) {
-		User user = userRep.findOne(ud.getUsername());
 		String token = generateToken(ud);
-		
-		if(user == null) {
-			user = new User();
-			user.setUserId(ud.getUsername());
-		}
+
+		User user = new User();
+		user.setUserId(ud.getUsername());
 		
 		user.setAuthToken(token);
-		userRep.save(user);
+		tokenToUserMappings.put(token, user);
 		
 		return token;
 	}
