@@ -14,9 +14,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import de.thm.arsnova.connector.auth.AuthenticationFilter;
 import de.thm.arsnova.connector.auth.AuthenticationHandler;
@@ -105,25 +103,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		http.csrf().disable();
-				
-		if("enable".equals(env.getProperty("service.startIliasConnector"))) {
-			http.authorizeRequests().antMatchers("/ilias/check").permitAll().and()
-				.authorizeRequests().antMatchers("/ilias/login").permitAll().and()
-				.authorizeRequests().anyRequest().authenticated().and()
-			
-				.formLogin().loginPage("/ilias/login").usernameParameter("uname")
-				.passwordParameter("upass").successHandler(authHandler().authSuccessHandler())
-				.failureHandler(authHandler().authFailureHandler()).and()
-				
-				.addFilterBefore(authFilter(),
-						UsernamePasswordAuthenticationFilter.class)
-
-				.exceptionHandling().authenticationEntryPoint(
-						authHandler().tokenAuthenticationEntryPoint()).and()
-						
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		} else {
-			http.httpBasic();
-		}
+		http.httpBasic();
 	}
 }

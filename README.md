@@ -13,7 +13,6 @@ We currently provide implementations to access Moodle, Ilias and Stud.IP:
 | LMS     | Retrieval method   | Compatible versions |
 |---------|--------------------|---------------------|
 | Moodle  | DBMS               | *                   |
-| Ilias   | DBMS               | *                   |
 | Stud.IP | DBMS or REST API   | *                   |
 
 \* The database structures and/or APIs for the limited data accessed by LMS Connector usually do not change with new LMS versions and we do not have the resources to test against every new release. If you notice any incompatibilities, please create an issue.

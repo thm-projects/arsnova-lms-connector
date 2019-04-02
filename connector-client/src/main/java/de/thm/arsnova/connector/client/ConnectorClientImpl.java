@@ -1,8 +1,6 @@
 package de.thm.arsnova.connector.client;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
-import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.http.HttpEntity;
@@ -12,8 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import de.thm.arsnova.connector.model.Courses;
-import de.thm.arsnova.connector.model.IliasCategoryNode;
-import de.thm.arsnova.connector.model.IliasQuestion;
 import de.thm.arsnova.connector.model.Membership;
 
 public class ConnectorClientImpl implements ConnectorClient {
@@ -21,8 +17,6 @@ public class ConnectorClientImpl implements ConnectorClient {
 
 	private static final String ISMEMBER_URI = "/{username}/membership/{courseid}";
 	private static final String GETCOURSES_URI = "/{username}/courses";
-	private static final String ILIAS_TREEOBJECTS_URI = "/ilias/{refid}";
-	private static final String ILIAS_QUESTIONS_URI = "/ilias/question/{refid}";
 
 	private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
@@ -72,60 +66,12 @@ public class ConnectorClientImpl implements ConnectorClient {
 		return response.getBody();
 	}
 
-	@Override
-	public IliasCategoryNode getTreeObjects(final int refId) {
-		final ResponseEntity<IliasCategoryNode> response = restTemplate.exchange(
-				buildRequestUri(ILIAS_TREEOBJECTS_URI),
-				HttpMethod.GET,
-				createNodeListEntity(),
-				IliasCategoryNode.class,
-				refId
-				);
-
-		return response.getBody();
-	}
-
-	@Override
-	public List<IliasQuestion> getQuestions(final int refId) {
-		final ResponseEntity<IliasQuestion[]> response = restTemplate.exchange(
-				buildRequestUri(ILIAS_QUESTIONS_URI),
-				HttpMethod.GET,
-				createQuestionListEntity(),
-				IliasQuestion[].class,
-				refId
-				);
-
-		return Arrays.asList(response.getBody());
-	}
-
-	@Override
-	public List<IliasQuestion> getQuestions(final int refId, final IliasQuestionSource source) {
-		final ResponseEntity<IliasQuestion[]> response = restTemplate.exchange(
-				buildRequestUri(ILIAS_QUESTIONS_URI + "?source={source}"),
-				HttpMethod.GET,
-				createQuestionListEntity(),
-				IliasQuestion[].class,
-				refId,
-				source
-				);
-
-		return Arrays.asList(response.getBody());
-	}
-
 	private HttpEntity<Membership> createMembershipEntity() {
 		return new HttpEntity<Membership>(getAuthorizationHeader());
 	}
 
 	private HttpEntity<Courses> createCoursesEntity() {
 		return new HttpEntity<Courses>(getAuthorizationHeader());
-	}
-
-	private HttpEntity<List<IliasCategoryNode>> createNodeListEntity() {
-		return new HttpEntity<List<IliasCategoryNode>>(getAuthorizationHeader());
-	}
-
-	private HttpEntity<List<IliasQuestion>> createQuestionListEntity() {
-		return new HttpEntity<List<IliasQuestion>>(getAuthorizationHeader());
 	}
 
 	private HttpHeaders getAuthorizationHeader() {

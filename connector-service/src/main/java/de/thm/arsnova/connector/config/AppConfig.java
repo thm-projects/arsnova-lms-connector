@@ -21,8 +21,6 @@ import org.springframework.orm.jpa.vendor.OpenJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import de.thm.arsnova.connector.dao.ConnectorDao;
-import de.thm.arsnova.connector.dao.IliasConnectorDaoImpl;
-import de.thm.arsnova.connector.dao.UniRepDao;
 
 @ComponentScan(basePackages = {
 		"de.thm.arsnova.connector.dao",
@@ -92,14 +90,6 @@ public class AppConfig {
 	@Bean
 	public ConnectorDao connectorDao() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
 		return (ConnectorDao) Class.forName(env.getProperty("dao.implementation")).newInstance();
-	}
-
-	@Bean
-	public UniRepDao uniRepDao() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		if ("enable".equals(env.getProperty("service.startIliasConnector"))) {
-			return new IliasConnectorDaoImpl();
-		}
-		return null;
 	}
 
 	private class HsqlDataSource extends DriverManagerDataSource {

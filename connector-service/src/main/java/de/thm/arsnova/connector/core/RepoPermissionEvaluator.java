@@ -52,13 +52,6 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 				return true;
 			}
 			break;
-
-		case "uniRepQuestion":
-		case "uniRepTree":
-			if ("read".equals(permission)) {
-				return true;
-			}
-			break;
 		}
 
 		return false;
