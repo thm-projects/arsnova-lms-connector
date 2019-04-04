@@ -12,8 +12,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
 
 import de.thm.arsnova.connector.auth.AuthenticationFilter;
@@ -22,7 +22,7 @@ import de.thm.arsnova.connector.auth.AuthenticationTokenService;
 import de.thm.arsnova.connector.core.RepoPermissionEvaluator;
 
 @Configuration
-@EnableWebMvcSecurity
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @PropertySource("file:///etc/arsnova/connector.properties")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
 		auth.inMemoryAuthentication().withUser(username)
-		.password(password).authorities("ADMIN");
+				.password("{noop}" + password).authorities("ADMIN");
 	
 		if (!"".equals(ldapServerUrl)) {
 			auth.ldapAuthentication().contextSource(ldapContextSource())

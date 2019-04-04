@@ -1,4 +1,3 @@
-apply plugin: 'eclipse-wtp'
 apply plugin: 'com.github.jacobono.jaxb'
 
 jar {
@@ -11,6 +10,7 @@ buildscript {
 	repositories {
 		jcenter()
 		mavenCentral()
+		mavenLocal()
 	}
 
 	dependencies { classpath 'com.github.jacobono:gradle-jaxb-plugin:1.3.5' }

@@ -50,6 +50,6 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 	}
 
 	private boolean isAdmin(final UserDetails user) {
-		return false;
+		return user.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ADMIN"));
 	}
 }

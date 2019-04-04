@@ -57,8 +57,8 @@ public class WebDomainIntegrationTest {
 	public void testShouldReturnCoursesWithoutCredentials() throws Exception {
 		try {
 			mockMvc.perform(get("/test/courses").accept(MediaType.APPLICATION_JSON))
-			.andExpect(status().isOk())
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+					.andExpect(status().isOk())
+					.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 		} catch (final NestedServletException e) {
 			assertTrue( e.getCause() instanceof AuthenticationCredentialsNotFoundException );
 			return;
@@ -74,8 +74,8 @@ public class WebDomainIntegrationTest {
 		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("admin", "secret", ga);
 		SecurityContextHolder.getContext().setAuthentication(token);
 		mockMvc.perform(get("/test/membership/42").accept(MediaType.APPLICATION_JSON))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+				.andExpect(status().isOk())
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class WebDomainIntegrationTest {
 
 		try {
 			mockMvc.perform(get("/test/membership/42").accept(MediaType.APPLICATION_JSON))
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+					.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 		} catch (final NestedServletException e) {
 			assertTrue( e.getCause() instanceof AccessDeniedException );
 			return;
@@ -102,8 +102,8 @@ public class WebDomainIntegrationTest {
 		final UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken("admin", "secret", ga);
 		SecurityContextHolder.getContext().setAuthentication(token);
 		mockMvc.perform(get("/test/courses").accept(MediaType.APPLICATION_JSON))
-		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+				.andExpect(status().isOk())
+				.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class WebDomainIntegrationTest {
 
 		try {
 			mockMvc.perform(get("/test/courses").accept(MediaType.APPLICATION_JSON))
-			.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+					.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 		} catch (final NestedServletException e) {
 			assertTrue( e.getCause() instanceof AccessDeniedException );
 			return;
@@ -126,6 +126,6 @@ public class WebDomainIntegrationTest {
 	@Test
 	public void testShouldRejectRequestNotAcceptingJson() throws Exception {
 		mockMvc.perform(get("/test/membership/42").accept(MediaType.TEXT_PLAIN))
-		.andExpect(status().isNotAcceptable());
+				.andExpect(status().isNotAcceptable());
 	}
 }
