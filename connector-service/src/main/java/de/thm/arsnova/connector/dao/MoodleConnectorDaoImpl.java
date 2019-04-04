@@ -2,11 +2,13 @@ package de.thm.arsnova.connector.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -44,65 +46,75 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 
 	@Override
 	public Membership getMembership(final String username, final String courseid) {
-		long userId = getUserId(username);
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		List<Membership> results = jdbcTemplate.query(
-				"SELECT mdl_user_enrolments.userid, mdl_role_assignments.roleid FROM mdl_enrol "
-						+ "JOIN mdl_user_enrolments ON (mdl_enrol.id = mdl_user_enrolments.enrolid) "
-						+ "JOIN mdl_role_assignments ON (mdl_role_assignments.userid = mdl_user_enrolments.userid) "
-						+ "JOIN mdl_context "
-						+ "ON (mdl_context.instanceid = mdl_enrol.courseid "
-						+ "AND mdl_context.id = mdl_role_assignments.contextid) "
-						+ "JOIN mdl_course ON (mdl_course.id = mdl_context.instanceid AND mdl_course.visible = 1) "
-						+ "WHERE mdl_context.contextlevel = 50 AND mdl_enrol.courseid = ? AND mdl_user_enrolments.userid = ? "
-						+ "ORDER BY roleid ASC;",
-						new Long[] {Long.valueOf(courseid), userId},
-						new RowMapper<Membership>() {
-							@Override
-							public Membership mapRow(ResultSet resultSet, int row) throws SQLException {
-								Membership membership = new Membership();
-								if (resultSet.wasNull()) {
-									membership.setMember(false);
-									return membership;
-								}
-								membership.setMember(true);
-								membership.setUserrole(getMembershipRole(resultSet.getInt("roleid")));
+		try {
+			long userId = getUserId(username);
+			JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+			List<Membership> results = jdbcTemplate.query(
+					"SELECT mdl_user_enrolments.userid, mdl_role_assignments.roleid FROM mdl_enrol "
+							+ "JOIN mdl_user_enrolments ON (mdl_enrol.id = mdl_user_enrolments.enrolid) "
+							+ "JOIN mdl_role_assignments ON (mdl_role_assignments.userid = mdl_user_enrolments.userid) "
+							+ "JOIN mdl_context "
+							+ "ON (mdl_context.instanceid = mdl_enrol.courseid "
+							+ "AND mdl_context.id = mdl_role_assignments.contextid) "
+							+ "JOIN mdl_course ON (mdl_course.id = mdl_context.instanceid AND mdl_course.visible = 1) "
+							+ "WHERE mdl_context.contextlevel = 50 AND mdl_enrol.courseid = ? AND mdl_user_enrolments.userid = ? "
+							+ "ORDER BY roleid ASC;",
+					new Long[]{Long.valueOf(courseid), userId},
+					new RowMapper<Membership>() {
+						@Override
+						public Membership mapRow(ResultSet resultSet, int row) throws SQLException {
+							Membership membership = new Membership();
+							if (resultSet.wasNull()) {
+								membership.setMember(false);
 								return membership;
 							}
+							membership.setMember(true);
+							membership.setUserrole(getMembershipRole(resultSet.getInt("roleid")));
+							return membership;
 						}
-				);
-		if (results.size() < 1) {
+					}
+			);
+
+			if (results.size() < 1) {
+				return new Membership();
+			}
+
+			return results.get(0);
+		} catch (EmptyResultDataAccessException e) {
 			return new Membership();
 		}
-		return results.get(0);
 	}
 
 	@Override
 	public List<Course> getMembersCourses(final String username) {
-		long userId = getUserId(username);
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		return jdbcTemplate.query(
-				"SELECT mdl_course.id, mdl_course.fullname, mdl_course.shortname FROM mdl_course "
-						+ "JOIN mdl_enrol ON (mdl_enrol.courseid = mdl_course.id) "
-						+ "JOIN mdl_user_enrolments ON (mdl_enrol.id = mdl_user_enrolments.enrolid) "
-						+ "WHERE mdl_user_enrolments.userid = ?;",
-						new Long[] {userId},
-						new RowMapper<Course>() {
-							@Override
-							public Course mapRow(ResultSet resultSet, int row) throws SQLException {
-								Course course = new Course();
-								course.setId(String.valueOf(resultSet.getLong("id")));
-								course.setFullname(resultSet.getString("fullname"));
-								course.setShortname(resultSet.getString("shortname"));
-								course.setType(TYPE);
-								course.setMembership(getMembership(username, resultSet.getString("id")));
-								return course;
-							}
+		try {
+			long userId = getUserId(username);
+			JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+			return jdbcTemplate.query(
+					"SELECT mdl_course.id, mdl_course.fullname, mdl_course.shortname FROM mdl_course "
+							+ "JOIN mdl_enrol ON (mdl_enrol.courseid = mdl_course.id) "
+							+ "JOIN mdl_user_enrolments ON (mdl_enrol.id = mdl_user_enrolments.enrolid) "
+							+ "WHERE mdl_user_enrolments.userid = ?;",
+					new Long[]{userId},
+					new RowMapper<Course>() {
+						@Override
+						public Course mapRow(ResultSet resultSet, int row) throws SQLException {
+							Course course = new Course();
+							course.setId(String.valueOf(resultSet.getLong("id")));
+							course.setFullname(resultSet.getString("fullname"));
+							course.setShortname(resultSet.getString("shortname"));
+							course.setType(TYPE);
+							course.setMembership(getMembership(username, resultSet.getString("id")));
+							return course;
 						}
-				);
+					}
+			);
+		} catch (EmptyResultDataAccessException e) {
+			return Collections.emptyList();
+		}
 	}
 
-	private long getUserId(final String username) {
+	private long getUserId(final String username) throws EmptyResultDataAccessException {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		return jdbcTemplate.queryForObject(
 				"SELECT mdl_user.id FROM mdl_user "
