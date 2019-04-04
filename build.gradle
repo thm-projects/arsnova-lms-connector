@@ -19,7 +19,6 @@ subprojects {
 	}
 
 	dependencies {
-		compile group: 'commons-collections', name: 'commons-collections', version: '3.2.1'
 		compile group: 'org.springframework', name: 'spring-context', version: springVersion
 		compile group: 'org.springframework.security', name: 'spring-security-config', version: springSecurityVersion
 		compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.5.0'
