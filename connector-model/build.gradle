@@ -1,4 +1,14 @@
-apply plugin: 'com.github.jacobono.jaxb'
+buildscript {
+	repositories {
+		jcenter()
+		mavenCentral()
+		mavenLocal()
+	}
+}
+
+plugins {
+	id "org.openrepose.gradle.plugins.jaxb" version "2.5.0"
+}
 
 jar {
 	manifest {
@@ -6,24 +16,20 @@ jar {
 	}
 }
 
-buildscript {
-	repositories {
-		jcenter()
-		mavenCentral()
-		mavenLocal()
-	}
-
-	dependencies { classpath 'com.github.jacobono:gradle-jaxb-plugin:1.3.5' }
+dependencies {
+	jaxb 'org.glassfish.jaxb:jaxb-xjc:2.3.2'
+	jaxb 'org.glassfish.jaxb:jaxb-runtime:2.3.2'
+	jaxb 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
 }
 
-dependencies {
-	jaxb 'com.sun.xml.bind:jaxb-xjc:2.2.8-b01'
-	jaxb 'com.sun.xml.bind:jaxb-impl:2.2.8-b01'
-	jaxb 'javax.xml.bind:jaxb-api:2.2.8'
+sourceSets {
+	main {
+		java {
+			srcDir 'build/generated-sources/xjc'
+		}
+	}
 }
 
 jaxb {
-	xsdDir = "${project.name}/src/main/resources"
+	xsdDir = "${project.projectDir}/src/main/resources"
 }
-
-build.finalizedBy(xjc)
