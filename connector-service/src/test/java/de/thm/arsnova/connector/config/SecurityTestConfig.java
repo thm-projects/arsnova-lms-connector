@@ -20,9 +20,9 @@ public class SecurityTestConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser("admin")
-		.password("secret").authorities("ADMIN")
-		.and().withUser("user").password("secret").authorities("USER");
+		auth.inMemoryAuthentication()
+				.withUser("admin").password("{noop}secret").authorities("ADMIN")
+				.and().withUser("user").password("{noop}secret").authorities("USER");
 	}
 
 	@Bean
