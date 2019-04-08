@@ -1,0 +1,32 @@
+variables:
+  OUTPUT_DIR: "*/build"
+  GRADLE_USER_HOME: .gradle-user-home
+
+.gradle_cache: &gradle_cache
+  paths:
+    - .gradle/
+    - $GRADLE_USER_HOME/
+
+compile:
+  stage: build
+  tags:
+    - gradle
+  artifacts:
+    paths:
+      - $OUTPUT_DIR
+  cache: *gradle_cache
+  script:
+    - gradle xjc assemble
+
+unit_test:
+  stage: test
+  tags:
+    - gradle
+  dependencies:
+    - compile
+  artifacts:
+    paths:
+      - $OUTPUT_DIR
+  cache: *gradle_cache
+  script:
+    - gradle test
