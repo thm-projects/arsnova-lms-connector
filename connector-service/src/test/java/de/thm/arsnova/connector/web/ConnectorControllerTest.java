@@ -58,26 +58,27 @@ public class ConnectorControllerTest {
 	public void testShouldReturnEmptyMembership() throws Exception {
 		mockMvc.perform(get("/ptsr00/membership/12345678").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 	}
 
 	@Test
 	public void testShouldNotReturnEmptyMembership() throws Exception {
 		mockMvc.perform(get("/ptsr00/membership/21435678").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 	}
 
 	@Test
 	public void testShouldReturnEmptyCourses() throws Exception {
 		mockMvc.perform(get("/ptsr00/courses").accept(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(content().contentType(MediaType.APPLICATION_JSON));
+		.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 	}
 
 	@Test
 	public void testShouldNotReturnEmptyCourses() throws Exception {
-		mockMvc.perform(get("/ptsr01/courses").accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON))
-		.andExpect(status().isOk());
+		mockMvc.perform(get("/ptsr01/courses").accept(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
 	}
 }

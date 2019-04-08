@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.MessageDigestPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import de.thm.arsnova.connector.persistence.domain.User;
@@ -65,12 +65,9 @@ public class AuthenticationTokenService {
 	 */
 	private String generateToken(UserDetails ud) {
 		Date now = new Date();
-		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+		MessageDigestPasswordEncoder encoder = new MessageDigestPasswordEncoder("MD5");
 		
-		return encoder.encodePassword(
-				ud.getUsername() + now.toString() + String.valueOf(Math.random()),
-				null
-		);
+		return encoder.encode(ud.getUsername() + now.toString() + Math.random());
 	}
 	
 	

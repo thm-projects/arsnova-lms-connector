@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 
 public class RepoPermissionEvaluator implements PermissionEvaluator {
 	@Override
@@ -27,20 +26,18 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 			final String targetType,
 			final Object permission
 			) {
-		if (authentication.getPrincipal() instanceof String) {
+		if (authentication == null || targetId == null || targetType == null || !(permission instanceof String)) {
 			return false;
 		}
 
-		final UserDetails ud = (UserDetails) authentication.getPrincipal();
-
-		if (isAdmin(ud)) {
+		if (isAdmin(authentication)) {
 			return true;
 		}
 
 		switch (targetType) {
 		case "membership":
 		case "courses":
-			if ("read".equals(permission) && ud.getUsername().equals(targetId)) {
+			if ("read".equals(permission) && authentication.getName().equals(targetId)) {
 				return true;
 			}
 			break;
@@ -49,7 +46,7 @@ public class RepoPermissionEvaluator implements PermissionEvaluator {
 		return false;
 	}
 
-	private boolean isAdmin(final UserDetails user) {
-		return false;
+	private boolean isAdmin(final Authentication authentication) {
+		return authentication.getAuthorities().stream().anyMatch(ga -> ga.getAuthority().equals("ADMIN"));
 	}
 }
