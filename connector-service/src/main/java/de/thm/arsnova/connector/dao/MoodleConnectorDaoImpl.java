@@ -2,12 +2,14 @@ package de.thm.arsnova.connector.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -19,9 +21,9 @@ import de.thm.arsnova.connector.model.UserRole;
 public class MoodleConnectorDaoImpl implements ConnectorDao {
 
 	private static final String TYPE = "moodle";
-	private static final int MOODLE_COURSE_EDITINGTEACHER = 3;
-	private static final int MOODLE_COURSE_TEACHER = 4;
-	private static final int MOODLE_COURSE_MEMBER = 5;
+
+	@Value("${lms.moodle.teacher-role-ids:3,4}") private int[] moodleTeacherRoleIds;
+	@Value("${lms.moodle.student-role-ids:5}") private int[] moodleStudentRoleIds;
 
 	@Autowired
 	private DataSource dataSource;
@@ -130,9 +132,9 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 	}
 
 	private UserRole getMembershipRole(final int moodleRoleId) {
-		if (moodleRoleId == MOODLE_COURSE_EDITINGTEACHER || moodleRoleId == MOODLE_COURSE_TEACHER) {
+		if (Arrays.stream(moodleTeacherRoleIds).anyMatch(id -> id == moodleRoleId)) {
 			return UserRole.TEACHER;
-		} else if (moodleRoleId == MOODLE_COURSE_MEMBER) {
+		} else if (Arrays.stream(moodleStudentRoleIds).anyMatch(id -> id == moodleRoleId)) {
 			return UserRole.MEMBER;
 		}
 
