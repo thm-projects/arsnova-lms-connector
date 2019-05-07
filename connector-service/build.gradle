@@ -29,6 +29,7 @@ dependencies {
 	implementation group: 'org.springframework.security', name: 'spring-security-ldap'
 	implementation group: 'cglib', name: 'cglib', version: '3.1'
 	implementation group: 'ch.qos.logback', name: 'logback-classic'
+	implementation group: 'org.codehaus.janino', name: 'janino'
 	implementation group: 'org.json', name: 'json', version: '20141113'
 
 	providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
@@ -45,6 +46,8 @@ test { systemProperties 'property': 'value' }
 
 gretty {
 	servletContainer = 'jetty9.4'
+	logbackConfigFile = 'src/main/resources/logback.xml'
+	jvmArgs = ['-Darsnova.log.level=DEBUG']
 }
 
 sonarqube {
