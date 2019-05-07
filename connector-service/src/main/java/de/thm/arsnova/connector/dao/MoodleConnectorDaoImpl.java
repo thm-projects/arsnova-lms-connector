@@ -118,7 +118,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 					"SELECT mdl_course.id, mdl_course.fullname, mdl_course.shortname FROM mdl_course "
 							+ "JOIN mdl_enrol ON (mdl_enrol.courseid = mdl_course.id) "
 							+ "JOIN mdl_user_enrolments ON (mdl_enrol.id = mdl_user_enrolments.enrolid) "
-							+ "WHERE mdl_user_enrolments.userid = ?;",
+							+ "WHERE mdl_course.visible = 1 AND mdl_user_enrolments.userid = ?;",
 					new Long[] {userId},
 					new RowMapper<Course>() {
 						@Override
