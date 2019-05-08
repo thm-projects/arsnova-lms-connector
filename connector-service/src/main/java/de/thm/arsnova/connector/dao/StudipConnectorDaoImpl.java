@@ -63,6 +63,7 @@ public class StudipConnectorDaoImpl implements ConnectorDao {
 		final Map<String, Object> jdbcParams = new HashMap<>();
 		jdbcParams.put("username", username);
 		jdbcParams.put("courseIds", courseIds);
+		logger.debug("Querying Stud.IP statuses of user {} for course IDs {}.", username, courseIds);
 		try {
 			final Map<String, Membership> memberships = jdbcTemplate.query(
 					"SELECT seminar_user.Seminar_ID, seminar_user.status FROM seminar_user "
@@ -75,9 +76,11 @@ public class StudipConnectorDaoImpl implements ConnectorDao {
 							final Map<String, Membership> memberships = new HashMap<>();
 							while (rs.next()) {
 								final Membership membership = new Membership();
+								final String status = rs.getString("status");
 								membership.setMember(true);
-								membership.setUserrole(getMembershipRole(rs.getString("status")));
+								membership.setUserrole(getMembershipRole(status));
 								memberships.put(rs.getString("Seminar_ID"), membership);
+								logger.trace("Resolved Stud.IP status {} to {}.", status, membership.getUserrole());
 							}
 
 							return memberships;
@@ -95,6 +98,7 @@ public class StudipConnectorDaoImpl implements ConnectorDao {
 	@Override
 	public List<Course> getMembersCourses(final String username) {
 		final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		logger.debug("Querying Stud.IP courses for user {}.", username);
 		try {
 			final List<Course> courses =  jdbcTemplate.query(
 					"SELECT seminare.Seminar_ID, seminare.Name, seminare.Untertitel, seminar_user.status FROM seminare "

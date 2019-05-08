@@ -74,6 +74,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 			final Map<String, Object> jdbcParams = new HashMap<>();
 			jdbcParams.put("userId", userId);
 			jdbcParams.put("courseIds", courseIds.stream().map(id -> Long.valueOf(id)).collect(Collectors.toList()));
+			logger.debug("Querying Moodle roles of user ID {} for course IDs {}.", userId, courseIds);
 			final Map<String, Membership> memberships = jdbcTemplate.query(
 					"SELECT mdl_course.id, mdl_user_enrolments.userid, mdl_role_assignments.roleid FROM mdl_enrol "
 							+ "JOIN mdl_user_enrolments ON (mdl_enrol.id = mdl_user_enrolments.enrolid) "
@@ -92,9 +93,16 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 							final Map<String, Membership> memberships = new HashMap<>();
 							while (rs.next()) {
 								final Membership membership = new Membership();
+								final String courseId = String.valueOf(rs.getLong("id"));
+								final int roleId = rs.getInt("roleid");
 								membership.setMember(true);
-								membership.setUserrole(getMembershipRole(rs.getInt("roleid")));
-								memberships.put(String.valueOf(rs.getLong("id")), membership);
+								membership.setUserrole(getMembershipRole(roleId));
+								if (memberships.containsKey(courseId)) {
+									logger.warn("Found multiple roles for Moodle user ID {} and course ID {}. This is not supported.",
+											userId, courseId);
+								}
+								memberships.put(courseId, membership);
+								logger.trace("Resolved Moodle role ID {} to {}.", roleId, membership.getUserrole());
 							}
 
 							return memberships;
@@ -114,6 +122,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 		try {
 			final long userId = getUserId(username);
 			final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+			logger.debug("Querying Moodle courses for user ID {}.", userId);
 			final List<Course> courses = jdbcTemplate.query(
 					"SELECT mdl_course.id, mdl_course.fullname, mdl_course.shortname FROM mdl_course "
 							+ "JOIN mdl_enrol ON (mdl_enrol.courseid = mdl_course.id) "
