@@ -5,9 +5,9 @@ variables:
 .gradle:
   image: gradle:6.2-jdk8
   cache:
+    key: gradle-global-cache
     paths:
-      - .gradle/
-      - $GRADLE_USER_HOME/
+      - $GRADLE_USER_HOME/caches
 
 compile:
   extends: .gradle
