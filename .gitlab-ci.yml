@@ -2,31 +2,29 @@ variables:
   OUTPUT_DIR: "*/build"
   GRADLE_USER_HOME: .gradle-user-home
 
-.gradle_cache: &gradle_cache
-  paths:
-    - .gradle/
-    - $GRADLE_USER_HOME/
+.gradle:
+  image: gradle:6.2-jdk8
+  cache:
+    paths:
+      - .gradle/
+      - $GRADLE_USER_HOME/
 
 compile:
+  extends: .gradle
   stage: build
-  tags:
-    - gradle
   artifacts:
     paths:
       - $OUTPUT_DIR
-  cache: *gradle_cache
   script:
     - gradle xjc assemble
 
 unit_test:
+  extends: .gradle
   stage: test
-  tags:
-    - gradle
   dependencies:
     - compile
   artifacts:
     paths:
       - $OUTPUT_DIR
-  cache: *gradle_cache
   script:
     - gradle test
