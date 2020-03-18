@@ -1,32 +1,55 @@
 variables:
   OUTPUT_DIR: "*/build"
   GRADLE_USER_HOME: .gradle-user-home
+  GRADLE_CLI_OPTS: --no-daemon --console=plain
 
-.gradle_cache: &gradle_cache
-  paths:
-    - .gradle/
-    - $GRADLE_USER_HOME/
+.gradle:
+  image: gradle:6.2-jdk8
+  cache:
+    key: gradle-global-cache
+    paths:
+      - $GRADLE_USER_HOME/caches
 
 compile:
+  extends: .gradle
   stage: build
-  tags:
-    - gradle
   artifacts:
     paths:
       - $OUTPUT_DIR
-  cache: *gradle_cache
   script:
-    - gradle xjc assemble
+    - gradle $GRADLE_CLI_OPTS xjc assemble
 
 unit_test:
+  extends: .gradle
   stage: test
-  tags:
-    - gradle
   dependencies:
     - compile
   artifacts:
     paths:
       - $OUTPUT_DIR
-  cache: *gradle_cache
   script:
-    - gradle test
+    - gradle $GRADLE_CLI_OPTS test
+
+docker_image:
+  extends: .gradle
+  stage: deploy
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+      when: never
+    - if: $CI_COMMIT_REF_NAME == "master"
+      when: on_success
+    - if: $CI_COMMIT_REF_NAME == "latest" || $CI_COMMIT_REF_NAME =~ /^v[0-9]+/ || $CI_COMMIT_REF_NAME =~ /^[0-9]+\.[0-9]+$/
+      when: never
+    - when: manual
+  variables:
+    DOCKER_IMAGE: $CI_REGISTRY/$CI_PROJECT_PATH:$CI_COMMIT_REF_SLUG
+  dependencies:
+    - compile
+  allow_failure: true
+  script:
+    - "echo Creation time for image: `git log -1 --format=%cI`"
+    - gradle $GRADLE_CLI_OPTS jib
+      -Djib.to.auth.username="$CI_REGISTRY_USER"
+      -Djib.to.auth.password="$CI_REGISTRY_PASSWORD"
+      -Djib.to.image="$DOCKER_IMAGE"
+      -Djib.container.creationTime="`git log -1 --format=%cI`"

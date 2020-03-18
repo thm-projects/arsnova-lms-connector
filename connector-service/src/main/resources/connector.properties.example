@@ -1,11 +1,11 @@
 jdbc.driverClassName=com.mysql.jdbc.Driver
-jdbc.url=jdbc:mysql://127.0.0.1:3306/moodle?zeroDateTimeBehavior=convertToNull
-jdbc.username=root
-jdbc.password=secret
+jdbc.url=jdbc:mysql://localhost:3306/moodle?zeroDateTimeBehavior=convertToNull
+jdbc.username=arsnova
+jdbc.password=arsnova
 
-lms.http.serverUrl=https://localhost/lms-api
-lms.http.username=connector-user
-lms.http.password=secret
+lms.http.serverUrl=https://example.com/lms-api
+lms.http.username=arsnova
+lms.http.password=arsnova
 
 # Select the data access object implementation your target platform
 # Uncomment the following line to access Moodle
@@ -17,8 +17,8 @@ dao.implementation=de.thm.arsnova.connector.dao.MoodleConnectorDaoImpl
 # Uncomment the following line to get a dummy implementation
 # dao.implementation=de.thm.arsnova.connector.dao.DummyConnectorDaoImpl
 
-admin.username=test
-admin.password=test
+admin.username=arsnova
+admin.password=arsnova
 
 ldap.serverUrl=
 ldap.userSearchBase=
