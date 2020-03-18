@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -18,7 +19,10 @@ import de.thm.arsnova.connector.dao.ConnectorDao;
 		"de.thm.arsnova.connector.services"
 })
 @Configuration
-@PropertySource("file:///etc/arsnova/connector.properties")
+@PropertySources({
+		@PropertySource(value = "classpath:connector.properties.example"),
+		@PropertySource(value = "file:///etc/arsnova/connector.properties", ignoreResourceNotFound = true)
+})
 public class AppConfig {
 
 	@Autowired

@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.ldap.core.support.BaseLdapPathContextSource;
 import org.springframework.security.access.PermissionEvaluator;
@@ -24,7 +23,6 @@ import de.thm.arsnova.connector.core.RepoPermissionEvaluator;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@PropertySource("file:///etc/arsnova/connector.properties")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${admin.username}") private String username;
 	@Value("${admin.password}") private String password;
