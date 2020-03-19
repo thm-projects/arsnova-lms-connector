@@ -18,6 +18,8 @@
 			<element name="fullname" type="string"></element>
 			<element name="shortname" type="string"></element>
 			<element ref="tns:membership"></element>
+			<element name="startdate" type="dateTime" minOccurs="0"></element>
+			<element name="enddate" type="dateTime" minOccurs="0"></element>
 		</sequence>
 		<attribute name="type" type="string"></attribute>
 	</complexType>

@@ -2,6 +2,7 @@ package de.thm.arsnova.connector.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -124,7 +125,7 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 			final JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 			logger.debug("Querying Moodle courses for user ID {}.", userId);
 			final List<Course> courses = jdbcTemplate.query(
-					"SELECT mdl_course.id, mdl_course.fullname, mdl_course.shortname FROM mdl_course "
+					"SELECT mdl_course.id, mdl_course.fullname, mdl_course.shortname, mdl_course.startdate, mdl_course.enddate FROM mdl_course "
 							+ "JOIN mdl_enrol ON (mdl_enrol.courseid = mdl_course.id) "
 							+ "JOIN mdl_user_enrolments ON (mdl_enrol.id = mdl_user_enrolments.enrolid) "
 							+ "WHERE mdl_course.visible = 1 AND mdl_user_enrolments.userid = ?;",
@@ -136,6 +137,8 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 							course.setId(String.valueOf(rs.getLong("id")));
 							course.setFullname(rs.getString("fullname"));
 							course.setShortname(rs.getString("shortname"));
+							course.setStartdate(Instant.ofEpochSecond(rs.getLong("startdate")));
+							course.setEnddate(Instant.ofEpochSecond(rs.getLong("enddate")));
 							course.setType(TYPE);
 
 							return course;

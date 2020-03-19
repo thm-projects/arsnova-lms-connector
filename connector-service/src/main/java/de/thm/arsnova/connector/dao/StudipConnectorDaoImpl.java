@@ -2,6 +2,8 @@ package de.thm.arsnova.connector.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -101,7 +103,7 @@ public class StudipConnectorDaoImpl implements ConnectorDao {
 		logger.debug("Querying Stud.IP courses for user {}.", username);
 		try {
 			final List<Course> courses =  jdbcTemplate.query(
-					"SELECT seminare.Seminar_ID, seminare.Name, seminare.Untertitel, seminar_user.status FROM seminare "
+					"SELECT seminare.Seminar_ID, seminare.Name, seminare.Untertitel, seminare.start_time, seminare.duration_time, seminar_user.status FROM seminare "
 							+ "JOIN seminar_user ON (seminar_user.seminar_id = seminare.seminar_id) "
 							+ "JOIN auth_user_md5 ON (seminar_user.user_id = auth_user_md5.user_id) "
 							+ "WHERE auth_user_md5.username = ?;",
@@ -113,7 +115,18 @@ public class StudipConnectorDaoImpl implements ConnectorDao {
 							course.setId(rs.getString("Seminar_ID"));
 							course.setFullname(rs.getString("Name"));
 							course.setShortname(rs.getString("Name"));
+							course.setStartdate(Instant.ofEpochSecond(rs.getLong("start_time")));
 							course.setType(TYPE);
+
+							final long duration = rs.getLong("duration_time");
+							if (duration == 0) {
+								/* The course is active for one term. A term's duration is approximated to 180 days
+								 * here. This might be incorrect if the Stud.IP's configuration for terms was changed
+								 * manually. */
+								course.setEnddate(course.getStartdate().plus(6 * 30, ChronoUnit.DAYS));
+							} else if (duration > 0) {
+								course.setEnddate(course.getStartdate().plusSeconds(duration));
+							}
 
 							return course;
 						}

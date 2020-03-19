@@ -61,6 +61,8 @@ public class ConnectorServiceStudipTest {
 						+ "Seminar_ID varchar(254) NOT NULL,"
 						+ "Name varchar(254),"
 						+ "Untertitel varchar(254),"
+						+ "start_time int,"
+						+ "duration_time int,"
 						+ "PRIMARY KEY (Seminar_ID))"
 				);
 
