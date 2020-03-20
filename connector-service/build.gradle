@@ -28,6 +28,7 @@ dependencies {
 	implementation group: 'org.springframework.security', name: 'spring-security-web'
 	implementation group: 'org.springframework.security', name: 'spring-security-config'
 	implementation group: 'org.springframework.security', name: 'spring-security-ldap'
+	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310'
 	implementation group: 'cglib', name: 'cglib', version: '3.1'
 	implementation group: 'ch.qos.logback', name: 'logback-classic'
 	implementation group: 'org.codehaus.janino', name: 'janino'
