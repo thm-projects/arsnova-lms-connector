@@ -20,6 +20,9 @@ repositories {
 
 dependencies {
 	implementation project(':connector-model')
+
+	providedCompile platform(group: 'org.springframework.boot', name: 'spring-boot-dependencies', version: springBootVersion)
+
 	implementation group: 'commons-codec', name: 'commons-codec'
 	implementation group: 'org.springframework', name: 'spring-context'
 	implementation group: 'org.springframework', name: 'spring-webmvc'
