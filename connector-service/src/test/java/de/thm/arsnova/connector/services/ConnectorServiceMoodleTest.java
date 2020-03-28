@@ -61,6 +61,8 @@ public class ConnectorServiceMoodleTest {
 						+ "id bigint NOT NULL,"
 						+ "fullname varchar(254),"
 						+ "shortname varchar(254),"
+						+ "startdate bigint,"
+						+ "enddate bigint,"
 						+ "visible bigint,"
 						+ "PRIMARY KEY (id))"
 				);

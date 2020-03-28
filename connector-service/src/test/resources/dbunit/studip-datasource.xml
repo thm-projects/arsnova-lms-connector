@@ -4,15 +4,21 @@
 		<column>Seminar_ID</column>
 		<column>Name</column>
 		<column>Untertitel</column>
+		<column>start_time</column>
+		<column>duration_time</column>
 		<row>
 			<value>1</value>
 			<value>Testkurs 1</value>
 			<value>TK1</value>
+			<value>1577836800</value>
+			<value>1601424000</value>
 		</row>
 		<row>
 			<value>2</value>
 			<value>Testkurs 2</value>
 			<value>TK2</value>
+			<value>1917043200</value>
+			<value>-1</value>
 		</row>
 	</table>
 	<table name="auth_user_md5">

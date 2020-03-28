@@ -1,5 +1,7 @@
 package de.thm.arsnova.connector.dao;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +29,8 @@ public class DummyConnectorDaoImpl implements ConnectorDao {
 		final Course course = new Course();
 		course.setFullname("Dummy Course");
 		course.setId("1");
+		course.setStartdate(Instant.EPOCH);
+		course.setEnddate(Instant.EPOCH.plus(180, ChronoUnit.DAYS));
 		course.setType(TYPE);
 		result.add(course);
 		return result;
