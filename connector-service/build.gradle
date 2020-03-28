@@ -34,14 +34,14 @@ dependencies {
 	implementation group: 'org.codehaus.janino', name: 'janino'
 	implementation group: 'org.json', name: 'json', version: '20141113'
 
-	providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
+	providedCompile group: 'jakarta.servlet', name: 'jakarta.servlet-api'
 
-	providedRuntime group: 'mysql', name: 'mysql-connector-java', version: '8.0.16'
+	providedRuntime group: 'mysql', name: 'mysql-connector-java'
 
 	testImplementation group: 'junit', name: 'junit'
 	testImplementation group: 'org.mockito', name: 'mockito-core'
 	testImplementation group: 'org.dbunit', name: 'dbunit', version: '2.5.0'
-	testImplementation group: 'org.hsqldb', name: 'hsqldb', version: '2.3.2'
+	testImplementation group: 'org.hsqldb', name: 'hsqldb'
 }
 
 test { systemProperties 'property': 'value' }
