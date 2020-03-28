@@ -1,6 +1,10 @@
+plugins {
+	id 'java-library'
+}
+
 jar {
 	manifest {
-		attributes 'Implementation-Title': 'Connector-Client', 'Implementation-Version': version
+		attributes 'Implementation-Title': 'Connector-Client', 'Implementation-Version': archiveVersion
 	}
 }
 
@@ -11,7 +15,8 @@ repositories {
 }
 
 dependencies {
-	compile project (':connector-model')
+	api project(':connector-model')
+
 	implementation group: 'commons-codec', name: 'commons-codec'
 	implementation group: 'org.springframework', name: 'spring-context'
 	implementation group: 'org.springframework', name: 'spring-web'

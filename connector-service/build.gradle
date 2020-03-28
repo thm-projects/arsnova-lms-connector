@@ -8,7 +8,7 @@ plugins {
 
 jar {
 	manifest {
-		attributes 'Implementation-Title': 'Connector-Service', 'Implementation-Version': version
+		attributes 'Implementation-Title': 'Connector-Service', 'Implementation-Version': archiveVersion
 	}
 }
 
@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-	compile project (':connector-model')
+	implementation project(':connector-model')
 	implementation group: 'commons-codec', name: 'commons-codec'
 	implementation group: 'org.springframework', name: 'spring-context'
 	implementation group: 'org.springframework', name: 'spring-webmvc'

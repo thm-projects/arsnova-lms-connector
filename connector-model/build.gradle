@@ -12,7 +12,7 @@ plugins {
 
 jar {
 	manifest {
-		attributes 'Implementation-Title': 'Connector-Model', 'Implementation-Version': version
+		attributes 'Implementation-Title': 'Connector-Model', 'Implementation-Version': archiveVersion
 	}
 }
 
