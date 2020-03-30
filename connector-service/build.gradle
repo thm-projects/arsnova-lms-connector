@@ -23,6 +23,7 @@ dependencies {
 
 	providedCompile platform(group: 'org.springframework.boot', name: 'spring-boot-dependencies', version: springBootVersion)
 
+	implementation group: 'jakarta.annotation', name: 'jakarta.annotation-api'
 	implementation group: 'commons-codec', name: 'commons-codec'
 	implementation group: 'org.springframework', name: 'spring-context'
 	implementation group: 'org.springframework', name: 'spring-webmvc'
