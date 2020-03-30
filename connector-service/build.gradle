@@ -63,5 +63,3 @@ sonarqube {
 		property "sonar.host.url", project.hasProperty('sonarServerUrl') ?  sonarServerUrl : ''
 	}
 }
-
-tasks.compileJava.dependsOn(':connector-model:xjc')

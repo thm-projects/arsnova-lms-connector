@@ -36,3 +36,5 @@ sourceSets {
 jaxb {
 	xsdDir = "${project.projectDir}/src/main/resources"
 }
+
+tasks.compileJava.dependsOn('xjc')
