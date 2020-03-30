@@ -25,5 +25,3 @@ dependencies {
 }
 
 test { systemProperties 'property': 'value' }
-
-tasks.compileJava.dependsOn(':connector-model:xjc')
