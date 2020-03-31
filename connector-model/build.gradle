@@ -1,11 +1,3 @@
-buildscript {
-	repositories {
-		jcenter()
-		mavenCentral()
-		mavenLocal()
-	}
-}
-
 plugins {
 	id 'java-library'
 	id "org.openrepose.gradle.plugins.jaxb" version "2.5.0"

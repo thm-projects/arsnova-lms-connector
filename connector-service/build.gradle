@@ -12,12 +12,6 @@ jar {
 	}
 }
 
-repositories {
-	jcenter()
-	mavenCentral()
-	mavenLocal()
-}
-
 dependencies {
 	implementation project(':connector-model')
 
