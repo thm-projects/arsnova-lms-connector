@@ -134,11 +134,14 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 						@Override
 						public Course mapRow(final ResultSet rs, final int row) throws SQLException {
 							final Course course = new Course();
+							final long enddate = rs.getLong("enddate");
 							course.setId(String.valueOf(rs.getLong("id")));
 							course.setFullname(rs.getString("fullname"));
 							course.setShortname(rs.getString("shortname"));
 							course.setStartdate(Instant.ofEpochSecond(rs.getLong("startdate")));
-							course.setEnddate(Instant.ofEpochSecond(rs.getLong("enddate")));
+							if (enddate > 0) {
+								course.setEnddate(Instant.ofEpochSecond(enddate));
+							}
 							course.setType(TYPE);
 
 							return course;
