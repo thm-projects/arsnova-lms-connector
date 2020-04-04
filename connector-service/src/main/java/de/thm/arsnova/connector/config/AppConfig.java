@@ -2,6 +2,7 @@ package de.thm.arsnova.connector.config;
 
 import java.sql.SQLException;
 
+import org.apache.commons.codec.CharEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,10 +20,16 @@ import de.thm.arsnova.connector.dao.ConnectorDao;
 		"de.thm.arsnova.connector.services"
 })
 @Configuration
-@PropertySources({
-		@PropertySource(value = "classpath:connector.properties.example"),
-		@PropertySource(value = "file:///etc/arsnova/connector.properties", ignoreResourceNotFound = true)
-})
+@PropertySource(
+		value = "classpath:config/defaults.yml",
+		factory = YamlPropertySourceFactory.class)
+@PropertySource(
+		value = {
+				"file:${connector.config-dir:.}/application.yml",
+				"file:${connector.config-dir:.}/lms-connector.yml",
+				"file:${connector.config-dir:.}/secrets.yml"},
+		ignoreResourceNotFound = true,
+		factory = YamlPropertySourceFactory.class)
 public class AppConfig {
 
 	@Autowired
