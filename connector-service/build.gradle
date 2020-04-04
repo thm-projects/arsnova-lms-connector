@@ -47,7 +47,15 @@ test { systemProperties 'property': 'value' }
 gretty {
 	servletContainer = 'jetty9.4'
 	logbackConfigFile = 'src/main/resources/logback.xml'
-	jvmArgs = ['-Darsnova.log.level=DEBUG']
+	jvmArgs = []
+	def logLevel = project.hasProperty('logLevel') ? logLevel : 'DEBUG'
+	jvmArgs.add('-Dconnector.log.level=' + logLevel)
+	if (project.hasProperty('springLogLevel')) {
+		jvmArgs.add('-Dconnector.log.level.spring=' + springLogLevel)
+	}
+	if (project.hasProperty('configDir')) {
+		jvmArgs.add('-Dconnector.config-dir=' + configDir)
+	}
 }
 
 sonarqube {
