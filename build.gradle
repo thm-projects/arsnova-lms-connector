@@ -34,15 +34,26 @@ subprojects {
 	configurations { deployerJars }
 
 	publishing {
-		publications {
-			mavenJava(MavenPublication) {
-				from components.java
-				versionMapping {
-					usage('java-api') {
-						fromResolutionOf('runtimeClasspath')
-					}
-					usage('java-runtime') {
-						fromResolutionResult()
+		repositories {
+			if (project.hasProperty('gitlabProjectId') || project.hasProperty('mavenRepoUrl')) {
+				maven {
+					if (project.hasProperty('gitlabProjectId')) {
+						def gitlabHostUrl = project.hasProperty('gitlabHostUrl') ? gitlabHostUrl : 'gitlab.com'
+						if (!(gitlabHostUrl ==~ /https?:.*/)) {
+							gitlabHostUrl = 'https://' + gitlabHostUrl
+						}
+						url = "${gitlabHostUrl}/api/v4/projects/${gitlabProjectId}/packages/maven"
+						if (project.hasProperty('gitlabAuthToken')) {
+							credentials(HttpHeaderCredentials) {
+								name = 'Job-Token'
+								value = gitlabAuthToken
+							}
+							authentication {
+								header(HttpHeaderAuthentication)
+							}
+						}
+					} else {
+						url = mavenRepoUrl
 					}
 				}
 			}

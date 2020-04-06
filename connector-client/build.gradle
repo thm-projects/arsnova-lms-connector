@@ -18,4 +18,20 @@ dependencies {
 	testImplementation group: 'junit', name: 'junit'
 }
 
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+			versionMapping {
+				usage('java-api') {
+					fromResolutionOf('runtimeClasspath')
+				}
+				usage('java-runtime') {
+					fromResolutionResult()
+				}
+			}
+		}
+	}
+}
+
 test { systemProperties 'property': 'value' }
