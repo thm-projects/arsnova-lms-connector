@@ -1,7 +1,5 @@
 package de.thm.arsnova.connector.client;
 
-import java.util.List;
-
 import de.thm.arsnova.connector.model.Courses;
 import de.thm.arsnova.connector.model.Membership;
 

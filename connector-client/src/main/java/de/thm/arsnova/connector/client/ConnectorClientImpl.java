@@ -1,24 +1,20 @@
 package de.thm.arsnova.connector.client;
 
-import java.nio.charset.Charset;
-
-import org.apache.commons.codec.binary.Base64;
+import de.thm.arsnova.connector.model.Courses;
+import de.thm.arsnova.connector.model.Membership;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import de.thm.arsnova.connector.model.Courses;
-import de.thm.arsnova.connector.model.Membership;
+import java.nio.charset.StandardCharsets;
 
 public class ConnectorClientImpl implements ConnectorClient {
 	private final RestTemplate restTemplate = new RestTemplate();
 
 	private static final String ISMEMBER_URI = "/{username}/membership/{courseid}";
 	private static final String GETCOURSES_URI = "/{username}/courses";
-
-	private static final Charset UTF8_CHARSET = Charset.forName("UTF-8");
 
 	private String uriHostPart;
 	private String httpUsername;
@@ -51,6 +47,7 @@ public class ConnectorClientImpl implements ConnectorClient {
 				username,
 				courseid
 				);
+
 		return response.getBody();
 	}
 
@@ -67,20 +64,16 @@ public class ConnectorClientImpl implements ConnectorClient {
 	}
 
 	private HttpEntity<Membership> createMembershipEntity() {
-		return new HttpEntity<Membership>(getAuthorizationHeader());
+		return new HttpEntity<>(getAuthorizationHeader());
 	}
 
 	private HttpEntity<Courses> createCoursesEntity() {
-		return new HttpEntity<Courses>(getAuthorizationHeader());
+		return new HttpEntity<>(getAuthorizationHeader());
 	}
 
 	private HttpHeaders getAuthorizationHeader() {
 		final HttpHeaders httpHeaders = new HttpHeaders();
-		final String authorisation = httpUsername + ":" + httpPassword;
-		httpHeaders.add(
-				"Authorization",
-				"Basic " + Base64.encodeBase64String(authorisation.getBytes(UTF8_CHARSET))
-				);
+		httpHeaders.setBasicAuth(httpUsername, httpPassword, StandardCharsets.UTF_8);
 		return httpHeaders;
 	}
 
