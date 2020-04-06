@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import java.nio.charset.StandardCharsets;
 
 public class ConnectorClientImpl implements ConnectorClient {
-	private final RestTemplate restTemplate = new RestTemplate();
+	private final RestTemplate restTemplate;
 
 	private static final String ISMEMBER_URI = "/{username}/membership/{courseid}";
 	private static final String GETCOURSES_URI = "/{username}/courses";
@@ -19,6 +19,14 @@ public class ConnectorClientImpl implements ConnectorClient {
 	private String uriHostPart;
 	private String httpUsername;
 	private String httpPassword;
+
+	public ConnectorClientImpl() {
+		this.restTemplate = new RestTemplate();
+	}
+
+	public ConnectorClientImpl(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
+	}
 
 	public void setServiceLocation(final String serviceLocation) {
 		uriHostPart = serviceLocation;
