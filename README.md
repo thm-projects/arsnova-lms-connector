@@ -8,7 +8,7 @@ The LMS membership data is retrieved either directly from the database or via an
 
 LMS Connector is still in beta phase but has been used on production systems for several years.
 Since it only needs limited read access, it is very unlikely to have a negative impact on your LMS.
-We currently provide implementations to access Moodle, Ilias and Stud.IP:
+We currently provide implementations to access Moodle and Stud.IP:
 
 | LMS     | Retrieval method   | Compatible versions |
 |---------|--------------------|---------------------|
