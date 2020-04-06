@@ -34,20 +34,6 @@ subprojects {
 	configurations { deployerJars }
 
 	publishing {
-		publications {
-			mavenJava(MavenPublication) {
-				from components.java
-				versionMapping {
-					usage('java-api') {
-						fromResolutionOf('runtimeClasspath')
-					}
-					usage('java-runtime') {
-						fromResolutionResult()
-					}
-				}
-			}
-		}
-
 		repositories {
 			if (project.hasProperty('gitlabProjectId') || project.hasProperty('mavenRepoUrl')) {
 				maven {

@@ -42,6 +42,22 @@ dependencies {
 	testImplementation group: 'org.hsqldb', name: 'hsqldb'
 }
 
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.web
+			versionMapping {
+				usage('java-api') {
+					fromResolutionOf('runtimeClasspath')
+				}
+				usage('java-runtime') {
+					fromResolutionResult()
+				}
+			}
+		}
+	}
+}
+
 test { systemProperties 'property': 'value' }
 
 gretty {

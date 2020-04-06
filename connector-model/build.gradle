@@ -17,6 +17,22 @@ dependencies {
 	jaxb 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
 }
 
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+			versionMapping {
+				usage('java-api') {
+					fromResolutionOf('runtimeClasspath')
+				}
+				usage('java-runtime') {
+					fromResolutionResult()
+				}
+			}
+		}
+	}
+}
+
 sourceSets {
 	main {
 		java {
