@@ -17,7 +17,7 @@ compile:
     paths:
       - $OUTPUT_DIR
   script:
-    - gradle $GRADLE_CLI_OPTS xjc assemble
+    - gradle $GRADLE_CLI_OPTS assemble
 
 unit_test:
   extends: .gradle
@@ -28,7 +28,7 @@ unit_test:
     paths:
       - $OUTPUT_DIR
   script:
-    - gradle $GRADLE_CLI_OPTS test
+    - gradle $GRADLE_CLI_OPTS test -x compileJava -x classes -x jar
 
 docker_image:
   extends: .gradle
@@ -48,7 +48,7 @@ docker_image:
   allow_failure: true
   script:
     - "echo Creation time for image: `git log -1 --format=%cI`"
-    - gradle $GRADLE_CLI_OPTS jib
+    - gradle $GRADLE_CLI_OPTS jib -x classes -x jar -x war
       -Djib.to.auth.username="$CI_REGISTRY_USER"
       -Djib.to.auth.password="$CI_REGISTRY_PASSWORD"
       -Djib.to.image="$DOCKER_IMAGE"
