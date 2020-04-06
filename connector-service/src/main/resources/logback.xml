@@ -47,6 +47,6 @@
 		</if>
 	</root>
 
-	<logger name="de.thm.arsnova" level="${connector.log.level}" />
+	<logger name="net.particify.arsnova" level="${connector.log.level}" />
 	<logger name="org.springframework" level="${connector.log.level.spring}" />
 </configuration>

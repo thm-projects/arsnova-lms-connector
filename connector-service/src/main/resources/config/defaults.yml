@@ -14,13 +14,13 @@ connector:
   # Select the data access object implementation your target platform
   # Uncomment the following line to access Moodle
   dao:
-    implementation: de.thm.arsnova.connector.dao.MoodleConnectorDaoImpl
+    implementation: net.particify.arsnova.connector.dao.MoodleConnectorDaoImpl
     # Uncomment the following line to access Stud.IP
-    #implementation: de.thm.arsnova.connector.dao.StudipConnectorDaoImpl
+    #implementation: net.particify.arsnova.connector.dao.StudipConnectorDaoImpl
     # Uncomment the following line to access Stud.IP via REST
-    #implementation: de.thm.arsnova.connector.dao.StudipRestConnectorDaoImpl
+    #implementation: net.particify.arsnova.connector.dao.StudipRestConnectorDaoImpl
     # Uncomment the following line to get a dummy implementation
-    #implementation: de.thm.arsnova.connector.dao.DummyConnectorDaoImpl
+    #implementation: net.particify.arsnova.connector.dao.DummyConnectorDaoImpl
 
   admin:
     username: arsnova
