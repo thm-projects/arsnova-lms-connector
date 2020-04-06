@@ -4,6 +4,6 @@
 		xmlns:xs="http://www.w3.org/2001/XMLSchema">
 	<globalBindings>
 		<xjc:javaType name="java.time.Instant" xmlType="xs:dateTime" 
-				adapter="de.thm.arsnova.connector.binding.InstantAdapter"/>
+				adapter="net.particify.arsnova.connector.binding.InstantAdapter"/>
 	</globalBindings>
 </bindings>
