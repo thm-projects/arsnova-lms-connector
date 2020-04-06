@@ -1,6 +1,7 @@
 variables:
   OUTPUT_DIR: "*/build"
   GRADLE_USER_HOME: .gradle-user-home
+  GRADLE_OPTS: -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false
   GRADLE_CLI_OPTS: --no-daemon --console=plain
 
 .gradle:
