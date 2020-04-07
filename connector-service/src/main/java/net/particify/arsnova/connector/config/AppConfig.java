@@ -28,6 +28,7 @@ import net.particify.arsnova.connector.dao.ConnectorDao;
 		ignoreResourceNotFound = true,
 		factory = YamlPropertySourceFactory.class)
 public class AppConfig {
+	private static final String DAO_PACKAGE = "net.particify.arsnova.connector.dao";
 
 	@Autowired
 	private Environment env;
@@ -49,6 +50,9 @@ public class AppConfig {
 
 	@Bean
 	public ConnectorDao connectorDao() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		return (ConnectorDao) Class.forName(env.getProperty("dao.implementation")).newInstance();
+		final String implClass = env.getProperty("dao.implementation").contains(".")
+				? env.getProperty("dao.implementation")
+				: DAO_PACKAGE + "." + env.getProperty("dao.implementation");
+		return (ConnectorDao) Class.forName(implClass).newInstance();
 	}
 }
