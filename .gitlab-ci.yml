@@ -27,9 +27,15 @@ unit_test:
     - compile
   artifacts:
     paths:
-      - $OUTPUT_DIR
+      - $OUTPUT_DIR/jacoco
+      - $OUTPUT_DIR/reports
+      - $OUTPUT_DIR/test-results
+    reports:
+      junit: $OUTPUT_DIR/test-results/test/TEST-*.xml
+  coverage: '/Code coverage: \d+\.\d+/'
   script:
-    - gradle $GRADLE_CLI_OPTS test -x compileJava -x classes -x jar
+    - gradle $GRADLE_CLI_OPTS test jacocoTestReport -x compileJava -x classes -x jar
+    - awk -F"," '{ instructions += $4 + $5; covered += $5 } END { print "Instructions covered:", covered, "/", instructions; print "Code coverage:", 100 * covered / instructions "%" }' $OUTPUT_DIR/reports/jacoco/test/jacocoTestReport.csv
 
 maven_publish:
   extends: .gradle
