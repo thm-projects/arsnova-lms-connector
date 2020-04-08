@@ -5,20 +5,12 @@ connector:
     username: arsnova
     password: arsnova
 
-  lms:
-    http:
-      serverUrl: https://example.com/lms-api
-      username: arsnova
-      password: arsnova
-
   # Select the data access object implementation your target platform
   # Uncomment the following line to access Moodle
   dao:
     implementation: MoodleConnectorDaoImpl
     # Uncomment the following line to access Stud.IP
     #implementation: StudipConnectorDaoImpl
-    # Uncomment the following line to access Stud.IP via REST
-    #implementation: StudipRestConnectorDaoImpl
     # Uncomment the following line to get a dummy implementation
     #implementation: DummyConnectorDaoImpl
 
