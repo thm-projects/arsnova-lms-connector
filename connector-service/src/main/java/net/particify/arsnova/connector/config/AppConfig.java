@@ -2,14 +2,16 @@ package net.particify.arsnova.connector.config;
 
 import java.sql.SQLException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
-import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import net.particify.arsnova.connector.config.properties.AuthenticationProperties;
+import net.particify.arsnova.connector.config.properties.DataAccessProperties;
 import net.particify.arsnova.connector.dao.ConnectorDao;
 
 @ComponentScan(basePackages = {
@@ -30,11 +32,14 @@ import net.particify.arsnova.connector.dao.ConnectorDao;
 				"file:${connector.config-dir:.}/secrets.yml"},
 		ignoreResourceNotFound = true,
 		factory = YamlPropertySourceFactory.class)
+@EnableConfigurationProperties({
+		AuthenticationProperties.class,
+		DataAccessProperties.class})
 public class AppConfig {
 	private static final String DAO_PACKAGE = "net.particify.arsnova.connector.dao";
 
 	@Autowired
-	private Environment env;
+	private DataAccessProperties dataAccessProperties;
 
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
@@ -44,18 +49,18 @@ public class AppConfig {
 	@Bean(name = "dataSource")
 	public DriverManagerDataSource dataSource() throws SQLException {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName(env.getProperty("data-access.jdbc.driver-class-name"));
-		dataSource.setUrl(env.getProperty("data-access.jdbc.url"));
-		dataSource.setUsername(env.getProperty("data-access.jdbc.username"));
-		dataSource.setPassword(env.getProperty("data-access.jdbc.password"));
+		dataSource.setDriverClassName(dataAccessProperties.getJdbc().getDriverClassName());
+		dataSource.setUrl(dataAccessProperties.getJdbc().getUrl());
+		dataSource.setUsername(dataAccessProperties.getJdbc().getUsername());
+		dataSource.setPassword(dataAccessProperties.getJdbc().getPassword());
 		return dataSource;
 	}
 
 	@Bean
 	public ConnectorDao connectorDao() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		final String implClass = env.getProperty("data-access.implementation").contains(".")
-				? env.getProperty("data-access.implementation")
-				: DAO_PACKAGE + "." + env.getProperty("data-access.implementation");
+		final String implClass = dataAccessProperties.getImplementation().contains(".")
+				? dataAccessProperties.getImplementation()
+				: DAO_PACKAGE + "." + dataAccessProperties.getImplementation();
 		return (ConnectorDao) Class.forName(implClass).newInstance();
 	}
 }
