@@ -13,7 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import net.particify.arsnova.connector.config.properties.AuthenticationProperties;
-import net.particify.arsnova.connector.core.RepoPermissionEvaluator;
+import net.particify.arsnova.connector.security.ConnectorPermissionEvaluator;
 
 @Configuration
 @EnableWebSecurity
@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	public PermissionEvaluator permissionEvaluator() {
-		return new RepoPermissionEvaluator();
+		return new ConnectorPermissionEvaluator();
 	}
 
 	@Override

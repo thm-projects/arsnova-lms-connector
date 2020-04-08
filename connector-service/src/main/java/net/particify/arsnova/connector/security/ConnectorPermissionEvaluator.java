@@ -1,11 +1,11 @@
-package net.particify.arsnova.connector.core;
+package net.particify.arsnova.connector.security;
 
 import java.io.Serializable;
 
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 
-public class RepoPermissionEvaluator implements PermissionEvaluator {
+public class ConnectorPermissionEvaluator implements PermissionEvaluator {
 	@Override
 	public boolean hasPermission(
 			final Authentication authentication,
