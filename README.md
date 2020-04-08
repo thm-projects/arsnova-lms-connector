@@ -2,7 +2,7 @@
 
 LMS Connector acts as a proxy to Learning Management Systems and provides course membership data under a unified API.
 This API can be consumed by ARSnova Backend to allow the creation of sessions linked to LMS courses.
-The LMS membership data is retrieved either directly from the database or via an API provided by the LMS.
+The LMS membership data is retrieved either directly from the database provided by the LMS.
 Only limited read access to the LMS's data is required.
 
 ## Compatibility
@@ -13,10 +13,6 @@ We currently provide implementations to access Moodle and Stud.IP:
 |---------|--------------------|---------------------|
 | Moodle  | DBMS               | >= 3.2              |
 | Stud.IP | DBMS               | >= 1.0              |
-| Stud.IP | REST API (plugin*) | >= 2.3, < 4.0       |
-
-\* The Stud.IP plugin has been deprecated because Stud.IP has an integrated REST API since version 3.0.
-This new API is not yet supported.
 
 ## Installation
 
