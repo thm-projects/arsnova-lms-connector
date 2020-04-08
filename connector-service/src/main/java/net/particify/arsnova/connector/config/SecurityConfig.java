@@ -12,9 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import net.particify.arsnova.connector.auth.AuthenticationFilter;
-import net.particify.arsnova.connector.auth.AuthenticationHandler;
-import net.particify.arsnova.connector.auth.AuthenticationTokenService;
 import net.particify.arsnova.connector.config.properties.AuthenticationProperties;
 import net.particify.arsnova.connector.core.RepoPermissionEvaluator;
 
@@ -38,24 +35,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
-	}
-	
-	@Bean
-	public AuthenticationHandler authHandler() {
-		return new AuthenticationHandler();
-	}
-	
-	@Bean
-	public AuthenticationTokenService authTokenService() {
-		return new AuthenticationTokenService();
-	}
-		
-	@Bean
-	public AuthenticationFilter authFilter() {
-		AuthenticationFilter authFilter = new AuthenticationFilter("/**");
-		authFilter.setAuthenticationFailureHandler(authHandler().authFailureHandler());
-		authFilter.setAuthenticationSuccessHandler(authHandler().tokenAuthSuccessHandler());
-		return authFilter;
 	}
 	
 	@Bean
