@@ -25,4 +25,4 @@ This is done by passing the command line argument `-Dconnector.config-dir=/path/
 For Tomcat, Java command line arguments can be added via the `JAVA_OPTS` environment variable.
 On Debian-based systems, `JAVA_OPTS` can be set in `/etc/default/tomcat9`.
 You have to select the implementation for your LMS and setup the access method.
-Credentials you set via `admin.username` and `admin.password` have to be set accordingly in the configuration file of ARSnova Backend.
+Credentials you set via `authentication.username` and `authentication.password` have to be set accordingly in the configuration file of ARSnova Backend.

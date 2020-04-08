@@ -34,8 +34,8 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 
 	private static final Logger logger = LoggerFactory.getLogger(MoodleConnectorDaoImpl.class);
 
-	@Value("${lms.moodle.teacher-role-ids:3,4}") private int[] moodleTeacherRoleIds;
-	@Value("${lms.moodle.student-role-ids:5}") private int[] moodleStudentRoleIds;
+	@Value("${lms.moodle.teacher-role-ids}") private int[] moodleTeacherRoleIds;
+	@Value("${lms.moodle.student-role-ids}") private int[] moodleStudentRoleIds;
 
 	@Autowired
 	private DataSource dataSource;

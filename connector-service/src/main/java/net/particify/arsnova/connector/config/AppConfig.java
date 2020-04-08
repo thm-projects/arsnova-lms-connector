@@ -18,7 +18,10 @@ import net.particify.arsnova.connector.dao.ConnectorDao;
 })
 @Configuration
 @PropertySource(
-		value = "classpath:config/defaults.yml",
+		value = {
+				"classpath:config/defaults.yml",
+				"classpath:config/defaults-moodle.yml"
+		},
 		factory = YamlPropertySourceFactory.class)
 @PropertySource(
 		value = {
@@ -41,18 +44,18 @@ public class AppConfig {
 	@Bean(name = "dataSource")
 	public DriverManagerDataSource dataSource() throws SQLException {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName(env.getProperty("jdbc.driverClassName"));
-		dataSource.setUrl(env.getProperty("jdbc.url"));
-		dataSource.setUsername(env.getProperty("jdbc.username"));
-		dataSource.setPassword(env.getProperty("jdbc.password"));
+		dataSource.setDriverClassName(env.getProperty("data-access.jdbc.driver-class-name"));
+		dataSource.setUrl(env.getProperty("data-access.jdbc.url"));
+		dataSource.setUsername(env.getProperty("data-access.jdbc.username"));
+		dataSource.setPassword(env.getProperty("data-access.jdbc.password"));
 		return dataSource;
 	}
 
 	@Bean
 	public ConnectorDao connectorDao() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		final String implClass = env.getProperty("dao.implementation").contains(".")
-				? env.getProperty("dao.implementation")
-				: DAO_PACKAGE + "." + env.getProperty("dao.implementation");
+		final String implClass = env.getProperty("data-access.implementation").contains(".")
+				? env.getProperty("data-access.implementation")
+				: DAO_PACKAGE + "." + env.getProperty("data-access.implementation");
 		return (ConnectorDao) Class.forName(implClass).newInstance();
 	}
 }

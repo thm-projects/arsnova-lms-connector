@@ -22,8 +22,8 @@ import net.particify.arsnova.connector.core.RepoPermissionEvaluator;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	@Value("${admin.username}") private String username;
-	@Value("${admin.password}") private String password;
+	@Value("${authentication.username}") private String username;
+	@Value("${authentication.password}") private String password;
 	
 	@Autowired
 	private Environment env;

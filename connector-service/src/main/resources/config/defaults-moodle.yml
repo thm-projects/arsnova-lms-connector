@@ -1,0 +1,8 @@
+connector:
+  lms:
+    moodle:
+      teacher-role-ids:
+        - 3
+        - 4
+      student-role-ids:
+        - 5
