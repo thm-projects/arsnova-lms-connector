@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,22 +15,23 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import net.particify.arsnova.connector.auth.AuthenticationFilter;
 import net.particify.arsnova.connector.auth.AuthenticationHandler;
 import net.particify.arsnova.connector.auth.AuthenticationTokenService;
+import net.particify.arsnova.connector.config.properties.AuthenticationProperties;
 import net.particify.arsnova.connector.core.RepoPermissionEvaluator;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	@Value("${admin.username}") private String username;
-	@Value("${admin.password}") private String password;
+	@Value("${authentication.username}") private String username;
+	@Value("${authentication.password}") private String password;
 	
 	@Autowired
-	private Environment env;
+	private AuthenticationProperties authenticationProperties;
 		
 	@Autowired
 	public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication().withUser(username)
-				.password("{noop}" + password).authorities("ADMIN");
+		auth.inMemoryAuthentication().withUser(authenticationProperties.getUsername())
+				.password("{noop}" + authenticationProperties.getPassword()).authorities("ADMIN");
 	}
 
 	@Bean

@@ -3,7 +3,6 @@ package net.particify.arsnova.connector.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -15,13 +14,15 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 
+import net.particify.arsnova.connector.config.properties.MoodleProperties;
 import net.particify.arsnova.connector.model.Course;
 import net.particify.arsnova.connector.model.Membership;
 import net.particify.arsnova.connector.model.UserRole;
@@ -29,13 +30,15 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSourceUtils;
 
+@Configuration
+@EnableConfigurationProperties(MoodleProperties.class)
 public class MoodleConnectorDaoImpl implements ConnectorDao {
 	private static final String TYPE = "moodle";
 
 	private static final Logger logger = LoggerFactory.getLogger(MoodleConnectorDaoImpl.class);
 
-	@Value("${lms.moodle.teacher-role-ids:3,4}") private int[] moodleTeacherRoleIds;
-	@Value("${lms.moodle.student-role-ids:5}") private int[] moodleStudentRoleIds;
+	@Autowired
+	private MoodleProperties moodleProperties;
 
 	@Autowired
 	private DataSource dataSource;
@@ -177,9 +180,9 @@ public class MoodleConnectorDaoImpl implements ConnectorDao {
 	}
 
 	private UserRole getMembershipRole(final int moodleRoleId) {
-		if (Arrays.stream(moodleTeacherRoleIds).anyMatch(id -> id == moodleRoleId)) {
+		if (moodleProperties.getTeacherRoleIds().stream().anyMatch(id -> id == moodleRoleId)) {
 			return UserRole.TEACHER;
-		} else if (Arrays.stream(moodleStudentRoleIds).anyMatch(id -> id == moodleRoleId)) {
+		} else if (moodleProperties.getStudentRoleIds().stream().anyMatch(id -> id == moodleRoleId)) {
 			return UserRole.MEMBER;
 		}
 

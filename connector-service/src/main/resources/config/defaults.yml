@@ -1,19 +1,18 @@
 connector:
-  jdbc:
-    driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/moodle?zeroDateTimeBehavior=convertToNull
-    username: arsnova
-    password: arsnova
-
-  # Select the data access object implementation your target platform
-  # Uncomment the following line to access Moodle
-  dao:
+  data-access:
+    # Select the data access object implementation for your target platform
+    # Uncomment the following line to access Moodle
     implementation: MoodleConnectorDaoImpl
     # Uncomment the following line to access Stud.IP
     #implementation: StudipConnectorDaoImpl
     # Uncomment the following line to get a dummy implementation
     #implementation: DummyConnectorDaoImpl
+    jdbc:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/moodle?zeroDateTimeBehavior=convertToNull
+      username: arsnova
+      password: arsnova
 
-  admin:
+  authentication:
     username: arsnova
     password: arsnova
