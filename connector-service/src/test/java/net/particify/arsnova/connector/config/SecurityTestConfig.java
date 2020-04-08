@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
-import net.particify.arsnova.connector.core.RepoPermissionEvaluator;
+import net.particify.arsnova.connector.security.ConnectorPermissionEvaluator;
 
 @Configuration
 @EnableWebSecurity
@@ -33,7 +33,7 @@ public class SecurityTestConfig extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public PermissionEvaluator permissionEvaluator() throws Exception {
-		return new RepoPermissionEvaluator();
+		return new ConnectorPermissionEvaluator();
 	}
 
 	@Override
