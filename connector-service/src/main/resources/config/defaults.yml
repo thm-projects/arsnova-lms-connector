@@ -17,8 +17,3 @@ connector:
   admin:
     username: arsnova
     password: arsnova
-
-  ldap:
-    serverUrl:
-    userSearchBase:
-    userSearchFilter:
