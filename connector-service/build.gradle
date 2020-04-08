@@ -30,7 +30,6 @@ dependencies {
 	implementation group: 'cglib', name: 'cglib', version: '3.3.0'
 	implementation group: 'ch.qos.logback', name: 'logback-classic'
 	implementation group: 'org.codehaus.janino', name: 'janino'
-	implementation group: 'org.json', name: 'json', version: '20190722'
 
 	providedCompile group: 'jakarta.servlet', name: 'jakarta.servlet-api'
 
