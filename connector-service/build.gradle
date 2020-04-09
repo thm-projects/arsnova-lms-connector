@@ -59,6 +59,12 @@ publishing {
 
 test { systemProperties 'property': 'value' }
 
+jib {
+	from {
+		image = 'gcr.io/distroless/java-debian10/jetty:java11'
+	}
+}
+
 gretty {
 	servletContainer = 'jetty9.4'
 	logbackConfigFile = 'src/main/resources/logback.xml'
