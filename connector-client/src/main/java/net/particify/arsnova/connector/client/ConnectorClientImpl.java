@@ -2,6 +2,8 @@ package net.particify.arsnova.connector.client;
 
 import net.particify.arsnova.connector.model.Courses;
 import net.particify.arsnova.connector.model.Membership;
+
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -11,10 +13,13 @@ import org.springframework.web.client.RestTemplate;
 import java.nio.charset.StandardCharsets;
 
 public class ConnectorClientImpl implements ConnectorClient {
-	private final RestTemplate restTemplate;
+	public static final String MEMBERSHIPS_CACHE = "lms.memberships";
+	public static final String COURSES_CACHE = "lms.courses";
 
 	private static final String ISMEMBER_URI = "/{username}/membership/{courseid}";
 	private static final String GETCOURSES_URI = "/{username}/courses";
+
+	private final RestTemplate restTemplate;
 
 	private String uriHostPart;
 	private String httpUsername;
@@ -46,6 +51,7 @@ public class ConnectorClientImpl implements ConnectorClient {
 	}
 
 	@Override
+	@Cacheable(MEMBERSHIPS_CACHE)
 	public Membership getMembership(final String username, final String courseid) {
 		final ResponseEntity<Membership> response = restTemplate.exchange(
 				buildRequestUri(ISMEMBER_URI),
@@ -60,6 +66,7 @@ public class ConnectorClientImpl implements ConnectorClient {
 	}
 
 	@Override
+	@Cacheable(COURSES_CACHE)
 	public Courses getCourses(final String username) {
 		final ResponseEntity<Courses> response = restTemplate.exchange(
 				buildRequestUri(GETCOURSES_URI),
