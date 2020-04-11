@@ -40,10 +40,17 @@ unit_test:
 maven_publish:
   extends: .gradle
   stage: deploy
-  only:
-    - master
-    - /^v[0-9]+/
-    - /^[0-9]+\.[0-9]+$/
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+      when: never
+    # Automatically publish snapshot packages for the master branch
+    - if: $CI_COMMIT_REF_NAME == "master"
+      when: on_success
+    # Publish packages for releases on-demand
+    - if: $CI_COMMIT_REF_NAME =~ /^v[0-9]+/ || $CI_COMMIT_REF_NAME =~ /^[0-9]+\.[0-9]+$/
+      when: manual
+    # Do not publish packages for topic branches
+    - when: never
   dependencies:
     - compile
   script:
