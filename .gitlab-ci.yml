@@ -54,7 +54,7 @@ maven_publish:
   dependencies:
     - compile
   script:
-    - gradle $GRADLE_CLI_OPTS publish -PgitlabHostUrl=$CI_SERVER_URL -PgitlabProjectId=$CI_PROJECT_ID -PgitlabAuthToken=$CI_JOB_TOKEN
+    - gradle $GRADLE_CLI_OPTS publish -x jar -x war -PgitlabHostUrl=$CI_SERVER_URL -PgitlabProjectId=$CI_PROJECT_ID -PgitlabAuthToken=$CI_JOB_TOKEN
 
 .docker_image:
   extends: .gradle
