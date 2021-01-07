@@ -12,9 +12,9 @@ jar {
 dependencies {
 	api 'jakarta.xml.bind:jakarta.xml.bind-api'
 
-	jaxb 'org.glassfish.jaxb:jaxb-xjc:2.3.2'
-	jaxb 'org.glassfish.jaxb:jaxb-runtime:2.3.2'
-	jaxb 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
+	jaxb 'org.glassfish.jaxb:jaxb-xjc:2.3.3'
+	jaxb 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
+	jaxb 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
 }
 
 publishing {
