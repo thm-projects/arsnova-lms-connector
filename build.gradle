@@ -1,6 +1,6 @@
 allprojects {
 	group = 'net.particify.arsnova.integrations'
-	version = '1.0.1-SNAPSHOT'
+	version = '1.0.1'
 
 	repositories {
 		jcenter()
