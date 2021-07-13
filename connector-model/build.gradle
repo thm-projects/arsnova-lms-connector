@@ -1,6 +1,6 @@
 plugins {
 	id 'java-library'
-	id "org.openrepose.gradle.plugins.jaxb" version "2.5.0"
+	id 'org.jetbrains.kotlin.jvm' version '1.5.20'
 }
 
 jar {
@@ -10,11 +10,7 @@ jar {
 }
 
 dependencies {
-	api 'jakarta.xml.bind:jakarta.xml.bind-api'
-
-	jaxb 'org.glassfish.jaxb:jaxb-xjc:2.3.3'
-	jaxb 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
-	jaxb 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
+	api 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 }
 
 publishing {
@@ -32,17 +28,3 @@ publishing {
 		}
 	}
 }
-
-sourceSets {
-	main {
-		java {
-			srcDir 'build/generated-sources/xjc'
-		}
-	}
-}
-
-jaxb {
-	xsdDir = "${project.projectDir}/src/main/resources"
-}
-
-tasks.compileJava.dependsOn('xjc')
