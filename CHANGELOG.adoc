@@ -1,0 +1,47 @@
+= Changelog
+
+== 1.0.2
+
+This is a maintenance release which only brings libraries up to date to
+fix potential bugs.
+
+== 1.0.1
+
+This is a maintenance release which only brings libraries up to date to
+fix potential bugs.
+
+== 1.0
+
+This is the first stable release of LMS Connector. It introduces a lot
+of changes since the latest pre-release.
+
+=== New Features and Improvements
+* Java 11 is supported.
+* Start and end dates of courses are retrieved from the LMS's and have
+  been added to the API.
+* The configuration file uses YAML format. Its location is set as a
+  Java system property.
+* Optimized SQL queries for performance.
+* The mapping of Moodle user role IDs can be changed in configuration.
+* The client library uses annotations to support caching of course and
+  membership data.
+* Frameworks and libraries have been updated.
+
+=== Bug Fixes
+* A NullPointerException, which was caused by the SQL query for Moodle
+  course memberships in some cases, has been fixed.
+* A compatibility issue with the PostgreSQL JDBC driver has been fixed.
+
+=== Removed Features
+* The deprecated Stud.IP REST API plugin is no longer supported.
+* Ilias integration was removed because its feature set was not
+  consistent with integrations for other LMS's. It might resurface in a
+  future release.
+* Token authentication is no longer supported.
+* LDAP is no longer supported.
+* CORS HTTP headers are no longer set.
+
+=== Contributions
+Lead development:
+Daniel Gerhardt (https://particify.com[Particify]),
+Paul-Christian Volkmer

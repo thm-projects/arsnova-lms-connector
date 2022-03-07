@@ -1,25 +1,36 @@
-buildscript {
-	repositories {
-		jcenter()
-		mavenCentral()
-		mavenLocal()
-	}
-}
-
 plugins {
+	id 'java-library'
 	id "org.openrepose.gradle.plugins.jaxb" version "2.5.0"
 }
 
 jar {
 	manifest {
-		attributes 'Implementation-Title': 'Connector-Model', 'Implementation-Version': version
+		attributes 'Implementation-Title': 'Connector-Model', 'Implementation-Version': archiveVersion
 	}
 }
 
 dependencies {
-	jaxb 'org.glassfish.jaxb:jaxb-xjc:2.3.2'
-	jaxb 'org.glassfish.jaxb:jaxb-runtime:2.3.2'
-	jaxb 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.2'
+	api 'jakarta.xml.bind:jakarta.xml.bind-api'
+
+	jaxb 'org.glassfish.jaxb:jaxb-xjc:2.3.3'
+	jaxb 'org.glassfish.jaxb:jaxb-runtime:2.3.3'
+	jaxb 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+			versionMapping {
+				usage('java-api') {
+					fromResolutionOf('runtimeClasspath')
+				}
+				usage('java-runtime') {
+					fromResolutionResult()
+				}
+			}
+		}
+	}
 }
 
 sourceSets {
@@ -33,3 +44,5 @@ sourceSets {
 jaxb {
 	xsdDir = "${project.projectDir}/src/main/resources"
 }
+
+tasks.compileJava.dependsOn('xjc')

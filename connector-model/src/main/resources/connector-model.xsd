@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema targetNamespace="http://arsnova.thm.de/connector/model"
+<schema targetNamespace="http://particify.net/arsnova/connector/model"
 	elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema"
-	xmlns:tns="http://arsnova.thm.de/connector/model">
+	xmlns:tns="http://particify.net/arsnova/connector/model">
 
 	<element name="courses">
 		<complexType>
@@ -18,6 +18,8 @@
 			<element name="fullname" type="string"></element>
 			<element name="shortname" type="string"></element>
 			<element ref="tns:membership"></element>
+			<element name="startdate" type="dateTime" minOccurs="0"></element>
+			<element name="enddate" type="dateTime" minOccurs="0"></element>
 		</sequence>
 		<attribute name="type" type="string"></attribute>
 	</complexType>
