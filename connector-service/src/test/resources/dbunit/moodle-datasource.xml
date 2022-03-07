@@ -4,23 +4,31 @@
 		<column>id</column>
 		<column>fullname</column>
 		<column>shortname</column>
+		<column>startdate</column>
+		<column>enddate</column>
 		<column>visible</column>
 		<row>
 			<value>1</value>
 			<value>Testkurs 1</value>
 			<value>TK1</value>
+			<value>1577836800</value>
+			<value>1601424000</value>
 			<value>1</value>
 		</row>
 		<row>
 			<value>2</value>
 			<value>Testkurs 2</value>
 			<value>TK2</value>
+			<value>1917043200</value>
+			<value>0</value>
 			<value>1</value>
 		</row>
 		<row>
 			<value>3</value>
 			<value>Testkurs 3 (Unsichtbar)</value>
 			<value>TK3</value>
+			<value>936868149</value>
+			<value>0</value>
 			<value>0</value>
 		</row>
 	</table>

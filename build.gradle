@@ -1,20 +1,23 @@
-subprojects {
-	apply plugin: 'java'
-	apply plugin: 'maven'
-
-	sourceCompatibility = 1.8
-
-	group = 'de.thm.arsnova.connector'
-	version = '1.0.0-SNAPSHOT'
-
-	ext {
-		springBootVersion = '2.1.4.RELEASE'
-	}
+allprojects {
+	group = 'net.particify.arsnova.integrations'
+	version = '1.1.0-SNAPSHOT'
 
 	repositories {
 		jcenter()
 		mavenCentral()
 		mavenLocal()
+	}
+}
+
+subprojects {
+	apply plugin: 'jacoco'
+	apply plugin: 'java'
+	apply plugin: 'maven-publish'
+
+	sourceCompatibility = 1.8
+
+	ext {
+		springBootVersion = '2.4.7'
 	}
 
 	dependencies {
@@ -31,17 +34,36 @@ subprojects {
 
 	configurations { deployerJars }
 
-	uploadArchives {
-		repositories.mavenDeployer {
-			configuration = configurations.deployerJars
-			repository(
-					url: project.hasProperty('mavenUrl') ? mavenUrl : "https://maven.mni.thm.de/content/repositories/snapshots/"
-					) {
-						authentication(
-								userName: project.hasProperty('mavenUsername') ? mavenUsername : '',
-								password: project.hasProperty('mavenPassword') ? mavenPassword : ''
-								)
+	publishing {
+		repositories {
+			if (project.hasProperty('gitlabProjectId') || project.hasProperty('mavenRepoUrl')) {
+				maven {
+					if (project.hasProperty('gitlabProjectId')) {
+						def gitlabHostUrl = project.hasProperty('gitlabHostUrl') ? gitlabHostUrl : 'gitlab.com'
+						if (!(gitlabHostUrl ==~ /https?:.*/)) {
+							gitlabHostUrl = 'https://' + gitlabHostUrl
+						}
+						url = "${gitlabHostUrl}/api/v4/projects/${gitlabProjectId}/packages/maven"
+						if (project.hasProperty('gitlabAuthToken')) {
+							credentials(HttpHeaderCredentials) {
+								name = 'Job-Token'
+								value = gitlabAuthToken
+							}
+							authentication {
+								header(HttpHeaderAuthentication)
+							}
+						}
+					} else {
+						url = mavenRepoUrl
 					}
+				}
+			}
+		}
+	}
+
+	jacocoTestReport {
+		reports {
+			csv.enabled true
 		}
 	}
 }
